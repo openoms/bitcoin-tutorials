@@ -90,11 +90,14 @@ https://github.com/Stadicus/guides/blob/master/raspibolt/raspibolt_64_electrum.m
 
 >sudo ufw status
 
->sudo ufw allow 50003
+allow your chosen port in ufw (default is 50002)
+
+>sudo ufw allow 50002
 
 >sudo systemctl start eps.service
 
 >admin ~ ฿ tail -f /tmp/electrumpersonalserver.log
 
->python3 run_electrum --oneserver --server 192.168.1.244:50002:s
+will need the LAN IP if your Raspibolt
+>python3 run_electrum --oneserver --server 192.168.?.???:50002:s
 
