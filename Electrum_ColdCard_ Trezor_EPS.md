@@ -4,7 +4,7 @@
 
 >sudo apt install git-all
 
-# download, verify, install Electrum
+## download, verify, install Electrum
 >wget https://download.electrum.org/3.3.2/Electrum-3.3.2.tar.gz https://download.electrum.org/3.3.2/Electrum-3.3.2.tar.gz.asc
 
 Verify Electrum's downloaded source code
@@ -45,7 +45,7 @@ And finally, install Electrum bitcoin wallet using the bellow command:
 >cd Electrum-3.3.2
 
 
-# install and activate a virtual environment
+## install and activate a virtual environment
 >apt-get install python3-venv
 
 >python3 -m venv venv
@@ -54,7 +54,7 @@ And finally, install Electrum bitcoin wallet using the bellow command:
 
 
 
-# to install ColdCard access for Electrum
+## to install ColdCard access for Electrum
 >sudo apt-get install python-dev libusb-1.0-0-dev libudev-dev
 
 >sudo pip install --upgrade setuptools
@@ -65,7 +65,7 @@ And finally, install Electrum bitcoin wallet using the bellow command:
 
 >pip install "ckcc-protocol[cli]"
 
-# install Trezor acces for Electrum
+## install Trezor access for Electrum
 >sudo apt-get install python3-dev python3-pip cython3 libusb-1.0-0-dev libudev-dev
 
 >pip3 install --upgrade setuptools
@@ -74,7 +74,7 @@ And finally, install Electrum bitcoin wallet using the bellow command:
 
 >sudo pip3 install trezor[hidapi]
 
-# install Electrum Personal server
+## install Electrum Personal server
 https://github.com/Stadicus/guides/blob/master/raspibolt/raspibolt_64_electrum.md  
 
 some debugging which worked for me:
