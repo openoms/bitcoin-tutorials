@@ -76,7 +76,10 @@ And finally, install Electrum bitcoin wallet using the bellow command:
 
 # install Electrum Personal server
 https://github.com/Stadicus/guides/blob/master/raspibolt/raspibolt_64_electrum.md  
->ssh admin@Raspiblitz
+
+some debugging which worked for me:
+
+>ssh admin@Raspibolt
 
 >sudo su - bitcoin
 
