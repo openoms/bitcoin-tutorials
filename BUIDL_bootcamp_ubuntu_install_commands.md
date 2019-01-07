@@ -3,7 +3,8 @@ sudo apt-get upgrade
 
 sudo apt install git-all
 
-git clone https://github.com/superquest/digital-cash.git
+git clone https://github.com/superquest/digital-cash.git  
+
 cd digital-cash
 
 apt-get install python3-venv
