@@ -58,8 +58,13 @@ sudo chmod +x /usr/local/bin/docker-compose
 # sudo shutdown now -r
 
 cd digital-cash/
-																																																																																																																																															source venv/bin/activate
+source venv/bin/activate
 cd experiments/
 docker-compose up --build
 
 # more troubleshooting: https://docs.docker.com/install/linux/linux-postinstall/
+
+# install fuzzy file finder: 
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+~/.fzf/install
+# restart bash, use with CTRL + R
