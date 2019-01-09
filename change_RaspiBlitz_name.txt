@@ -1,3 +1,2 @@
-cd /home/admin/assets
-nano lnd.bitcoin.conf
+sudo nano /home/bitcoin/.lnd/lnd.conf 
 >alias=
