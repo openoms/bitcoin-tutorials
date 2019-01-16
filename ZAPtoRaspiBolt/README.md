@@ -24,9 +24,9 @@ Install instructions: https://github.com/LN-Zap/zap-desktop#install
 * Restart LND :  
   `$ sudo systemctl restart lnd`  
   
-* Copy the new tls.cert to user "admin", as they are needed to use lncli:  
+* Copy the new tls.cert to user "admin", as it is needed for lncli:  
     `$ sudo cp /home/bitcoin/.lnd/tls.cert /home/admin/.lnd`
-    
+
 * Unlock wallet  
   `$ lncli unlock` 
 
@@ -44,7 +44,7 @@ Install instructions: https://github.com/LN-Zap/zap-desktop#install
   `$ scp admin@your.RaspiBolt.LAN.IP:/home/admin/.lnd/tls.cert ~/`
 
 * Copy the admin.macaroon to your home directory:  
-`$ scp admin@your.RaspiBolt.LAN.IP:/home/admin/admin.macaroon ~/`
+`$ scp admin@your.RaspiBolt.LAN.IP:/home/bitcoin/.lnd/admin.macaroon ~/`
 
 ### Configure ZAP
 
