@@ -13,22 +13,27 @@ Install instructions: https://github.com/LN-Zap/zap-desktop#install
 
 ### Preparation on the Pi
 
-* Add the following line to your lnd configuration file in the section `[Application Options]`  
-  `$ sudo nano /home/bitcoin/.lnd/lnd.conf`
-  
-  ```tlsextraip=0.0.0.0```
-* Allow the ufw firewall to listen on 10009 from the LAN
+* Allow connections to the RaspiBolt from your LAN. Check what your LAN IP address is starting with eg. 192.168.0 or 192.168.1 and use the address accordingly. Ending with .0/24 will allow all IP addresses from that network.
+    `$ sudo nano /home/bitcoin/.lnd/lnd.conf`  
 
+    Add the following line to your lnd configuration file in the section to `[Application Options]`:
+  ```tlsextraip=192.168.0.0/24```
+* Delete tls.cert (restrating lnd will recreate it):  
+    `$ sudo rm /home/bitcoin/.lnd/tls.*`
+
+* Restart LND and unlock wallet:  
+  `$ sudo systemctl restart lnd`  
+  `$ lncli unlock` 
+
+* Allow the ufw firewall to listen on 10009 from the LAN:  
   `$ sudo ufw allow from 192.168.0.0/24 to any port 10009 comment 'allow LND grpc from local LAN'`
 
  * restart and check the firewall:  
- `$ sudo ufw enable`  
- `$ sudo ufw status`
+  `$ sudo ufw enable`  
+  `$ sudo ufw status`
 
-* Restart LND and unlock wallet  
-  `$ sudo systemctl restart lnd`  
-  `$ lncli unlock` 
-### On your linux desktop:  
+
+### On your Linux desktop terminal:  
 
 * Copy the tls.cert to your home directory:  
   `$ scp admin@your.RaspiBolt.LAN.IP:/home/admin/.lnd/tls.cert ~/`
@@ -44,13 +49,10 @@ Install instructions: https://github.com/LN-Zap/zap-desktop#install
 ![](zap1.png)
 
 
-* Fill in the next screen:
-
-`your.RaspiBolt.LAN.IP:10009`
-
-`~/tls.cert`
-
-`~/admin.macaroon`
+* Fill in the next screen:  
+`your.RaspiBolt.LAN.IP:10009`  
+`~/tls.cert`  
+`~/admin.macaroon`  
 
 ![](zap2.png)
 
