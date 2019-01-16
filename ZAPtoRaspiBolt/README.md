@@ -18,11 +18,16 @@ Install instructions: https://github.com/LN-Zap/zap-desktop#install
 
     Add the following line to your lnd configuration file in the section to `[Application Options]`:
   ```tlsextraip=192.168.0.0/24```
-* Delete tls.cert (restrating lnd will recreate it):  
+* Delete tls.cert (restarting LND will recreate it):  
     `$ sudo rm /home/bitcoin/.lnd/tls.*`
 
-* Restart LND and unlock wallet:  
+* Restart LND :  
   `$ sudo systemctl restart lnd`  
+  
+* Copy the new tls.cert to user "admin", as they are needed to use lncli:  
+    `$ sudo cp /home/bitcoin/.lnd/tls.cert /home/admin/.lnd`
+    
+* Unlock wallet  
   `$ lncli unlock` 
 
 * Allow the ufw firewall to listen on 10009 from the LAN:  
