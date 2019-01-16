@@ -6,10 +6,12 @@ Bring the power of lightning to the web with in-browser payments and identity, a
 
 ### Preparation on the Pi
 
-* For Joule to work you will need to allow connection to your RaspiBolt from any IP (0.0.0.0). The communications will remain encrypted with TLS, but there is a a risk of a DDOS or other attack.  
+For Joule to work you will need to allow connection to your RaspiBolt from any IP (0.0.0.0). The communications will remain encrypted with TLS, but there is a a risk of a DDOS or other attack.  
+
+* Open the LND configuration file:   
     `$ sudo nano /home/bitcoin/.lnd/lnd.conf`  
 
-    Add the following line to your lnd configuration file in the section to `[Application Options]`:
+    Add the following line in the section to `[Application Options]`:  
   ```tlsextraip=0.0.0.0```
 * Delete tls.cert (restarting LND will recreate it):  
     `$ sudo rm /home/bitcoin/.lnd/tls.*`
@@ -23,11 +25,8 @@ Bring the power of lightning to the web with in-browser payments and identity, a
 * Unlock wallet  
   `$ lncli unlock` 
 
-* Allow the ufw firewall to listen on 8080 from the LAN:  
-  `$ sudo ufw allow from 192.168.0.0/24 to any port 8080 comment 'allow REST api from local LAN'`
-  
-  For the #RECKLESS it can be opened for any address
-  `$ sudo ufw allow from 0.0.0.0 to any port 8080 comment 'allow REST api from ANYWHERE'`
+* Allow the REST api communicate with any IP address:  
+  `$ sudo ufw allow 8080 comment 'allow REST api from public internet'`
 
  * restart and check the firewall:  
   `$ sudo ufw enable`  
