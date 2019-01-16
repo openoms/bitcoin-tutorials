@@ -11,7 +11,7 @@ For Joule to work you will need to allow connection to your RaspiBolt from any I
 * Open the LND configuration file:   
     `$ sudo nano /home/bitcoin/.lnd/lnd.conf`  
 
-    Add the following line in the section to `[Application Options]`:  
+    Add the following line to the section `[Application Options]`:  
   ```tlsextraip=0.0.0.0```
 * Delete tls.cert (restarting LND will recreate it):  
     `$ sudo rm /home/bitcoin/.lnd/tls.*`
