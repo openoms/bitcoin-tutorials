@@ -1,4 +1,7 @@
-Ubuntu18.04.01LTS image
+Download the working Ubuntu18.04.01LTS image:
+https://mega.nz/#F!JQ1S1KqT!nDiX3p9aCY-8DUvvmf-_mw
+
+
 unzip the .vdi to use with Virtualbox
 
 username: buidl
