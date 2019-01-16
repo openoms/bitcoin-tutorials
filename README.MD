@@ -9,7 +9,7 @@ More here:
 
 [Connect the Zap Desktop Lightning wallet to the RaspiBlitz](ZAPtoRaspiBolt/README.md)
 
-[Connect the Joule browser extension to the RaspiBlitz](JouletoRaspiBolt/README.md)
+[Connect the Joule browser extension to the RaspiBlitz](JouleToRaspiBlitz.md)
 
 [Install Electrum with support for ColdCard, Trezor and Ledger](Electrum_ColdCard_Trezor_Ledger_EPS.md)
 
