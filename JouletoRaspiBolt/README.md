@@ -1,4 +1,4 @@
-## Connect the Joule browser extension to your RaspiBolt
+## Connect the Joule browser extension to the RaspiBlitz
 
 https://lightningjoule.com/  
 Bring the power of lightning to the web with in-browser payments and identity, all with your own node. 

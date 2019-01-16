@@ -1,3 +1,6 @@
+# Install Electrum with support for ColdCard, Trezor and Ledger connected to your own Electrum Personal Server
+
+
 >sudo apt-get update
 
 >sudo apt-get upgrade
@@ -8,7 +11,8 @@
 >wget https://download.electrum.org/3.3.2/Electrum-3.3.2.tar.gz https://download.electrum.org/3.3.2/Electrum-3.3.2.tar.gz.asc
 
 Verify Electrum's downloaded source code
-At this stage, we are ready to verify Electrum's source code. The source code is signed by Thomas Voegtlin (https://electrum.org). Let's import a relevant key signature:
+At this stage, we are ready to verify Electrum's source code. The source code is signed by Thomas Voegtlin (https://electrum.org).   
+Let's import his public key:
 
 > gpg --keyserver pool.sks-keyservers.net --recv-keys 2BD5824B7F9470E6
 ```
@@ -17,8 +21,7 @@ gpg: no ultimately trusted keys found
 gpg: Total number processed: 1
 gpg:               imported: 1
 ```
-
-Confirm a correct key import as per LINE 2. Once the key has been imported it is time to perform the verification:
+Confirm a correct key import and proceed to verify the downloaded file with with the help of the signature file:
 
 > gpg --verify Electrum-3.3.2.tar.gz.asc Electrum-3.3.2.tar.gz
 ```
@@ -32,13 +35,13 @@ gpg:          There is no indication that the signature belongs to the owner.
 Primary key fingerprint: 6694 D8DE 7BE8 EE56 31BE  D950 2BD5 824B 7F94 70E6
 ```
 
-Note gpg: Good signature on Line 4. All seems to be in order!
+Note gpg: Good signature on Line 3. All seems to be in order!
 Install Electrum
 To install Electrum bitcoin wallet, we first need to preform an installation of all prerequisites:
 
 > sudo apt-get install python3-setuptools python3-pyqt5 python3-pip
 
-And finally, install Electrum bitcoin wallet using the bellow command:
+Install Electrum using the command:
 
 >sudo pip3 install Electrum-3.3.2.tar.gz
 

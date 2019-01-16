@@ -1,7 +1,6 @@
 
 
-## Connect the ZAP Desktop Lightning wallet to your RaspiBolt
-
+## Connect the ZAP Desktop Lightning wallet to the RaspiBlitz
 
 The desktop app ZAP (https://github.com/LN-Zap/zap-desktop)
 ) is a cross platform Lightning Network wallet focused on user experience and ease of use.

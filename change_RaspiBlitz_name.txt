@@ -1,2 +1,0 @@
-sudo nano /home/bitcoin/.lnd/lnd.conf 
->alias=
