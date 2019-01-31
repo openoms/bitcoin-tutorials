@@ -15,7 +15,7 @@ Install instructions: https://github.com/LN-Zap/zap-desktop#install
 * Allow connections to the RaspiBolt from your LAN. Check what your LAN IP address is starting with eg. 192.168.0 or 192.168.1 and use the address accordingly. Ending with .0/24 will allow all IP addresses from that network.
     `$ sudo nano /home/bitcoin/.lnd/lnd.conf`  
 
-    Add the following line to the section `[Application Options]`:
+    Add the following line to the section `[Application Options]`:  
   ```tlsextraip=192.168.0.0/24```
   
 * Delete tls.cert (restarting LND will recreate it):  
@@ -44,7 +44,7 @@ Install instructions: https://github.com/LN-Zap/zap-desktop#install
   `$ scp admin@your.RaspiBolt.LAN.IP:/home/admin/.lnd/tls.cert ~/`
 
 * Copy the admin.macaroon to your home directory:  
-`$ scp admin@your.RaspiBolt.LAN.IP:/home/bitcoin/.lnd/admin.macaroon ~/`
+`$ scp root@your.RaspiBolt.LAN.IP:/home/bitcoin/.lnd/data/chain/bitcoin/mainnet/admin.macaroon ~/`
 
 ### Configure ZAP
 
