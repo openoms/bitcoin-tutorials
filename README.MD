@@ -23,7 +23,7 @@ Bring the power of lightning to the web with in-browser payments and identity, a
 
 ---
 
-### [Click here to see my node on explore.casa and connect](https://explore.casa/nodes/03ae56e5cc4edb357407727d52372a6bee32bc870802b0888961b01b49625a1815)
+### [Click here to see my node on explore.casa and connect](https://explore.casa/nodes/02a4c564af0f33795b438e8d76d2b5057c3dcd1115be144c3fc05e7c8c65486f23)
 If you are not behind Tor send me a DM on https://twitter.com/openoms an I will add you as a peer first.
 
-![03ae56e5cc4edb357407727d52372a6bee32bc870802b0888961b01b49625a1815@g6jeg2malp4n3pld.onion:9735](images/RaspiBlitzPhoto.jpg)
+![02a4c564af0f33795b438e8d76d2b5057c3dcd1115be144c3fc05e7c8c65486f23@valadbahwqsr6uxh.onion:9735](images/RaspiBlitzPhoto.jpg)
