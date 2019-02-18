@@ -12,7 +12,7 @@ Install instructions: https://github.com/LN-Zap/zap-desktop#install
 
 ### Preparation on the Pi
 
-* Allow connections to the RaspiBolt from your LAN. Check what your LAN IP address is starting with eg. 192.168.0 or 192.168.1 and use the address accordingly. Ending with .0/24 will allow all IP addresses from that network.
+* Allow connections to the RaspiBolt from your LAN. Check what your LAN IP address is starting with eg. 192.168.0.xxx or 192.168.1.xxx and use the address accordingly. Changing the last number (xxx) with .0/24 will allow all IP addresses from your local network.
     `$ sudo nano /home/bitcoin/.lnd/lnd.conf`  
 
     Add the following line to the section `[Application Options]`:  
