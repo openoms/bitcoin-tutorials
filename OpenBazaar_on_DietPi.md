@@ -11,9 +11,20 @@ go run $GOPATH/src/github.com/OpenBazaar/openbazaar-go/openbazaard.go start
 https://api.docs.openbazaar.org/
 
 
-To restore your shop from a backup copy your existing .openbazaar dir to /root/.openbazaar
 
-To restore your OpenBazaar node only from the backup seed:
+### To restore your OpenBazaar node only from the backup seed:
+
+root@DietPi:~# go run $GOPATH/src/github.com/OpenBazaar/openbazaar-go/openbazaard.go restore -d /root/.openbazaar -m "word1 word2 word3 word4 word5 word6 word7 word8 word9 word10 word11 word12"
+
+Restore your shop from a backup copy your existing .openbazaar dir to /root/.openbazaar
+
+
+fdisk -l
+mount /dev/sda1 /mnt/usbdrive
+cp -R  /mnt/usbdrive/OpenBazaar2.0/* /root/.openbazaar/
+
+
+
 https://openbazaar.zendesk.com/hc/en-us/articles/360002820331-How-do-I-restore-my-OpenBazaar-wallet-from-seed-
 
 
@@ -49,4 +60,6 @@ Available commands:
   start            start the OpenBazaar-Server
   status           get the repo status
   stop             shutdown the server and disconnect
+
+
 

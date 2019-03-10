@@ -8,6 +8,10 @@ and continue https://github.com/Stadicus/guides/blob/master/raspibolt/raspibolt_
 
 More here:
 
+### [Install the Electrum Server in Rust (electrs) on the RaspiBlitz on Dietpi](https://gist.github.com/openoms/8d365f330f5e1288933e0f4874b56dbd)
+
+### [Install OpenBazaar on a RaspiBlitz, install OpenBazaar client and migrate the store contents](https://gist.github.com/openoms/ba843f7c44ff9c7ca0b5a80e12a0aeb4)
+
 ### [Connect the Zap Desktop Lightning wallet to the RaspiBlitz](ZAPtoRaspiBolt/README.md)  
 The desktop app ZAP (https://github.com/LN-Zap/zap-desktop) ) is a cross platform Lightning Network wallet focused on user experience and ease of use.
 
