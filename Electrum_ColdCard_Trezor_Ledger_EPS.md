@@ -50,12 +50,14 @@ Install Electrum using the command:
 ## install zbar to read QR codes with the camera
 >sudo apt-get install zbar-tools
 
-## install and activate a virtual environment
+## (optional) install and activate a virtual environment 
 >apt-get install python3-venv
 
 >python3 -m venv venv
 
 >source venv/bin/activate
+
+---
 
 ## to install ColdCard for Electrum
 >sudo apt-get install python-dev libusb-1.0-0-dev libudev-dev
@@ -67,6 +69,13 @@ Install Electrum using the command:
 >pip install pyqt5 
 
 >pip install "ckcc-protocol[cli]"
+
+add udev rules:
+> cd /etc/udev/rules.d/
+
+>sudo wget https://raw.githubusercontent.com/Coldcard/ckcc-protocol/master/51-coinkite.rules
+
+>sudo udevadm control --reload-rules && sudo udevadm trigger
 
 ## install Trezor for Electrum
 >sudo apt-get install python3-dev python3-pip cython3 libusb-1.0-0-dev libudev-dev
@@ -89,6 +98,11 @@ Install Electrum using the command:
 
 >wget -q -O - https://raw.githubusercontent.com/LedgerHQ/udev-rules/master/add_udev_rules.sh | sudo bash
 <https://support.ledger.com/hc/en-us/articles/115005165269-What-if-Ledger-Wallet-is-not-recognized-on-Linux->
+
+### Documentation on how to add udev rules in linux:
+https://github.com/spesmilo/electrum-docs/blob/master/hardware-linux.rst 
+
+---
 
 ## install Electrum Personal server
 https://github.com/Stadicus/guides/blob/master/raspibolt/raspibolt_64_electrum.md  
