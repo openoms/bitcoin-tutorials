@@ -10,9 +10,19 @@
 sudo apt-get install python3-pyqt5
 # Download package: 	
 wget https://download.electrum.org/3.3.4/Electrum-3.3.4.tar.gz
-#Verify signature: 	
+
+#Verify signature:
+gpg --import ThomasV.asc
 wget https://download.electrum.org/3.3.4/Electrum-3.3.4.tar.gz.asc
-gpg --verify Electrum-3.3.4.tar.gz.asc
+verifyResult=$(gpg --verify Electrum-3.3.4.tar.gz.asc 2>&1)
+goodSignature=$(echo ${verifyResult} | grep 'Good signature' -c)
+echo "goodSignature(${goodSignature})"
+if [ ${goodSignature} -lt 1 ]; then
+  echo ""
+  echo "!!! BUILD FAILED --> PGP Verify not OK / signature(${goodSignature})"
+  exit 1
+fi
+
 # Run without installing: 	tar -xvf Electrum-3.3.4.tar.gz
 # python3 Electrum-3.3.4/run_electrum
 # Install with PIP: 	

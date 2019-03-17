@@ -1,14 +1,13 @@
 # Make your Full Node work
 Get the most value out of your dedicated hardware
 
-
 start at https://github.com/rootzoll/raspiblitz
 
 and continue https://github.com/Stadicus/guides/blob/master/raspibolt/raspibolt_60_bonus.md
 
 More here:
 
-### [Install the Electrum Server in Rust (electrs) on the RaspiBlitz on Dietpi](https://gist.github.com/openoms/8d365f330f5e1288933e0f4874b56dbd)
+### [Install the Electrum Server in Rust (electrs) on the RaspiBlitz](electrs/README.md)
 
 ### [Install OpenBazaar on a RaspiBlitz, install OpenBazaar client and migrate the store contents](https://gist.github.com/openoms/ba843f7c44ff9c7ca0b5a80e12a0aeb4)
 
