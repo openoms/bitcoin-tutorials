@@ -1,6 +1,11 @@
 ## Install the Electrum Server in Rust (electrs) on a RaspiBlitz
 * tested on the Odroid HC1 and XU4
 
+Will take 40 minutes to build the code from source.
+Building the electrs database (need to be done once) takes ~18 hours.
+on an Odroid HC1 with SSD and requires ~50 Gb diskpace.
+
+Possible, but not recommended to use on a computer with less than 2 Gb RAM
 
 Download this script to your RaspiBlitz:  
 `wget https://github.com/openoms/bitcoin-tutorials/raw/master/electrs/electrs_install_on_RaspiBlitz.sh`  

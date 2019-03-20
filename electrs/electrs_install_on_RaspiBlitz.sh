@@ -28,7 +28,7 @@ cargo build --release
  
 echo ""
 echo "***"
-echo "The electrs database will be built in /mnt/hdd/electrs/db. Takes ~18 hours and ~38Gb diskspace"
+echo "The electrs database will be built in /mnt/hdd/electrs/db. Takes ~18 hours and ~50Gb diskspace"
 echo "***"
 echo ""
 
@@ -41,3 +41,10 @@ read PASSWORD_B
 
 # Run with password B filled in: 
 cargo run --release -- -vvvv --index-batch-size=10 --jsonrpc-import --db-dir /mnt/hdd/electrs/db --cookie="raspibolt:$PASSWORD_B" --electrum-rpc-addr="0.0.0.0:50001"
+
+# to preserve settings:
+# see https://github.com/romanz/electrs/blob/master/src/config.rs
+# sudo nano $HOME/electrs/src/config.rs 
+# change the lines:
+# 73: from: .takes_value(true), to: .default_value("raspibolt:PASSWORD B"),
+# 132: from .default_value("Welcome to electrs (Electrum Rust Server)!") to your custom message
