@@ -1,14 +1,12 @@
 ## Install the Electrum Server in Rust (electrs) on the RaspiBlitz
-Based on https://github.com/romanz/electrs/blob/master/doc/usage.md 
+Based on https://github.com/romanz/electrs/blob/master/doc/usage.md
+Some shared experiences here: https://github.com/rootzoll/raspiblitz/issues/123
 
 Tested on the
 * Odroid HC1 and XU4 (~18 hours)
-* Raspberry Pi 3 B+ (very long time to build the database from scratch)
+* Raspberry Pi 3 B+ (~ two days to build the database from scratch)
 
-On an Odroid HC1 with SSD it takes ~40 minutes to build the code from source.
-Building the electrs database (need to be done once) takes ~18 hours and requires ~50 Gb diskpace.
-
-Possible, but not recommended to use on a computer with less than 2 Gb RAM.
+Requires 47 Gb diskpace (March 2019).
 
 The install instructions adapted to the RaspiBlitz are in this script, take a look: https://github.com/openoms/bitcoin-tutorials/blob/master/electrs/electrs_install_on_RaspiBlitz.sh
 
