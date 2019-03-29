@@ -88,7 +88,7 @@ echo "***"
 echo "Please type the domain/ddns you have generated the certificate for followed by [ENTER]"
 read YOUR_DOMAIN
 
-echo "setting up nginx.confsu"
+echo "Setting up nginx.conf"
 echo "***"
 echo ""
 # sudo nano /etc/nginx/nginx.conf
@@ -128,7 +128,7 @@ After=bitcoind.service
 
 [Service]
 WorkingDirectory=/home/admin/electrs
-ExecStart=/home/admin/electrs/target/release/electrs --release -- -vvvv --index-batch-size=10 --jsonrpc-import --db-dir /mnt/hdd/electrs/db  --electrum-rpc-addr="0.0.0.0:50001" --cookie="raspibolt:$PASSWORD_B"
+ExecStart=/home/admin/electrs/target/release/electrs --index-batch-size=10 --jsonrpc-import --db-dir /mnt/hdd/electrs/db  --electrum-rpc-addr="0.0.0.0:50001" --cookie="raspibolt:$PASSWORD_B"
 
 User=admin
 Group=admin
