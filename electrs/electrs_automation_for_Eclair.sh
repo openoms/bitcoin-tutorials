@@ -20,7 +20,7 @@ sudo /etc/init.d/nginx start
 
 echo ""
 echo "***"
-echo "To confirm that the port 80 is forwarded to the IP of the RaspiBlitz press [ENTER]" 
+echo "Please confirm that the port 80 is forwarded to the IP of the RaspiBlitz by pressing [ENTER]" 
 read key
 
 echo "allow port 80 on ufw"
@@ -81,7 +81,8 @@ Restart=always
 RestartSec=60
 " | sudo tee -a /etc/systemd/system/certbot.service
 
-sudo systemctl enable certbot.timer
+sudo systemctl enable certbot
+sudo systemctl start certbot
 
 echo ""
 echo "***"
@@ -91,6 +92,7 @@ read YOUR_DOMAIN
 echo "Setting up nginx.conf"
 echo "***"
 echo ""
+
 # sudo nano /etc/nginx/nginx.conf
 echo "
 stream {
