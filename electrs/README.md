@@ -23,9 +23,9 @@ Take a look: [electrs_automation_for_Eclair.sh](electrs_automation_for_Eclair.sh
 To download this script, make executable and run:  
 `$ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/electrs/electrs_automation_for_Eclair.sh && sudo chmod +x electrs_automation_for_Eclair.sh && ./electrs_automation_for_Eclair.sh`
 
-For the certificate to be obtained successfully a dynamic DNS and port forwarding is needed
-Need to forward port 80 to the IP of your RaspiBlitz for certbot
-Forward port 50002 to be able to access you electrs from outside of your LAN
+For the certificate to be obtained successfully a dynamic DNS and port forwarding is needed.  
+Forward port 80 to the IP of your RaspiBlitz for certbot.  
+Forward port 50002 to be able to access electrs from the outside of your LAN.
 
 ---
 
