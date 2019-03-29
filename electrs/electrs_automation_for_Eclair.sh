@@ -1,8 +1,11 @@
-# A script to set up Electrson the RaspiBlitz to be used with Eclair
+# A script to set up the Electrum Server in Rust on the RaspiBlitz to be used with Eclair
 # Sets up the automatic start of electrs and nginx and certbot
 
+# To download this script, make executable and run:
+# $ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/electrs/electrs_automation_for_Eclair.sh && sudo chmod +x electrs_automation_for_Eclair.sh && ./electrs_automation_for_Eclair.sh
+
 # For the certificate to be obtained successfully a dynamic DNS and port forwarding is needed
-# Need to forward port 80 to the IP of your RaspiBlitz fro certbot
+# Need to forward port 80 to the IP of your RaspiBlitz for certbot
 # Forward port 50002 to be able to access you electrs from outside of your LAN
 
 # https://www.raspberrypi.org/documentation/remote-access/web-server/nginx.md
@@ -20,6 +23,7 @@ echo "***"
 echo "To confirm that the port 80 is forwarded to the IP of the RaspiBlitz press [ENTER]" 
 read key
 
+echo "allow port 80 on ufw"
 sudo ufw allow 80
 
 # https://certbot.eff.org/lets-encrypt/debianother-nginx
@@ -141,4 +145,7 @@ WantedBy=multi-user.target
 sudo systemctl enable electrs
 sudo systemctl start electrs
 
+echo "allow port 50002 on ufw"
 sudo ufw allow 50002
+
+echo "Set the \`Current Electrum server\` of you Eclair wallet to \`$YOUR_DOMAIN:50002\` and make sure the port 5002 is forwarded on your router"
