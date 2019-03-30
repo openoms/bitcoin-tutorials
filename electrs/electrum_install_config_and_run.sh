@@ -46,3 +46,6 @@ electrum setconfig rpcuser raspibolt
 electrum setconfig server $RASPIBLITZ_IP:50001:t
 
 electrum --oneserver --server=$RASPIBLITZ_IP:50001:t 
+
+# to connect through SSL:
+# electrum --oneserver --server=$YOUR_DOMAIN:50002

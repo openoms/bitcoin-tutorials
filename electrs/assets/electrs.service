@@ -1,0 +1,20 @@
+# RaspiBlitz systemd unit for electrs
+
+[Unit]
+Description=Electrs
+After=bitcoind.service
+
+[Service]
+WorkingDirectory=/home/admin/electrs
+ExecStart=/home/admin/electrs/target/release/electrs --index-batch-size=10 --jsonrpc-import --db-dir /mnt/hdd/electrs/db  --electrum-rpc-addr="0.0.0.0:50001" --cookie="raspibolt:$PASSWORD_B"
+
+User=admin
+Group=admin
+Type=simple
+KillMode=process
+TimeoutSec=60
+Restart=always
+RestartSec=60
+
+[Install]
+WantedBy=multi-user.target
