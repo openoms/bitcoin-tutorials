@@ -1,4 +1,4 @@
-### Set up SSL acces for the Ride The Lightning web UI on the RaspiBlitz
+### Set up SSL access for the Ride The Lightning web UI on the RaspiBlitz
 
 Have a look a the script here: [bonus.SSL_for_RTL.sh](bonus.SSL_for_RTL.sh).
 
