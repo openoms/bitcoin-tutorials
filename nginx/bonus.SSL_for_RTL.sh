@@ -77,8 +77,7 @@ Restart=always
 RestartSec=60
 " | sudo tee -a /etc/systemd/system/certbot.service
 
-sudo systemctl enable certbot
-sudo systemctl start certbot
+sudo systemctl enable certbot.timer
 
 echo ""
 echo "***"
@@ -87,8 +86,7 @@ read YOUR_DOMAIN
 
 echo "Setting up nginx.conf"
 echo ""
-echo "If there is other an stream service is installed with Nginx already, you will need to edit the nginx.conf manually to remove the duplicate stream entry"
-echo "by running \`sudo nano /etc/nginx/nginx.conf\`."
+echo "If there is other an stream service is installed with Nginx already, you will need to edit the nginx.conf manually to remove the duplicate stream entry by running \`sudo nano /etc/nginx/nginx.conf\`."
 echo "please press a key to continue"
 read key
 
