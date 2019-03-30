@@ -1,8 +1,4 @@
-# A script to set up the Electrum Server in Rust on the RaspiBlitz to be used with Eclair
-# Sets up the automatic start of electrs and nginx and certbot
-
-# To download this script, make executable and run:
-# $ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/electrs/electrs_automation_for_Eclair.sh && sudo chmod +x electrs_automation_for_Eclair.sh && ./electrs_automation_for_Eclair.sh
+# Script to install nginx and certbot to enable SSL connection for RTL
 
 # For the certificate to be obtained successfully a dynamic DNS and port forwarding is needed
 # Need to forward port 80 to the IP of your RaspiBlitz for certbot
@@ -90,9 +86,7 @@ echo "Please type the domain/ddns you have generated the certificate for followe
 read YOUR_DOMAIN
 
 echo "Setting up nginx.conf"
-echo "***"
 echo ""
-
 echo "If there is other an stream service is installed with Nginx already, you will need to edit the nginx.conf manually to remove the duplicate stream entry"
 echo "by running \`sudo nano /etc/nginx/nginx.conf\`."
 echo "please press a key to continue"
@@ -101,13 +95,11 @@ read key
 echo "
 stream {
         upstream electrs {
-                server 127.0.0.1:50001;
+                server 127.0.0.1:3000;
         }
-
         server {
-                listen 50002 ssl;
-                proxy_pass electrs;
-
+                listen 3002 ssl;
+                proxy_pass RTL;
                 ssl_certificate /etc/letsencrypt/live/$YOUR_DOMAIN/fullchain.pem;
                 ssl_certificate_key /etc/letsencrypt/live/$YOUR_DOMAIN/privkey.pem;
                 ssl_session_cache shared:SSL:1m;
@@ -120,38 +112,3 @@ stream {
 
 sudo systemctl enable nginx
 sudo systemctl start nginx
-
-echo ""
-echo "***"
-echo "Type the PASSWORD B of your RaspiBlitz followed by [ENTER] for the electrs service:"
-read PASSWORD_B
-
-# sudo nano /etc/systemd/system/electrs.service 
-echo "
-[Unit]
-Description=Electrs
-After=bitcoind.service
-
-[Service]
-WorkingDirectory=/home/admin/electrs
-ExecStart=/home/admin/electrs/target/release/electrs --index-batch-size=10 --jsonrpc-import --db-dir /mnt/hdd/electrs/db  --electrum-rpc-addr="0.0.0.0:50001" --cookie="raspibolt:$PASSWORD_B"
-
-User=admin
-Group=admin
-Type=simple
-KillMode=process
-TimeoutSec=60
-Restart=always
-RestartSec=60
-
-[Install]
-WantedBy=multi-user.target
-" | sudo tee -a /etc/systemd/system/electrs.service 
-
-sudo systemctl enable electrs
-sudo systemctl start electrs
-
-echo "allow port 50002 on ufw"
-sudo ufw allow 50002
-
-echo "Set the \`Current Electrum server\` of you Eclair wallet to \`$YOUR_DOMAIN:50002\` and make sure the port 5002 is forwarded on your router"
