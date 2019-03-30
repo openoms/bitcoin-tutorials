@@ -85,6 +85,36 @@ sudo systemctl enable certbot.timer
 
 echo ""
 echo "***"
+echo "Type the PASSWORD B of your RaspiBlitz followed by [ENTER] for the electrs service:"
+read PASSWORD_B
+
+# sudo nano /etc/systemd/system/electrs.service 
+echo "
+[Unit]
+Description=Electrs
+After=bitcoind.service
+
+[Service]
+WorkingDirectory=/home/admin/electrs
+ExecStart=/home/admin/electrs/target/release/electrs --index-batch-size=10 --jsonrpc-import --db-dir /mnt/hdd/electrs/db  --electrum-rpc-addr="0.0.0.0:50001" --cookie="raspibolt:$PASSWORD_B"
+
+User=admin
+Group=admin
+Type=simple
+KillMode=process
+TimeoutSec=60
+Restart=always
+RestartSec=60
+
+[Install]
+WantedBy=multi-user.target
+" | sudo tee -a /etc/systemd/system/electrs.service 
+
+sudo systemctl enable electrs
+sudo systemctl start electrs
+
+echo ""
+echo "***"
 echo "Please type the domain/ddns you have generated the certificate for followed by [ENTER]"
 read YOUR_DOMAIN
 
@@ -116,40 +146,14 @@ stream {
 }
 " | sudo tee -a /etc/nginx/nginx.conf
 
-sudo systemctl enable nginx
-sudo systemctl start nginx
-
-echo ""
-echo "***"
-echo "Type the PASSWORD B of your RaspiBlitz followed by [ENTER] for the electrs service:"
-read PASSWORD_B
-
-# sudo nano /etc/systemd/system/electrs.service 
-echo "
-[Unit]
-Description=Electrs
-After=bitcoind.service
-
-[Service]
-WorkingDirectory=/home/admin/electrs
-ExecStart=/home/admin/electrs/target/release/electrs --index-batch-size=10 --jsonrpc-import --db-dir /mnt/hdd/electrs/db  --electrum-rpc-addr="0.0.0.0:50001" --cookie="raspibolt:$PASSWORD_B"
-
-User=admin
-Group=admin
-Type=simple
-KillMode=process
-TimeoutSec=60
-Restart=always
-RestartSec=60
-
-[Install]
-WantedBy=multi-user.target
-" | sudo tee -a /etc/systemd/system/electrs.service 
-
-sudo systemctl enable electrs
-sudo systemctl start electrs
-
 echo "allow port 50002 on ufw"
 sudo ufw allow 50002
 
-echo "Set the \`Current Electrum server\` of you Eclair wallet to \`$YOUR_DOMAIN:50002\` and make sure the port 5002 is forwarded on your router"
+sudo systemctl enable nginx
+sudo systemctl restart nginx
+
+echo "If there is an error starting Nginx there is a stream service installed with Nginx already.  
+You will need to edit the nginx.conf manually to remove the duplicate stream entry by running \`sudo nano /etc/nginx/nginx.conf\` \
+and restart nginx with \`sudo systemctl restart nginx\`."
+echo ""
+echo "If successful set the \`Current Electrum server\` of you Eclair wallet to \`$YOUR_DOMAIN:50002\` and make sure the port 5002 is forwarded on your router"

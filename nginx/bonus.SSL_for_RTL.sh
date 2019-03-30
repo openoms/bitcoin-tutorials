@@ -1,4 +1,7 @@
 # Script to install nginx and certbot to enable SSL connection for RTL
+# To download, make executable and run:
+# $ wget https://github.com/openoms/bitcoin-tutorials/raw/master/nginx/bonus.SSL_for_RTL.sh && sudo chmod +x bonus.SSL_for_RTL.sh && ./bonus.SSL_for_RTL.sh
+
 
 # For the certificate to be obtained successfully a dynamic DNS and port forwarding is needed
 # Need to forward port 80 to the IP of your RaspiBlitz for certbot
@@ -108,5 +111,14 @@ stream {
 }
 " | sudo tee -a /etc/nginx/nginx.conf
 
+echo "allow port 3002 on ufw"
+sudo ufw allow 3002
+
 sudo systemctl enable nginx
-sudo systemctl start nginx
+sudo systemctl restart nginx
+
+echo "If there is an error starting Nginx there is a stream service installed with Nginx already.  
+You will need to edit the nginx.conf manually to remove the duplicate stream entry by running \`sudo nano /etc/nginx/nginx.conf\` \
+and restart nginx with \`sudo systemctl restart nginx\`."
+echo ""
+echo "If successful connect to RTL through https on the port 3002"
