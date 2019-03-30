@@ -150,4 +150,4 @@ sudo systemctl enable nginx
 sudo systemctl restart nginx
 
 echo ""
-echo "Connect to RTL through https on the port 3002 and forward the port on your router to acces outside of the LAN"
+echo "Connect to RTL through https on the port 3002 and forward the port on your router to access outside of the LAN"
