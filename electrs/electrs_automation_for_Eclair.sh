@@ -156,5 +156,4 @@ echo "If there is an error starting Nginx there is a stream service installed wi
 You will need to edit the nginx.conf manually to remove the duplicate stream entry by running \`sudo nano /etc/nginx/nginx.conf\` \
 and restart nginx with \`sudo systemctl restart nginx\`."
 echo ""
-echo "If successful set the \`Current Electrum server\` of you Eclair wallet to \`$YOUR_DOMAIN:50002\` and make sure the port 5002 is forwarded on your router"
 echo "Set the \`Current Electrum server\` of you Eclair wallet to \`$YOUR_DOMAIN:50002\` and make sure the port 50002 is forwarded on your router"
