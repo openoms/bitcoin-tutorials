@@ -150,4 +150,4 @@ sudo systemctl start electrs
 echo "allow port 50002 on ufw"
 sudo ufw allow 50002
 
-echo "Set the \`Current Electrum server\` of you Eclair wallet to \`$YOUR_DOMAIN:50002\` and make sure the port 5002 is forwarded on your router"
+echo "Set the \`Current Electrum server\` of you Eclair wallet to \`$YOUR_DOMAIN:50002\` and make sure the port 50002 is forwarded on your router"
