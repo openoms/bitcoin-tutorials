@@ -1,4 +1,4 @@
-## Make your Full Node work
+## Documenting Bitcoin related setups for the RaspiBlitz, RaspiBolt, Thundroid and Ubuntu Linux desktop
 Get the most value out of your dedicated hardware
 
 start at https://github.com/rootzoll/raspiblitz
