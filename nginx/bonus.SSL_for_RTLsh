@@ -2,7 +2,7 @@
 
 # For the certificate to be obtained successfully a dynamic DNS and port forwarding is needed
 # Need to forward port 80 to the IP of your RaspiBlitz for certbot
-# Forward port 50002 to be able to access you electrs from outside of your LAN
+# Forward port 3002 to be able to access RTL from outside of your LAN
 
 # https://www.raspberrypi.org/documentation/remote-access/web-server/nginx.md
 echo ""
@@ -94,7 +94,7 @@ read key
 
 echo "
 stream {
-        upstream electrs {
+        upstream RTL {
                 server 127.0.0.1:3000;
         }
         server {
