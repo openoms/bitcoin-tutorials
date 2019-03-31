@@ -1,6 +1,6 @@
 
 
-## Connect the ZAP Desktop Lightning wallet to the RaspiBlitz
+## Connect the ZAP Desktop Lightning wallet to the RaspiBolt
 
 The desktop app ZAP (https://github.com/LN-Zap/zap-desktop)
 ) is a cross platform Lightning Network wallet focused on user experience and ease of use.
@@ -8,7 +8,6 @@ The desktop app ZAP (https://github.com/LN-Zap/zap-desktop)
 Download ZAP for your operating sytem:
 https://github.com/LN-Zap/zap-desktop/releases  
 Install instructions: https://github.com/LN-Zap/zap-desktop#install
-
 
 ### Preparation on the Pi
 
@@ -37,6 +36,34 @@ Install instructions: https://github.com/LN-Zap/zap-desktop#install
   `$ sudo ufw enable`  
   `$ sudo ufw status`
 
+  ---
+
+## To use the Connection String method (available from  ZAP 0.4 beta):
+
+### On the RaspiBolt:
+* Install LndConnect:  
+  `$ cd ~`  
+  `$ go get -d github.com/LN-Zap/lndconnect`  - this can take a couple of minutes  
+  `$ cd ~/go/src/github.com/LN-Zap/lndconnect`  
+  `$ make install`  
+
+* Generate the Connection String  
+  `$ cd ~/go/bin`  
+  `$ ./lndconnect --lnddir=/home/admin/.lnd --image  --host=your.RaspiBolt.LAN.IP --port=10009`
+
+  Copy the resulting text starting with lndconnect://...
+
+### Set up ZAP: 
+
+  * Start ZAP on your desktop
+  * Create new wallet
+  * Connect to your node
+  * Paste the Connection string generated with LndConnect
+  * Confirm and Connect
+
+---
+
+## To use the files method: 
 
 ### On your Linux desktop terminal:  
 
@@ -46,7 +73,7 @@ Install instructions: https://github.com/LN-Zap/zap-desktop#install
 * Copy the admin.macaroon to your home directory:  
 `$ scp root@your.RaspiBolt.LAN.IP:/home/bitcoin/.lnd/data/chain/bitcoin/mainnet/admin.macaroon ~/`
 
-### Configure ZAP
+### Configure ZAP:
 
 * Start the app and select:  
 ```Connect your own node```

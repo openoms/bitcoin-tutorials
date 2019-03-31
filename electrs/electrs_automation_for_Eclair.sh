@@ -1,4 +1,4 @@
-# A script to set up the Electrum Server in Rust on the RaspiBlitz to be used with Eclair
+# A script to set up the Electrum Server in Rust on the RaspiBlitz to connect over SSL to Eclair and Electrum wallet
 # Sets up the automatic start of electrs and nginx and certbot
 
 # To download this script, make executable and run:
@@ -181,4 +181,7 @@ sudo systemctl enable nginx
 sudo systemctl restart nginx
 
 echo ""
-echo "Set the \`Current Electrum server\` of you Eclair wallet to \`$YOUR_DOMAIN:50002\` and make sure the port 50002 is forwarded on your router"
+echo "To connect from outside of the local network make sure the port 50002 is forwarded on your router"
+echo "Eclair mobile wallet: In the \`Network info\` set the \`Current Electrum server\` to \`$YOUR_DOMAIN:50002\`"
+echo "Electrum wallet: start with the options \`electrum --oneserver --server $YOUR_DOMAIN:50002:s"
+echo ""
