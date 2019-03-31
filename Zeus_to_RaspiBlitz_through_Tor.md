@@ -43,10 +43,11 @@ Press the + button on the lower right. Type in the the onion address and secret 
 Go back to orbot's main screen, and select the gear icon under `tor enabled apps`. Add `Zeus`, then press back. Click `stop` on the big onion logo. Exit orbot and reopen it. Turn on `VPN Mode`. Start your connection to the tor network by clicking on the big onion (if it has not automatically connected already)
 
 
-make sure go is installed (should be v1.11 or higher) :  
-`$ go version` 
-
-if need to install Go run:
+Make sure go is installed (should be v1.11 or higher) :  
+```
+$ go version 
+```
+If need to install Go run:
 
 ```
 $ wget https://storage.googleapis.com/golang/go${goVersion}.linux-armv6l.tar.gz
@@ -70,8 +71,10 @@ $ ./lndconnect --lnddir=/home/admin/.lnd --image --host=z1234567890abc.onion --p
 ```
 The file `lndconnect-qr.png` will be generated.   
   
-In a Linux terminal run:  
-`$ scp admin@[YOUR.RASIBLITZ.IP]:~/go/bin/lndconnect-qr.png ~/`  
+In a Linux terminal run: 
+``` 
+$ scp admin@[YOUR.RASIBLITZ.IP]:~/go/bin/lndconnect-qr.png ~/
+```
 and open the png from your home directory.  
 
 On Windows use WinSCP to download the image to your PC and open it.
