@@ -15,7 +15,13 @@ Download this script to your RaspiBlitz, make it executable and run:
 
 ---
 
-## Set up the Electrum Server in Rust on the RaspiBlitz to be used with Eclair
+## Set up the Electrs service, autostart and the connection over SSL
+
+Can be used as a secure backend of:
+
+    Eclair Mobile Bitcoin and Ligthtning wallet
+    Electrum wallet
+
 Sets up the automatic start of electrs and nginx and certbot.
 
 Take a look: [electrs_automation_for_Eclair.sh](electrs_automation_for_Eclair.sh)
