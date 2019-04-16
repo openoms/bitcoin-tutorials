@@ -15,7 +15,7 @@ sudo apt install -y clang cmake  # for building 'rust-rocksdb'
  
 echo ""
 echo "***"
-echo "Downloading and building electrs. This will take ~30 minutes" # ~ 33 min on an Odroid HC1
+echo "Downloading and building electrs. This will take ~30 minutes" # ~22 min on an Odroid XU4
 echo "***"
 echo ""
 git clone https://github.com/romanz/electrs
