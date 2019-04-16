@@ -1,4 +1,4 @@
-## Install the Electrum Server in Rust (electrs) on the RaspiBlitz
+## RaspiBlitz: install the Electrum Server in Rust (electrs)
 Based on https://github.com/romanz/electrs/blob/master/doc/usage.md
 Some shared experiences here: https://github.com/rootzoll/raspiblitz/issues/123
 
@@ -15,21 +15,25 @@ Download this script to your RaspiBlitz, make it executable and run:
 
 ---
 
-## Set up the Electrs service, autostart and the connection over SSL
+## RaspiBlitz: Set up the Electrs systemd service and connect over SSL 
+
+For the SSL certificate to be obtained successfully a **dynamic DNS** and **port forwarding is necessary**.
+
+The script sets up the automatic start of electrs, Nginx and certbot.
+
+Assumes that electrs was insatlled already with the [latter script](https://github.com/openoms/bitcoin-tutorials/blob/master/electrs/README.md#raspiblitz-install-the-electrum-server-in-rust-electrs)
 
 Can be used as a secure backend of:
 
     Eclair Mobile Bitcoin and Ligthtning wallet
     Electrum wallet
 
-Sets up the automatic start of electrs and nginx and certbot.
-
 Take a look: [electrs_automation_for_Eclair.sh](electrs_automation_for_Eclair.sh)
 
 To download this script, make executable and run:  
 `$ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/electrs/electrs_automation_for_Eclair.sh && sudo chmod +x electrs_automation_for_Eclair.sh && ./electrs_automation_for_Eclair.sh`
 
-For the certificate to be obtained successfully a dynamic DNS and port forwarding is needed.  
+For the certificate to be obtained successfully a **dynamic DNS** and **port forwarding is necessary**.  
 Forward port 80 to the IP of your RaspiBlitz for certbot.  
 Forward port 50002 to be able to access electrs from the outside of your LAN.
 
