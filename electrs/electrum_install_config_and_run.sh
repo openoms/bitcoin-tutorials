@@ -7,11 +7,12 @@
 
 # https://electrum.org/#download
 # Install dependencies: 	
-sudo apt-get install python3-pyqt5
+sudo apt-get install -y python3-pyqt5
 # Download package: 	
 wget https://download.electrum.org/3.3.4/Electrum-3.3.4.tar.gz
 
 #Verify signature:
+https://raw.githubusercontent.com/spesmilo/electrum/master/pubkeys/ThomasV.asc
 gpg --import ThomasV.asc
 wget https://download.electrum.org/3.3.4/Electrum-3.3.4.tar.gz.asc
 verifyResult=$(gpg --verify Electrum-3.3.4.tar.gz.asc 2>&1)
@@ -26,8 +27,11 @@ fi
 # Run without installing: 	tar -xvf Electrum-3.3.4.tar.gz
 # python3 Electrum-3.3.4/run_electrum
 # Install with PIP: 	
-sudo apt-get install python3-setuptools python3-pip
+sudo apt-get install -y python3-setuptools python3-pip
 python3 -m pip install --user Electrum-3.3.4.tar.gz[fast]
+
+# add install dir to PATH
+PATH=$PATH:~/.local/bin/
 
 echo "Type the PASSWORD B of your RaspiBlitz followed by [ENTER]:"
 read PASSWORD_B
