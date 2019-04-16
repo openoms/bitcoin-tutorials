@@ -21,7 +21,7 @@ For the SSL certificate to be obtained successfully a **dynamic DNS** and **port
 
 The script sets up the automatic start of electrs, Nginx and certbot.
 
-Assumes that electrs was insatlled already with the [latter script](https://github.com/openoms/bitcoin-tutorials/blob/master/electrs/README.md#raspiblitz-install-the-electrum-server-in-rust-electrs)
+Assumes that electrs was installed already with the [latter script](https://github.com/openoms/bitcoin-tutorials/blob/master/electrs/.README.md#raspiblitz-install-the-electrum-server-in-rust-electrs).
 
 Can be used as a secure backend of:
 

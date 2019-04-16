@@ -1,71 +1,74 @@
 # Install Electrum with support for ColdCard, Trezor and Ledger connected to your own Electrum Personal Server
 
+* make sure the system is up-to-date
 
->sudo apt-get update
+    `sudo apt-get update`
 
->sudo apt-get upgrade
+    `sudo apt-get upgrade`
 
->sudo apt install git-all
+    `sudo apt install git-all`
 
 ## download, verify, install Electrum
 
 https://electrum.org/#download
 
-Download package:
+* Download package:
 
->wget https://download.electrum.org/3.3.4/Electrum-3.3.4.tar.gz
+    ` $ wget https://download.electrum.org/3.3.4/Electrum-3.3.4.tar.gz`
 
-Verify Electrum's downloaded source code
-At this stage, we are ready to verify Electrum's source code. The source code is signed by Thomas Voegtlin (https://electrum.org).   
-Let's import his public key:
+* Verify Electrum's downloaded source code
 
-> gpg --keyserver pool.sks-keyservers.net --recv-keys 2BD5824B7F9470E6
-```
-gpg: key 2BD5824B7F9470E6: public key "Thomas Voegtlin (https://electrum.org) " imported
-gpg: no ultimately trusted keys found
-gpg: Total number processed: 1
-gpg:               imported: 1
-```
-Confirm a correct key import and proceed to verify the downloaded file with the help of the signature file:
+    At this stage, we are ready to verify Electrum's source code. The source code is signed by Thomas Voegtlin (https://electrum.org).   
+    Let's import his public key:
 
-> wget https://download.electrum.org/3.3.4/Electrum-3.3.4.tar.gz.asc
+    `$ gpg --keyserver pool.sks-keyservers.net --recv-keys 2BD5824B7F9470E6`
+    ```
+    gpg: key 2BD5824B7F9470E6: public key "Thomas Voegtlin (https://electrum.org) " imported
+    gpg: no ultimately trusted keys found
+    gpg: Total number processed: 1
+    gpg:               imported: 1
+    ```
+* Confirm a correct key import and proceed to verify the downloaded file with the help of the signature file:
 
-> gpg --verify Electrum-3.3.4.tar.gz.asc
-```
-gpg: Signature made Tue 12 Dec 2017 17:06:09 AEDT
-gpg:                using RSA key 2BD5824B7F9470E6
-gpg: Good signature from "Thomas Voegtlin (https://electrum.org) " [unknown]
-gpg:                 aka "ThomasV " [unknown]
-gpg:                 aka "Thomas Voegtlin " [unknown]
-gpg: WARNING: This key is not certified with a trusted signature!
-gpg:          There is no indication that the signature belongs to the owner.
-Primary key fingerprint: 6694 D8DE 7BE8 EE56 31BE  D950 2BD5 824B 7F94 70E6
-```
+    `$ wget https://download.electrum.org/3.3.4/Electrum-3.3.4.tar.gz.asc`
 
-Note gpg: Good signature on Line 3. All seems to be in order!
-Install Electrum
-To install Electrum bitcoin wallet, we first need to preform an installation of all prerequisites:
+        `$ gpg --verify Electrum-3.3.4.tar.gz.asc`
+    ```
+    gpg: Signature made Tue 12 Dec 2017 17:06:09 AEDT
+    gpg:                using RSA key 2BD5824B7F9470E6
+    gpg: Good signature from "Thomas Voegtlin (https://electrum.org) " [unknown]
+    gpg:                 aka "ThomasV " [unknown]
+    gpg:                 aka "Thomas Voegtlin " [unknown]
+    gpg: WARNING: This key is not certified with a trusted signature!
+    gpg:          There is no indication that the signature belongs to the owner.
+    Primary key fingerprint: 6694 D8DE 7BE8 EE56 31BE  D950 2BD5 824B 7F94 70E6
+    ```
 
-Install dependencies: 	
+* Note gpg: Good signature on Line 3. All seems to be in order!
+* Install Electrum
+
+    To install Electrum bitcoin wallet, we first need to preform an installation of all prerequisites:
+
+    Install dependencies: 	
 
 
-> sudo apt-get install python3-setuptools python3-pyqt5 python3-pip
+    `sudo apt-get install python3-setuptools python3-pyqt5 python3-pip`
 
-Install Electrum using the command:
+    Install Electrum using the command:
 
->python3 -m pip install --user Electrum-3.3.4.tar.gz[fast]
+    `python3 -m pip install --user Electrum-3.3.4.tar.gz[fast]`
 
->cd Electrum-3.3.4
+    `cd Electrum-3.3.4`
 
-## install zbar to read QR codes with the camera
->sudo apt-get install zbar-tools
+    ## install zbar to read QR codes with the camera
+    `sudo apt-get install zbar-tools`
 
-## (optional) install and activate a virtual environment 
->apt-get install python3-venv
+    ## (optional) install and activate a virtual environment 
+    `apt-get install python3-venv`
 
->python3 -m venv venv
+    `python3 -m venv venv`
 
->source venv/bin/activate
+    `source venv/bin/activate`
 
 ---
 
