@@ -1,8 +1,8 @@
 # A script to set up the Electrum Server in Rust on the RaspiBlitz to connect over SSL to Eclair and Electrum wallet
 # Sets up the automatic start of electrs and nginx and certbot
 
-# To download this script, make executable and run:
-# $ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/electrs/electrs_automation_for_Eclair.sh && sudo chmod +x electrs_automation_for_Eclair.sh && ./electrs_automation_for_Eclair.sh
+# To download and run:
+# $ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/electrs/electrs_automation_for_Eclair.sh && bash electrs_automation_for_Eclair.sh
 
 # For the certificate to be obtained successfully a dynamic DNS and port forwarding is needed
 # Need to forward port 80 to the IP of your RaspiBlitz for certbot

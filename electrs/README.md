@@ -10,8 +10,8 @@ Requires 47 Gb diskpace (March 2019).
 
 The install instructions adapted to the RaspiBlitz are in this script, take a look: [electrs_install_on_RaspiBlitz.sh](electrs_install_on_RaspiBlitz.sh)
 
-Download this script to your RaspiBlitz, make it executable and run:  
-`$ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/electrs/electrs_install_on_RaspiBlitz.sh && sudo chmod +x electrs_install_on_RaspiBlitz.sh && ./electrs_install_on_RaspiBlitz.sh`  
+To download and run on the RaspiBlitz::  
+`$ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/electrs/electrs_install_on_RaspiBlitz.sh && bash electrs_install_on_RaspiBlitz.sh`  
 
 ---
 
@@ -30,8 +30,8 @@ Can be used as a secure backend of:
 
 Take a look: [electrs_automation_for_Eclair.sh](electrs_automation_for_Eclair.sh)
 
-To download this script, make executable and run:  
-`$ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/electrs/electrs_automation_for_Eclair.sh && sudo chmod +x electrs_automation_for_Eclair.sh && ./electrs_automation_for_Eclair.sh`
+To download and run on the RaspiBlitz:  
+`$ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/electrs/electrs_automation_for_Eclair.sh && bash electrs_automation_for_Eclair.sh`
 
 For the certificate to be obtained successfully a **dynamic DNS** and **port forwarding is necessary**.  
 Forward the port 80 to the IP of your RaspiBlitz for certbot.  
@@ -42,6 +42,6 @@ Forward the port 50002 to be able to access electrs from the outside of your LAN
 ## Linux desktop: Install, configure and run the Electrum wallet
 The instruction are in the script: [electrum_install_config_and_run.sh](electrum_install_config_and_run.sh)
 
-Download this script to your linux desktop, make it executable and run:  
-`$ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/electrs/electrum_install_config_and_run.sh && sudo chmod +x electrum_install_config_and_run.sh && ./electrum_install_config_and_run.sh`  
+To download and run on the Linux desktop:  
+`$ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/electrs/electrum_install_config_and_run.sh && bash electrum_install_config_and_run.sh`  
 

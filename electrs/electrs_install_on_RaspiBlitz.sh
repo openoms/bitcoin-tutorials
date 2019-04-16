@@ -1,5 +1,5 @@
-# Download this script to your RaspiBlitz, make it executable, and run:
-# $ wget https://github.com/openoms/bitcoin-tutorials/raw/master/electrs/electrs_install_on_RaspiBlitz.sh && sudo chmod +x electrs_install_on_RaspiBlitz.sh && ./electrs_install_on_RaspiBlitz.sh
+# Download and run this script on the RaspiBlitz:
+# $ wget https://github.com/openoms/bitcoin-tutorials/raw/master/electrs/electrs_install_on_RaspiBlitz.sh && bash electrs_install_on_RaspiBlitz.sh
 
 # https://github.com/romanz/electrs/blob/master/doc/usage.md
 echo ""
