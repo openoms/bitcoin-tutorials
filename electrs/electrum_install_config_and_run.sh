@@ -30,8 +30,11 @@ fi
 sudo apt-get install -y python3-setuptools python3-pip
 python3 -m pip install --user Electrum-3.3.4.tar.gz[fast]
 
-# add install dir to PATH
-PATH=$PATH:~/.local/bin/
+# add install dir to PATH (and make persist)
+PATH=$PATH:~/.local/bin
+touch ~/.profile
+export PATH
+~/.profile
 
 echo "Type the PASSWORD B of your RaspiBlitz followed by [ENTER]:"
 read PASSWORD_B

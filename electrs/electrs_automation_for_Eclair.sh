@@ -30,8 +30,8 @@ sudo ufw allow 80
 echo ""
 echo "***"
 echo "Installing certbot"
-echo " you will be asked for and email address and your domain name - a dynamic DNS can be used"
-echo " give a 4-11 character password and press [ENTER] to save default options for the certificate"
+echo "Will ask for an email address and a domain name - a dynamic DNS can be used"
+echo "Use the default settings in the other options"
 echo "***"
 echo ""
 

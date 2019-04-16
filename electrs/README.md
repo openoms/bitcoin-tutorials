@@ -34,12 +34,12 @@ To download this script, make executable and run:
 `$ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/electrs/electrs_automation_for_Eclair.sh && sudo chmod +x electrs_automation_for_Eclair.sh && ./electrs_automation_for_Eclair.sh`
 
 For the certificate to be obtained successfully a **dynamic DNS** and **port forwarding is necessary**.  
-Forward port 80 to the IP of your RaspiBlitz for certbot.  
-Forward port 50002 to be able to access electrs from the outside of your LAN.
+Forward the port 80 to the IP of your RaspiBlitz for certbot.  
+Forward the port 50002 to be able to access electrs from the outside of your LAN.
 
 ---
 
-## Install, configure and run the Electrum wallet on your Linux desktop
+## Linux desktop: Install, configure and run the Electrum wallet
 The instruction are in the script: [electrum_install_config_and_run.sh](electrum_install_config_and_run.sh)
 
 Download this script to your linux desktop, make it executable and run:  
