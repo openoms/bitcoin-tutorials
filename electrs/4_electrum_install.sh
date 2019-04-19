@@ -1,7 +1,5 @@
-# Download this script to your linux desktop:
-# $ wget https://gist.github.com/openoms/8d365f330f5e1288933e0f4874b56dbd/raw/2cf47bf5cc629e861540f4dd5fa525fd157fc341/electrum_install_config_and_run.sh
-# and run:
-# $ bash electrum_install_config_and_run.sh
+# Download and run this script to the Linux desktop:
+# $ wget https://gist.github.com/openoms/8d365f330f5e1288933e0f4874b56dbd/raw/2cf47bf5cc629e861540f4dd5fa525fd157fc341/4_electrum_install && bash 4_electrum_install.sh
 
 # https://electrum.org/#download
 # Install dependencies: 	
