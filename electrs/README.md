@@ -18,7 +18,7 @@ To download and run on the RaspiBlitz::
 
 This will only run the server until the terminal window is open.  
 To restart electrs manually run (with your PASSWORD_B filled in):  
-`/home/admin/electrs/target/release/electrs --index-batch-size=10 --jsonrpc-import --db-dir /mnt/hdd/electrs/db  --electrum-rpc-addr="0.0.0.0:50001" --cookie="raspibolt:PASSWORD_B"`
+`$ /home/admin/electrs/target/release/electrs --index-batch-size=10 --jsonrpc-import --db-dir /mnt/hdd/electrs/db  --electrum-rpc-addr="0.0.0.0:50001" --cookie="raspibolt:PASSWORD_B"`
 
 ---
 ## RaspiBlitz: Set up the Electrs systemd service
@@ -31,9 +31,9 @@ To download and run:
 `$ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/electrs/2_electrs_systemd_service.sh && bash 2_electrs_systemd_service.sh`
 
 If running the always-on electrs service is too much for your RPi stop it with:  
-`sudo systemctl stop electrs`  
+`$ sudo systemctl stop electrs`  
 To stop running on boot:  
-`sudo systemctl disable electrs`  
+`$ sudo systemctl disable electrs`  
 (To re-enable and start use the `enable`  and  `start`commands)
 
 ## RaspiBlitz: install Nginx and Certbot to connect over SSL 
