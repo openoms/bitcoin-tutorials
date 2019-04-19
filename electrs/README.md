@@ -30,6 +30,12 @@ Take a look: [2_electrs_systemd_service.sh](2_electrs_systemd_service.sh)
 To download and run:  
 `$ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/electrs/2_electrs_systemd_service.sh && bash 2_electrs_systemd_service.sh`
 
+If running the always-on electrs service is too much for your RPi stop it with:  
+`sudo systemctl stop electrs`  
+To stop running on boot:  
+`sudo systemctl disable electrs`  
+(To re-enable and start use the `enable`  and  `start`commands)
+
 ## RaspiBlitz: install Nginx and Certbot to connect over SSL 
 
 For the SSL certificate to be obtained successfully a **dynamic DNS** and **port forwarding is necessary**.
