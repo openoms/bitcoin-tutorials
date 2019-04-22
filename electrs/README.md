@@ -33,7 +33,7 @@ To download and run:
 If running the always-on electrs service is too much for your RPi stop it with:  
 `$ sudo systemctl stop electrs`  
 To stop running on boot:  
-`$ sudo systemctl disable electrs`  
+`$  sudo systemctl disable electrs`  
 (To re-enable and start use the `enable`  and  `start`commands)
 
 ## RaspiBlitz: install Nginx and Certbot to connect over SSL 
@@ -51,13 +51,10 @@ Can be used as a secure backend of:
     Eclair Mobile Bitcoin and Ligthtning wallet
     Electrum wallet
 
-Take a look: [3_Nginx_and_Certbot_for_SSL](3_Nginx_and_Certbot_for_SSL.sh)
+Take a look: [3_Nginx_and_Certbot_for_SSL.sh](3_Nginx_and_Certbot_for_SSL.sh)
 
 To download and run on the RaspiBlitz:  
 `$ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/electrs/3_Nginx_and_Certbot_for_SSL.sh && bash 3_Nginx_and_Certbot_for_SSL.sh`
-
- 
-
 
 ---
 
