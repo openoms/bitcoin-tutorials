@@ -1,13 +1,11 @@
 # Install Electrum with support for ColdCard, Trezor and Ledger connected to your own Electrum Personal Server
 
 * make sure the system is up-to-date
-
-    `sudo apt-get update`
-
-    `sudo apt-get upgrade`
-
-    `sudo apt install git-all`
-
+```
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt install git-all
+```
 ## download, verify, install Electrum
 
 https://electrum.org/#download
@@ -60,7 +58,7 @@ https://electrum.org/#download
 
     `cd Electrum-3.3.4`
 
-    ## install zbar to read QR codes with the camera
+    ## (optional) zbar to read QR codes with the camera
     `sudo apt-get install zbar-tools`
 
     ## (optional) install and activate a virtual environment 
@@ -72,53 +70,55 @@ https://electrum.org/#download
 
 ---
 
-## to install ColdCard for Electrum
->sudo apt-get install python-dev libusb-1.0-0-dev libudev-dev
+## ColdCard for Electrum
+```
+sudo apt-get install python-dev libusb-1.0-0-dev libudev-dev
+sudo pip install --upgrade setuptools
+sudo pip install hidapi pyqt5 "ckcc-protocol[cli]"
+```
+add the udev rules
+```
+cd /etc/udev/rules.d/
+sudo wget https://raw.githubusercontent.com/Coldcard/ckcc-protocol/master/51-coinkite.rules
+sudo udevadm control --reload-rules && sudo udevadm trigger
+```
 
->sudo pip install --upgrade setuptools
+## Trezor for Electrum
+```
+sudo apt-get install python3-dev python3-pip cython3 libusb-1.0-0-dev libudev-dev
+sudo pip3 install --upgrade setuptools
+pip3 install trezor
+sudo pip3 install trezor[hidapi]
+```
+Add the udev rules:
+```
+cd /etc/udev/rules.d   
+sudo wget https://raw.githubusercontent.com/trezor/trezor-common/master/udev/51-trezor.rules`
 
->sudo pip install hidapi
+sudo cp udev/*.rules /etc/udev/rules.d/  
+sudo udevadm trigger  
+sudo udevadm control --  reload-rules  
+sudo groupadd plugdev 
+sudo usermod -aG plugdev `whoami`
+```
 
->pip install pyqt5 
+## Ledger for Electrum
+```
+apt-get install libudev-dev libusb-1.0-0-dev
+ln -s /lib/x86_64-linux-gnu/libudev.so.1 /lib/x86_64-linux-gnu/libudev.so
+sudo pip3 install btchip-python
+wget -q -O - https://raw.githubusercontent.com/LedgerHQ/udev-rules/master/add_udev_rules.sh | sudo bash
+```
+https://support.ledger.com/hc/en-us/articles/115005165269-What-if-Ledger-Wallet-is-not-recognized-on-Linux-
 
->pip install "ckcc-protocol[cli]"
+## Documentation on how to add udev rules in Linux:
 
-add udev rules:
-> cd /etc/udev/rules.d/
-
->sudo wget https://raw.githubusercontent.com/Coldcard/ckcc-protocol/master/51-coinkite.rules
-
->sudo udevadm control --reload-rules && sudo udevadm trigger
-
-## install Trezor for Electrum
->sudo apt-get install python3-dev python3-pip cython3 libusb-1.0-0-dev libudev-dev
-
->pip3 install --upgrade setuptools
-
->pip3 install trezor
-
->sudo pip3 install trezor[hidapi]
-
-## install Ledger for Electrum
-
->apt-get install libudev-dev
-
->apt-get install libusb-1.0-0-dev
-
->ln -s /lib/x86_64-linux-gnu/libudev.so.1 /lib/x86_64-linux-gnu/libudev.so
-
->sudo pip3 install btchip-python
-
->wget -q -O - https://raw.githubusercontent.com/LedgerHQ/udev-rules/master/add_udev_rules.sh | sudo bash
-
-<https://support.ledger.com/hc/en-us/articles/115005165269-What-if-Ledger-Wallet-is-not-recognized-on-Linux->
-
-### Documentation on how to add udev rules in Linux:
+https://github.com/bitcoin-core/HWI/tree/master/udev  
 https://github.com/spesmilo/electrum-docs/blob/master/hardware-linux.rst 
 
 ---
 
-## install Electrum Personal server
+## Electrum Personal Server
 
 Follow Stadicus`s guide: 
 https://github.com/Stadicus/guides/blob/master/raspibolt/raspibolt_64_electrum.md  
@@ -142,4 +142,3 @@ monitor the log:
 
 restrict Electrum to use your own EPS, point it to the LAN IP of your Raspibolt
 >python3 run_electrum --oneserver --server [RaspiBolt.IP]:50002:s
-
