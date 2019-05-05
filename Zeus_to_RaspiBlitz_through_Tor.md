@@ -38,7 +38,8 @@ Download Orbot for Android. https://guardianproject.info/apps/orbot/
 
 Open orbot. Click the `⋮`, select `hidden services ˃`, select `Client cookies`.
 
-Press the + button on the lower right. Type in the the onion address and secret cookie you revealed with `sudo cat /mnt/hdd/tor/lnd_api/hostname`.
+Press the + button on the lower right. Type in the the onion address and secret cookie you revealed with `sudo cat /mnt/hdd/tor/lnd_api/hostname`. Must enter onion address and add .onion to end in address area. For the cookie you
+need all the information including [cookie] # client : [client] So for example:AbyZXCfghtG+E0r84y/nR # client: myandroid
 
 Go back to orbot's main screen, and select the gear icon under `tor enabled apps`. Add `Zeus`, then press back. Click `stop` on the big onion logo. Exit orbot and reopen it. Turn on `VPN Mode`. Start your connection to the tor network by clicking on the big onion (if it has not automatically connected already)
 
@@ -65,22 +66,35 @@ Download and compile [lndconnect](https://github.com/LN-Zap/lndconnect):
 ```
 $ cd ~
 $ go get -d github.com/LN-Zap/lndconnect
-$ cd ~/go/src/github.com/LN-Zap/lndconnect
-$ make install
+$ cd $GOPATH/src/github.com/LN-Zap/lndconnect
+$ make
 ```
 Generate the LND connect URI QR code:  
 ```
-$ cd ~/go/bin
+$ cd $GOPATH/bin
 $ ./lndconnect --lnddir=/home/admin/.lnd --image --host=z1234567890abc.onion --port=8080
 ```
 The file `lndconnect-qr.png` will be generated.   
   
-In a Linux terminal run: 
+In a Linux terminal run: [YOUR.RASIBLITZ.IP] = the local internal ip showing on your pi
 ``` 
-$ scp admin@[YOUR.RASIBLITZ.IP]:~/go/bin/lndconnect-qr.png ~/
+$ scp admin@[YOUR.RASIBLITZ.IP]:$GOPATH/bin/lndconnect-qr.png ~/
 ```
 and open the png from your home directory.  
+
+
+May need to add something to view png from raspberry pi.
+```
+$ cd ~ 
+$ sudo apt-get install fbi
+$ sudo fbi -d /dev/fb0 -T 1 lndconnect-qr.png
+```
+Now plug in hdmi cord from pi to external monitor and you will see qr code to scan with zeus!
 
 On Windows use WinSCP to download the image to your PC and open it.
 
 Scan the QR Code with the ZeusLN app to be connected to your node through Tor!
+
+SEND SATOSHI'S PRIVATE! 
+Get that beautiful onion png in the top left of Zeuz.
+Self Sovereignty for the streets!
