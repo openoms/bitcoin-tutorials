@@ -74,27 +74,26 @@ Generate the LND connect URI QR code:
 $ cd $GOPATH/bin
 $ ./lndconnect --lnddir=/home/admin/.lnd --image --host=z1234567890abc.onion --port=8080
 ```
-The file `lndconnect-qr.png` will be generated.   
-  
-In a Linux terminal run: [YOUR.RASIBLITZ.IP] = the local internal ip showing on your pi
+The file `lndconnect-qr.png` will be generated, you need to scan this with ZeusLN to connect through Tor.  
+
+To display the .png on your Desktop: 
+
+On Windows use WinSCP to download the image to your PC and open it.
+
+On Linux run:
 ``` 
 $ scp admin@[YOUR.RASIBLITZ.IP]:$GOPATH/bin/lndconnect-qr.png ~/
 ```
-and open the png from your home directory.  
+and open the .png from your home directory. 
 
-
-May need to add something to view png from raspberry pi.
+To view the .png from your RaspiBlitz:
 ```
 $ cd ~ 
 $ sudo apt-get install fbi
 $ sudo fbi -d /dev/fb0 -T 1 lndconnect-qr.png
 ```
-Now plug in hdmi cord from pi to external monitor and you will see qr code to scan with zeus!
-
-On Windows use WinSCP to download the image to your PC and open it.
-
-Scan the QR Code with the ZeusLN app to be connected to your node through Tor!
+Now connect the HDMI cord to an external monitor and you will see qr code to scan with Zeus!
 
 SEND SATOSHI'S PRIVATE! 
-Get that beautiful onion png in the top left of Zeuz.
+Get that beautiful onion png in the top left of Zeus.
 Self Sovereignty for the streets!
