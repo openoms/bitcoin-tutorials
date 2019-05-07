@@ -7,8 +7,9 @@ and continue https://github.com/Stadicus/guides/blob/master/raspibolt/raspibolt_
 
 More here:
 
-* #### [RaspiBlitz: Connect the Zeus Lightning Wallet on Android to the RaspiBlitz over Tor](Zeus_to_RaspiBlitz_through_Tor.md)
+* #### [RaspiBlitz: update LND to v0.6.1-beta-rc2](lnd.update.sh)
 
+* #### [RaspiBlitz: Connect the Zeus Lightning Wallet on Android to the RaspiBlitz over Tor](Zeus_to_RaspiBlitz_through_Tor.md)
 
 * #### [RaspiBlitz: SSL/HTTPS access for the Ride The Lightning web UI](nginx/README.md)
 

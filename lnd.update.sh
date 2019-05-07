@@ -1,8 +1,7 @@
 # LND Update Script
 
-# Download and run this script to the Linux desktop:
-# $ wget https://gist.github.com/openoms/8d365f330f5e1288933e0f4874b56dbd/raw/2cf47bf5cc629e861540f4dd5fa525fd157fc341/4_electrum_install && bash 4_electrum_install.sh
-
+# Download and run this script on the RaspiBlitz:
+# $ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/lnd.update.sh && sudo bash lnd.update.sh
 
 ## based on https://github.com/Stadicus/guides/blob/master/raspibolt/raspibolt_40_lnd.md#lightning-lnd
 ## see LND releases: https://github.com/lightningnetwork/lnd/releases
