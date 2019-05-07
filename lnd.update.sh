@@ -96,3 +96,6 @@ if [ ${#installed} -eq 0 ]; then
 fi
 
 sudo systemctl restart lnd
+
+echo ""
+echo "Installed ${installed}"
