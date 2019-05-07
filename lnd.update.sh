@@ -8,6 +8,19 @@
 
 lndVersion="0.6.1-beta-rc2"
 
+echo "Check Linux base ..." 
+isARM=$(uname -m | grep -c 'arm')
+isAARCH64=$(uname -m | grep -c 'aarch64')
+isX86_64=$(uname -m | grep -c 'x86_64')
+if [ ${isARM} -eq 0 ] && [ ${isAARCH64} -eq 0 ] && [ ${isX86_64} -eq 0 ] ; then
+  echo "!!! FAIL !!!"
+  echo "Can only build on ARM, aarch64 or x86_64 not on:"
+  uname -m
+  exit 1
+else
+ echo "OK running on $(uname -m) architecture."
+fi
+
 if [ ${isARM} -eq 1 ] ; then
   lndOSversion="armv7"
   lndSHA256="acaed77436ea210164553ac9e11b87c92ed918f10b6a5e54f96c01ca0b93fe24"
@@ -20,19 +33,6 @@ if [ ${isX86_64} -eq 1 ] ; then
   lndOSversion="amd64"
   lndSHA256="860a5d0a56c1ec9eef33a5f29c20013221b95298468825a1b7793d13320cba70"
 fi 
-
-echo "Check if Linux base ..." 
-isARM=$(uname -m | grep -c 'arm')
-isAARCH64=$(uname -m | grep -c 'aarch64')
-isX86_64=$(uname -m | grep -c 'x86_64')
-if [ ${isARM} -eq 0 ] && [ ${isAARCH64} -eq 0 ] && [ ${isX86_64} -eq 0 ] ; then
-  echo "!!! FAIL !!!"
-  echo "Can only build on ARM, aarch64 or x86_64 not on:"
-  uname -m
-  exit 1
-else
- echo "OK running on $(uname -m) architecture."
-fi
 
 echo ""
 echo "*** LND v${bitcoinVersion} for ${bitcoinOSversion} ***"
