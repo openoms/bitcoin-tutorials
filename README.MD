@@ -3,7 +3,7 @@ Get the most value out of your dedicated hardware
 
 start at https://github.com/rootzoll/raspiblitz
 
-and continue https://github.com/Stadicus/guides/blob/master/raspibolt/raspibolt_60_bonus.md
+and continue https://stadicus.github.io/RaspiBolt/raspibolt_60_bonus.html
 
 More here:
 
