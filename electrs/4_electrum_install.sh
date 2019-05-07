@@ -1,5 +1,5 @@
 # Download and run this script to the Linux desktop:
-# $ wget https://gist.github.com/openoms/8d365f330f5e1288933e0f4874b56dbd/raw/2cf47bf5cc629e861540f4dd5fa525fd157fc341/4_electrum_install && bash 4_electrum_install.sh
+# $ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/electrs/4_electrum_install && bash 4_electrum_install.sh
 
 # https://electrum.org/#download
 # Install dependencies: 	
