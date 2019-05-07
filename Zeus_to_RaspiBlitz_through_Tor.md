@@ -9,7 +9,7 @@ Have a look at the proposal of @seth586 about connecting light wallets through T
 
 
 Download the Zeus app, APKs available here: https://github.com/ZeusLN/zeus/releases, 
-on Google Play and soon on F-Droid.
+on F-Droid and Google Play.
 
 Log in to your RaspiBlitz through shh.
 
@@ -23,7 +23,7 @@ HiddenServicePort 10009 127.0.0.1:10009
 ```
 Save (Ctrl+O, ENTER) and exit (Ctrl+X)
 
-Restart Tor 
+Restart Tor:
 ```
 $ sudo systemctl restart tor
 ```
@@ -36,15 +36,22 @@ z1234567890abc.onion AbyZXCfghtG+E0r84y/nR # client: myandroid
 
 Download Orbot for Android. https://guardianproject.info/apps/orbot/
 
-Open orbot. Click the `⋮`, select `hidden services ˃`, select `Client cookies`.
+Open Orbot. Click the `⋮`, select `hidden services ˃`, select `Client cookies`.
 
-Press the + button on the lower right. Type in the the onion address and secret cookie you revealed with `sudo cat /mnt/hdd/tor/lnd_api/hostname`. Must enter onion address and add .onion to end in address area. For the cookie you
-need all the information including [cookie] # client : [client] So for example:AbyZXCfghtG+E0r84y/nR # client: myandroid
+Press the + button on the lower right. Type in the the onion address and secret cookie you revealed with `sudo cat /mnt/hdd/tor/lnd_api/hostname`.  
+ Must enter onion address and add .onion to end in address area.  
+For the cookie you
+need all the information including [cookie] # client : [client]  
+ So for example:AbyZXCfghtG+E0r84y/nR # client: myandroid
 
-Go back to orbot's main screen, and select the gear icon under `tor enabled apps`. Add `Zeus`, then press back. Click `stop` on the big onion logo. Exit orbot and reopen it. Turn on `VPN Mode`. Start your connection to the tor network by clicking on the big onion (if it has not automatically connected already)
+Go back to Orbot's main screen, and select the gear icon under `tor enabled apps`.  
+Add `Zeus`, then press back.  
+Click `stop` on the big onion logo.  
+Exit orbot and reopen it. Turn on `VPN Mode`.  
+Start your connection to the Tor network by clicking on the big onion (if it has not automatically connected already)
 
 
-Make sure go is installed (should be v1.11 or higher) :  
+Make sure Go is installed (should be v1.11 or higher):  
 ```
 $ go version 
 ```
@@ -62,38 +69,20 @@ $ export GOPATH=/usr/local/gocode
 $ export PATH=$PATH:$GOPATH/bin
 ```
 
-Download and compile [lndconnect](https://github.com/LN-Zap/lndconnect):
+Install [lndconnect](https://github.com/LN-Zap/lndconnect):
 ```
-$ cd ~
-$ go get -d github.com/LN-Zap/lndconnect
-$ cd $GOPATH/src/github.com/LN-Zap/lndconnect
-$ make
+$ cd /tmp
+$ wget https://github.com/LN-Zap/lndconnect/releases/download/v0.1.0/lndconnect-linux-armv7-v0.1.0.tar.gz
+$ sudo tar -xvf lndconnect-linux-armv7-v0.1.0.tar.gz --strip=1 -C /usr/local/bin
 ```
 Generate the LND connect URI QR code:  
-```
-$ cd $GOPATH/bin
-$ ./lndconnect --lnddir=/home/admin/.lnd --image --host=z1234567890abc.onion --port=8080
-```
-The file `lndconnect-qr.png` will be generated, you need to scan this with ZeusLN to connect through Tor.  
+It will be a big QR code so maximize your terminal window and use CTRL - to shrink the code further to fit the screen
 
-To display the .png on your Desktop: 
-
-On Windows use WinSCP to download the image to your PC and open it.
-
-On Linux run:
-``` 
-$ scp admin@[YOUR.RASIBLITZ.IP]:$GOPATH/bin/lndconnect-qr.png ~/
 ```
-and open the .png from your home directory. 
-
-To view the .png from your RaspiBlitz:
+$ lndconnect --lnddir=/home/admin/.lnd --host=z1234567890abc.onion --port=8080
 ```
-$ cd ~ 
-$ sudo apt-get install fbi
-$ sudo fbi -d /dev/fb0 -T 1 lndconnect-qr.png
-```
-Now connect the HDMI cord to an external monitor and you will see qr code to scan with Zeus!
+Scan it with Zeus and you are done.
 
-SEND SATOSHI'S PRIVATE! 
-Get that beautiful onion png in the top left of Zeus.
+SEND SATOSHI'S PRIVATE!  
+Get that beautiful onion png in the top left of Zeus.  
 Self Sovereignty for the streets!
