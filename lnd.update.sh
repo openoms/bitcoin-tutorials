@@ -6,7 +6,8 @@
 ## based on https://github.com/Stadicus/guides/blob/master/raspibolt/raspibolt_40_lnd.md#lightning-lnd
 ## see LND releases: https://github.com/lightningnetwork/lnd/releases
 
-lndVersion="0.6.1-beta-rc2"
+lndVersion="0.6.1-beta"
+home="/mnt/hdd/app"
 
 echo "Check Linux base ..." 
 isARM=$(uname -m | grep -c 'arm')
@@ -45,12 +46,12 @@ PGPcheck="BD599672C804AF2770869A048B80CD2BB8BD8132"
 #PGPcheck="9C8D61868A7C492003B2744EE7D737B67FA592C7"
 
 # get LND resources
-cd /home/admin/download
+cd "${home}"
 binaryName="lnd-linux-${lndOSversion}-v${lndVersion}.tar.gz"
 sudo -u admin wget https://github.com/lightningnetwork/lnd/releases/download/v${lndVersion}/${binaryName}
 sudo -u admin wget https://github.com/lightningnetwork/lnd/releases/download/v${lndVersion}/manifest-v${lndVersion}.txt
 sudo -u admin wget https://github.com/lightningnetwork/lnd/releases/download/v${lndVersion}/manifest-v${lndVersion}.txt.sig
-sudo -u admin wget -O /home/admin/download/pgp_keys.asc ${PGPpkeys}
+sudo -u admin wget -O "${home}/pgp_keys.asc" ${PGPpkeys}
 
 # check binary is was not manipulated (checksum test)
 binaryChecksum=$(sha256sum ${binaryName} | cut -d " " -f1)
@@ -61,7 +62,7 @@ fi
 
 # check gpg finger print
 gpg ./pgp_keys.asc
-fingerprint=$(sudo gpg /home/admin/download/pgp_keys.asc 2>/dev/null | grep "${PGPcheck}" -c)
+fingerprint=$(sudo gpg "${home}/pgp_keys.asc" 2>/dev/null | grep "${PGPcheck}" -c)
 if [ ${fingerprint} -lt 1 ]; then
   echo ""
   echo "!!! BUILD WARNING --> LND PGP author not as expected"
