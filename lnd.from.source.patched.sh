@@ -7,32 +7,24 @@ sudo systemctl stop lnd
 
 #### Build from Source
 # To quickly catch up get latest patches if needed
-repo="github.com/lightningnetwork/lnd"
-commit="6e3b92b55f4a064198bc82eeefe33ad8733fea2a"
+repo="github.com/openoms/lnd"
+commit="1a59596df3e8ae9e95a858cda33c329d4736d1bd"
+# https://github.com/openoms/lnd/commit/1a59596df3e8ae9e95a858cda33c329d4736d1bd
+
 # BUILDING LND FROM SOURCE
 echo "*** Build LND from Source ***"
+echo "repo=${repo}"
+echo "up to the commit=${commit}"
+
+export GOROOT=/usr/local/go
+export PATH=$PATH:$GOROOT/bin
+export GOPATH=/usr/local/gocode
+export PATH=$PATH:$GOPATH/bin
 go get -d $repo
 # make sure to always have the same code (commit) to build
 # TODO: To update lnd -> change to latest commit
 cd $GOPATH/src/${repo}
 sudo git checkout ${commit}
-
-diff --git a/channeldb/graph.go b/channeldb/graph.go
-index eaf3503c..b1b351b7 100644
---- a/channeldb/graph.go
-+++ b/channeldb/graph.go
-@@ -3025,7 +3025,9 @@ func (c *ChannelGraph) ChannelView() ([]EdgePoint, error) {
- 				edgeIndex, chanID,
- 			)
- 			if err != nil {
--				return err
-+				log.Errorf("Unable to fetch edge info for "+
-+					"channel %v: %v", chanPoint, err)
-+				return nil
- 			}
- 
- 			pkScript, err := genMultiSigP2WSH(
-
 make && make install
 sudo chmod 555 /usr/local/gocode/bin/lncli
 sudo chmod 555 /usr/local/gocode/bin/lnd
@@ -54,4 +46,4 @@ sudo ln -s /usr/local/gocode/bin/lnd /usr/local/bin/lnd
 sudo systemctl restart lnd
 
 echo ""
-echo "LND VERSION INSTALLED: ${lndVersionCheck} up to commit ${commit}"
+echo "LND VERSION INSTALLED: ${lndVersionCheck} up to commit ${commit} from ${repo}"
