@@ -1,13 +1,9 @@
-# LND Update Script
+# LND Update Script to build patch for https://github.com/rootzoll/raspiblitz/issues/595
 
 # Download and run this script on the RaspiBlitz:
 # $ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/lnd.from.source.patched.sh && sudo bash lnd.from.source.patched.sh
 
 sudo systemctl stop lnd
-
-
-echo ""
-echo "Installed ${installed}"
 
 #### Build from Source
 # To quickly catch up get latest patches if needed
