@@ -6,7 +6,8 @@
 ## based on https://github.com/Stadicus/guides/blob/master/raspibolt/raspibolt_40_lnd.md#lightning-lnd
 ## see LND releases: https://github.com/lightningnetwork/lnd/releases
 
-lndVersion="0.6.1-beta"
+lndVersion="0.6.1-beta"  # the version you would like to be updated
+home="/mnt/hdd/download"  # edit your download directory
 
 echo "Detect CPU architecture ..." 
 isARM=$(uname -m | grep -c 'arm')
@@ -22,6 +23,7 @@ else
  echo "OK running on $(uname -m) architecture."
 fi
 
+# update the SHA256 checksum upon version change
 if [ ${isARM} -eq 1 ] ; then
   lndOSversion="armv7"
   lndSHA256="5541959c7fde98d76d88cc8070ca626c681ba38c44afcb85bf417a9a677e23c2"
@@ -49,12 +51,12 @@ PGPcheck="BD599672C804AF2770869A048B80CD2BB8BD8132"
 #PGPcheck="9C8D61868A7C492003B2744EE7D737B67FA592C7"
 
 # get LND resources
-cd /home/admin/download
+cd "${home}"
 binaryName="lnd-linux-${lndOSversion}-v${lndVersion}.tar.gz"
-sudo -u admin wget https://github.com/lightningnetwork/lnd/releases/download/v${lndVersion}/${binaryName}
-sudo -u admin wget https://github.com/lightningnetwork/lnd/releases/download/v${lndVersion}/manifest-v${lndVersion}.txt
-sudo -u admin wget https://github.com/lightningnetwork/lnd/releases/download/v${lndVersion}/manifest-v${lndVersion}.txt.sig
-sudo -u admin wget -O /home/admin/download/pgp_keys.asc ${PGPpkeys}
+sudo -u admin wget -N https://github.com/lightningnetwork/lnd/releases/download/v${lndVersion}/${binaryName}
+sudo -u admin wget -N https://github.com/lightningnetwork/lnd/releases/download/v${lndVersion}/manifest-v${lndVersion}.txt
+sudo -u admin wget -N https://github.com/lightningnetwork/lnd/releases/download/v${lndVersion}/manifest-v${lndVersion}.txt.sig
+sudo -u admin wget -N -O "${home}/pgp_keys.asc" ${PGPpkeys}
 
 # check binary is was not manipulated (checksum test)
 binaryChecksum=$(sha256sum ${binaryName} | cut -d " " -f1)
@@ -65,7 +67,7 @@ fi
 
 # check gpg finger print
 gpg ./pgp_keys.asc
-fingerprint=$(sudo gpg /home/admin/download/pgp_keys.asc 2>/dev/null | grep "${PGPcheck}" -c)
+fingerprint=$(sudo gpg "${home}/pgp_keys.asc" 2>/dev/null | grep "${PGPcheck}" -c)
 if [ ${fingerprint} -lt 1 ]; then
   echo ""
   echo "!!! BUILD WARNING --> LND PGP author not as expected"
