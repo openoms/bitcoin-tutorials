@@ -8,7 +8,7 @@ sudo systemctl stop lnd
 #### Build from Source
 # To quickly catch up get latest patches if needed
 repo="github.com/openoms/lnd"
-commit="1a59596df3e8ae9e95a858cda33c329d4736d1bd"
+commit="580509191007617afa6da4b6b0151b4b5313eb72"
 # https://github.com/openoms/lnd/commit/1a59596df3e8ae9e95a858cda33c329d4736d1bd
 
 # BUILDING LND FROM SOURCE
@@ -20,6 +20,7 @@ export GOROOT=/usr/local/go
 export PATH=$PATH:$GOROOT/bin
 export GOPATH=/usr/local/gocode
 export PATH=$PATH:$GOPATH/bin
+sudo rm -r /usr/local/gocode/src/github.com/openoms
 go get -d $repo
 # make sure to always have the same code (commit) to build
 # TODO: To update lnd -> change to latest commit
