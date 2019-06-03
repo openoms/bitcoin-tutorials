@@ -5,8 +5,11 @@
 
 #### Build from Source
 # To quickly catch up get latest patches if needed
-repo="github.com/lightningnetwork/lnd"
+aarepo="github.com/lightningnetwork/lnd"
 echo "Paste the latest or desired commit ID to checkout from: https://github.com/lightningnetwork/lnd/commits/master"
+echo "Example:"
+echo "4068e78af690f9b4a598de1f3f0b21b5560dd146"
+echo "and press ENTER"
 read commit
 # commit="580509191007617afa6da4b6b0151b4b5313eb72"
 
