@@ -37,6 +37,6 @@ More here:
 ---
 
 #### See my Lightning node on 1ML and connect: https://1ml.com/node/028a2cb8d51e44d7d7e108c2e80a98cc069145e05a6d2025cf554bd8866fe32993
-If you are not behind Tor send me a DM on https://twitter.com/openoms an I will add you as a peer first.
+If your node is not behind Tor send me a DM on https://twitter.com/openoms and will add you as a peer first.
 
 ![https://1ml.com/node/028a2cb8d51e44d7d7e108c2e80a98cc069145e05a6d2025cf554bd8866fe32993](images/DroidBlitzXU4_HC1.jpg)
