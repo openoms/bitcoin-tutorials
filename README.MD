@@ -19,9 +19,9 @@ More here:
 
 * #### [RaspiBlitz: Connect the Zeus Lightning Wallet on Android to the RaspiBlitz over Tor](Zeus_to_RaspiBlitz_through_Tor.md)
 
-* #### [RaspiBlitz: update LND to v0.6.1-beta](lnd.update.v0.6.1-beta.sh)
+* #### [RaspiBlitz: update LND to v0.7.0-beta-rc1](lnd.update.v0.7.0-beta-rc1.sh)
     Download and run the script to update:  
-    `$ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/lnd.update.v0.6.1-beta.sh && sudo bash lnd.update.v0.6.1-beta.sh`
+    `$ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/lnd.update.v0.7.0-beta-rc1.sh && sudo bash lnd.update.v0.7.0-beta-rc1.sh`
 
 * #### [RaspiBlitz: build LND from source](lnd.from.source.sh)
     Download and run this script on the RaspiBlitz:  
