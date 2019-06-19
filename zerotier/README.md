@@ -5,10 +5,11 @@ ZeroTier is a VPN service which is an easy option to connect remotely when neith
 The drawback is that it requires installing a trusted package which gives access to your private network.  
 
 Other, less trusted  methods to connect remotely:
-* RTL access through HTTPS/SSL (needs port forwarding and a dynamicDNS)
-    https://github.com/openoms/bitcoin-tutorials/blob/master/nginx/README.md
-* Zeus access with a Tor auth cookie (needs an Android phone and Tor activated)
-    https://github.com/openoms/bitcoin-tutorials/blob/master/Zeus_to_RaspiBlitz_through_Tor.md
+* RTL access through HTTPS/SSL (needs port forwarding and a dynamicDNS)  
+https://github.com/openoms/bitcoin-tutorials/blob/master/nginx/README.md
+* Zeus access with a Tor auth cookie (needs an Android phone and Tor activated)  
+https://github.com/openoms/bitcoin-tutorials/blob/master/Zeus_to_RaspiBlitz_through_Tor.md
+* Setup port-forwarding with a SSH tunnel  https://github.com/rootzoll/raspiblitz/blob/master/FAQ.md#how-to-setup-port-forwarding-with-a-ssh-tunnel
 
 Steps to install:
 
