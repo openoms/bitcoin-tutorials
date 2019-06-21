@@ -23,9 +23,9 @@ More here:
     ZeroTier is a VPN service which is an easy option to connect remotely when neither port forwarding nor using Tor is possible (e.g. iOS on a remote network)
     The drawback is that it requires installing a trusted package which gives access to your private network.
 
-* #### [RaspiBlitz: update LND to v0.7.0-beta-rc1](lnd.update.v0.7.0-beta-rc1.sh)
+* #### [RaspiBlitz: update LND to v0.7.0-beta-rc2](lnd.update.v0.7.0-beta-rc2.sh)
     Download and run the script to update:  
-    `$ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/lnd.update.v0.7.0-beta-rc1.sh && sudo bash lnd.update.v0.7.0-beta-rc1.sh`
+    `$ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/lnd.update.v0.7.0-beta-rc2.sh && sudo bash lnd.update.v0.7.0-beta-rc2.sh`
 
 * #### [RaspiBlitz: build LND from source](lnd.from.source.sh)
     Download and run this script on the RaspiBlitz:  
