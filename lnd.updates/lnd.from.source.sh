@@ -1,7 +1,7 @@
 # LND Update Script
 
 # Download and run this script on the RaspiBlitz:
-# $ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/lnd.from.source.sh && sudo bash lnd.from.source.sh
+# $ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/lnd.updates/lnd.from.source.sh && sudo bash lnd.from.source.sh
 
 #### Build from Source
 # To quickly catch up get latest patches if needed
