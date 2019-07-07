@@ -44,8 +44,15 @@ CTRL+O and ENTER to save, CTRL+X to exit
 After setting up and activating ZeroTier on my Android phone successfully tested: 
 * ZeusLN using the IP 172.x.x.x and port 8080
 * RTL from the outside on my 172.x.x.x:3000 address 
-
-
+* Termius to connect with ssh to admin@172.x.x.x
+---
+* To uninstall run:
+```
+sudo systemctl stop zerotier-one
+sudo apt remove zerotier-one
+sudo rm -r /var/lib/zerotier-one
+```
+---
 
 This guide is based on: https://medium.com/@ketominer/using-nodl-remotely-with-zerotier-a9a17cbb48cf
 
