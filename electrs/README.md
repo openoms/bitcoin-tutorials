@@ -11,7 +11,9 @@ Tested on the
 
 Requires 47 Gb diskpace (March 2019).
 
-The install instructions adapted to the RaspiBlitz are in this script, take a look: [1_electrs_on_RaspiBlitz.sh](1_electrs_on_RaspiBlitz.sh)
+The install instructions are adapted to the RaspiBlitz are in this script, take a look: [1_electrs_on_RaspiBlitz.sh](1_electrs_on_RaspiBlitz.sh)
+
+The script is a collection of commands. The whole setup has multiple components and dependencies which can change when updated or modified by the maintainers. If you run into problems try to run the commands manually one-by-one, spot which is causing the problem and copy the output. Open an issue here with the details and I will be happy to help to solve it. Bear in mind that this guide and the parts used are free-opensource projects, you use them at your own responsibility and there are no guarantees of any kind.
 
 To download and run on the RaspiBlitz::  
 `$ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/electrs/1_electrs_on_RaspiBlitz.sh && bash 1_electrs_on_RaspiBlitz.sh`  
@@ -29,6 +31,7 @@ To connect through SSL (requires to set up the Nginx server):
 `electrum --oneserver --server $YOUR_DOMAIN:50002:s`
 
 ---
+
 ## RaspiBlitz: Set up the Electrs systemd service
 
 Set up the systemd service to run electrs continuously in the background.
