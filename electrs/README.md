@@ -25,10 +25,10 @@ To restart electrs manually run (with your PASSWORD_B filled in) or install the 
 ## To connect your Electrum wallet use these commands and ports: 
 
 For an unencrypted TCP connection (suitable inside a secure LAN):  
-`electrum --oneserver --server $RASPIBLITZ_IP:50001:t` 
+`electrum --oneserver --server RASPIBLITZ_IP:50001:t` 
 
 To connect through SSL (requires to set up the Nginx server):  
-`electrum --oneserver --server $YOUR_DOMAIN:50002:s`
+`electrum --oneserver --server YOUR_DOMAIN:50002:s`
 
 ---
 
