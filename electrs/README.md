@@ -20,6 +20,14 @@ This will only run the server until the terminal window is open.
 To restart electrs manually run (with your PASSWORD_B filled in) or install the Electrs systemd service (next step):  
 `$ /home/admin/electrs/target/release/electrs --index-batch-size=10 --jsonrpc-import --db-dir /mnt/hdd/electrs/db  --electrum-rpc-addr="0.0.0.0:50001" --cookie="raspibolt:PASSWORD_B"`
 
+## To connect your Electrum wallet use these commands and ports: 
+
+For an unencrypted TCP connection (suitable inside a secure LAN):  
+`electrum --oneserver --server $RASPIBLITZ_IP:50001:t` 
+
+To connect through SSL (requires to set up the Nginx server):  
+`electrum --oneserver --server $YOUR_DOMAIN:50002:s`
+
 ---
 ## RaspiBlitz: Set up the Electrs systemd service
 
