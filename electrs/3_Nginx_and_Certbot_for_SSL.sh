@@ -1,5 +1,5 @@
 # A script to set up the Electrum Server in Rust on the RaspiBlitz to connect over SSL to Eclair and Electrum wallet
-# Sets up the automatic start of electrs and nginx and certbot
+# Sets up the automatic start of nginx and certbot
 
 # To download and run:
 # $ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/electrs/3_Nginx_and_Certbot_for_SSL.sh && bash 3_Nginx_and_Certbot_for_SSL.sh
@@ -65,7 +65,7 @@ WantedBy=timers.target
 
 echo "
 [Unit]
-Description=Electrs
+Description=Certbot-auto renewal service
 After=bitcoind.service
 
 [Service]
