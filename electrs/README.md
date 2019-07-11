@@ -27,7 +27,7 @@ To restart electrs manually run (with your PASSWORD_B filled in) or install the 
 For an unencrypted TCP connection (suitable inside a secure LAN):  
 `electrum --oneserver --server RASPIBLITZ_IP:50001:t` 
 
-To connect through SSL (requires to set up the Nginx server):  
+To connect through SSL (requires setting up the Nginx server):  
 `electrum --oneserver --server YOUR_DOMAIN:50002:s`
 
 ---
@@ -46,6 +46,16 @@ If running the always-on electrs service is too much for your RPi stop it with:
 To stop running on boot:  
 `$  sudo systemctl disable electrs`  
 (To re-enable and start use the `enable`  and  `start`commands)
+
+---
+
+To connect remotely to Electrs there is a encrypted connection needed.  
+See the guide from @cryptomulde to connect to a VPS through a  reverse ssh tunnel: https://medium.com/@cryptomulde/private-electrum-server-electrs-for-your-raspiblitz-full-node-without-forwarding-ports-417e4c3af975  
+
+The more secure option is to continue with setting up the SSL connection as described in the next section.
+
+---
+
 
 ## RaspiBlitz: install Nginx and Certbot to connect over SSL 
 
