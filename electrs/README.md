@@ -20,7 +20,7 @@ To download and run on the RaspiBlitz::
 
 This will only run the server until the terminal window is open.  
 To restart electrs manually run (with your PASSWORD_B filled in) or install the Electrs systemd service (next step):  
-`$ /home/admin/electrs/target/release/electrs --index-batch-size=10 --jsonrpc-import --db-dir /mnt/hdd/electrs/db  --electrum-rpc-addr="0.0.0.0:50001" --cookie="raspibolt:PASSWORD_B"`
+`$ /home/admin/electrs/target/release/electrs --index-batch-size=10 --jsonrpc-import --db-dir /mnt/hdd/electrs/db  --electrum-rpc-addr="0.0.0.0:50001" --cookie="raspibolt:PASSWORD_B" -vvvv`
 
 ## To connect your Electrum wallet use these commands and ports: 
 
