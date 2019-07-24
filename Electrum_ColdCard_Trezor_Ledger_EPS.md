@@ -121,7 +121,7 @@ https://github.com/spesmilo/electrum-docs/blob/master/hardware-linux.rst
 ## Electrum Personal Server
 
 Follow Stadicus`s guide: 
-https://github.com/Stadicus/guides/blob/master/raspibolt/raspibolt_64_electrum.md  
+https://github.com/Stadicus/RaspiBolt/blob/master/raspibolt_64_electrum.md
 
 some permissions I needed to fix:
 
