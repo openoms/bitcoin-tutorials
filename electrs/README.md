@@ -49,13 +49,12 @@ To stop running on boot:
 
 ---
 
-To connect remotely to Electrs there is a encrypted connection needed.  
-See the guide from @cryptomulde to connect to a VPS through a  reverse ssh tunnel: https://medium.com/@cryptomulde/private-electrum-server-electrs-for-your-raspiblitz-full-node-without-forwarding-ports-417e4c3af975  
+A remote connection to Electrs should be encrypted.  
+See the guide from @cryptomulde to connect to a VPS through a reverse ssh tunnel: https://medium.com/@cryptomulde/private-electrum-server-electrs-for-your-raspiblitz-full-node-without-forwarding-ports-417e4c3af975  
 
 The more secure option is to continue with setting up the SSL connection as described in the next section.
 
 ---
-
 
 ## RaspiBlitz: install Nginx and Certbot to connect over SSL 
 

@@ -5,7 +5,7 @@
 
 #### Build from Source
 # To quickly catch up get latest patches if needed
-aarepo="github.com/lightningnetwork/lnd"
+repo="github.com/lightningnetwork/lnd"
 echo "Paste the latest or desired commit ID to checkout from"
 echo "See the list at: https://github.com/lightningnetwork/lnd/commits/master"
 echo "Example:"
