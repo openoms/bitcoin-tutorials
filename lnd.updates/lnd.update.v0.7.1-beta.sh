@@ -32,6 +32,8 @@ else
  echo "OK running on $(uname -m) architecture."
 fi
 
+cd "${downloadDir}"
+
 # extract the SHA256 hash from the manifest file for the corresponding platform
 sudo -u admin wget -N https://github.com/lightningnetwork/lnd/releases/download/v${lndVersion}/manifest-v${lndVersion}.txt
 if [ ${isARM} -eq 1 ] ; then
@@ -56,7 +58,6 @@ echo "SHA256 hash: $lndSHA256"
 echo ""
 
 # get LND binary
-cd "${downloadDir}"
 binaryName="lnd-linux-${lndOSversion}-v${lndVersion}.tar.gz"
 sudo -u admin wget -N https://github.com/lightningnetwork/lnd/releases/download/v${lndVersion}/${binaryName}
 
