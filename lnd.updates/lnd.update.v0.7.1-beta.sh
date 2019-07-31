@@ -34,7 +34,7 @@ fi
 
 cd "${downloadDir}"
 
-# extract the SHA256 hash from the manifest file for the corresponding platform
+# get lndOSversion and lndSHA256 for the corresponding platform
 sudo -u admin wget -N https://github.com/lightningnetwork/lnd/releases/download/v${lndVersion}/manifest-v${lndVersion}.txt
 if [ ${isARM} -eq 1 ] ; then
   lndOSversion="armv7"
