@@ -52,6 +52,7 @@ if [ ${isX86_32} -eq 1 ] ; then
 fi 
 echo ""
 echo "*** LND v${lndVersion} for ${lndOSversion} ***"
+echo "SHA256 hash: $lndSHA256"
 echo ""
 
 # get LND binary
@@ -83,7 +84,7 @@ sleep 3
 verifyResult=$(gpg --verify manifest-v${lndVersion}.txt.sig 2>&1)
 goodSignature=$(echo ${verifyResult} | grep 'Good signature' -c)
 echo "goodSignature(${goodSignature})"
-correctKey=$(echo ${verifyResult} | tr -d " \t\n\r" | grep "${olaoluwaPGP}" -c)
+correctKey=$(echo ${verifyResult} | tr -d " \t\n\r" | grep "${GPGcheck}" -c)
 echo "correctKey(${correctKey})"
 if [ ${correctKey} -lt 1 ] || [ ${goodSignature} -lt 1 ]; then
   echo ""
