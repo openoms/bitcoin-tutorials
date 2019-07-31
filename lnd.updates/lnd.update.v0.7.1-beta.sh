@@ -36,19 +36,19 @@ fi
 sudo -u admin wget -N https://github.com/lightningnetwork/lnd/releases/download/v${lndVersion}/manifest-v${lndVersion}.txt
 if [ ${isARM} -eq 1 ] ; then
   lndOSversion="armv7"
-  lndSHA256=$(grep -i "linux-$lndOSversion" manifest-v$lndVersion.txt | awk '{print $1}')
+  lndSHA256=$(grep -i "linux-$lndOSversion" manifest-v$lndVersion.txt | cut -d " " -f1)
 fi
 if [ ${isAARCH64} -eq 1 ] ; then
   lndOSversion="arm64"
-  lndSHA256=$(grep -i "linux-$lndOSversion" manifest-v$lndVersion.txt | awk '{print $1}')
+  lndSHA256=$(grep -i "linux-$lndOSversion" manifest-v$lndVersion.txt | cut -d " " -f1)
 fi
 if [ ${isX86_64} -eq 1 ] ; then
   lndOSversion="amd64"
-  lndSHA256=$(grep -i "linux-$lndOSversion" manifest-v$lndVersion.txt | awk '{print $1}')
+  lndSHA256=$(grep -i "linux-$lndOSversion" manifest-v$lndVersion.txt | cut -d " " -f1)
 fi 
 if [ ${isX86_32} -eq 1 ] ; then
   lndOSversion="386"
-  lndSHA256=$(grep -i "linux-$lndOSversion" manifest-v$lndVersion.txt | awk '{print $1}')
+  lndSHA256=$(grep -i "linux-$lndOSversion" manifest-v$lndVersion.txt | cut -d " " -f1)
 fi 
 echo ""
 echo "*** LND v${lndVersion} for ${lndOSversion} ***"
@@ -87,7 +87,7 @@ correctKey=$(echo ${verifyResult} | tr -d " \t\n\r" | grep "${olaoluwaPGP}" -c)
 echo "correctKey(${correctKey})"
 if [ ${correctKey} -lt 1 ] || [ ${goodSignature} -lt 1 ]; then
   echo ""
-  echo "!!! BUILD FAILED --> LND PGP Verify not OK / signatute(${goodSignature}) verify(${correctKey})"
+  echo "!!! BUILD FAILED --> LND PGP Verify not OK / signature(${goodSignature}) verify(${correctKey})"
   exit 1
 fi
 
