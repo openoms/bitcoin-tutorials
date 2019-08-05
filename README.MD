@@ -23,7 +23,7 @@ More here:
     ZeroTier is a VPN service which is an easy option to connect remotely when neither port forwarding nor using Tor is possible (e.g. iOS on a remote network)
     The drawback is that it requires installing a trusted package which gives access to your private network.
 
-* #### [RaspiBlitz: LND updates](lnd.updates/README.md)
+* #### [RaspiBlitz: LND updates](https://github.com/openoms/lightning-node-management/blob/master/lnd.updates/README.md)
     Automated scripts to download, verify and update LND to the latest release or build from source up to a chosen commit.
 
 * #### [RaspiBlitz: Connect the Zap Desktop Lightning wallet](ZAPtoRaspiBolt/README.md)  

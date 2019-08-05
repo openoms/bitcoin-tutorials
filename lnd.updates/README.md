@@ -1,5 +1,7 @@
 ## Automated LND update scripts for the RaspiBlitz and compatible systems
 
+Moved to the repo: [https://github.com/openoms/lightning-node-management](https://github.com/openoms/lightning-node-management/blob/master/lnd.updates/README.md)
+
 #### [Build LND from source](lnd.from.source.sh)
 * Download and run this script on the RaspiBlitz:  
     `$ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/lnd.updates/lnd.from.source.sh && sudo bash lnd.from.source.sh`
