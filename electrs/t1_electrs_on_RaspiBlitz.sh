@@ -2,6 +2,10 @@
 # $ wget https://github.com/openoms/bitcoin-tutorials/raw/master/electrs/electrs_install_on_RaspiBlitz.sh && bash electrs_install_on_RaspiBlitz.sh
 
 # https://github.com/romanz/electrs/blob/master/doc/usage.md
+
+echo "Type the PASSWORD B of your RaspiBlitz followed by [ENTER] (needed for Electrs to access the bitcoind RPC):"
+read PASSWORD_B
+
 echo ""
 echo "***"
 echo "Installing Rust - press 1 and [ENTER] when prompted"
@@ -31,9 +35,6 @@ echo ""
 sudo mkdir /mnt/hdd/electrs
 sudo chown -R admin:admin /mnt/hdd/electrs
 sudo ufw allow 60001
-
-echo "Type the PASSWORD B of your RaspiBlitz followed by [ENTER]:"
-read PASSWORD_B
 
 # Run with password B filled in: 
 cargo run --release -- -vvvv --index-batch-size=10 --jsonrpc-import --db-dir /mnt/hdd/electrs/testnetdb --cookie="raspibolt:$PASSWORD_B" --electrum-rpc-addr="0.0.0.0:60001" --network testnet --timestamp
