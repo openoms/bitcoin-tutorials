@@ -7,7 +7,7 @@ Shared experiences here: https://github.com/rootzoll/raspiblitz/issues/123 and h
 
 Tested on the
 * Odroid HC1 and XU4 (~18 hours)
-* Raspberry Pi 3 B+ (~ two days to build the database from scratch)
+* Raspberry Pi 3 B+ (~two days to build the database from scratch)
 
 Requires 47 Gb diskpace (March 2019).
 
@@ -32,7 +32,7 @@ To connect through SSL (requires setting up the Nginx server):
 
 ---
 
-## Set up the Electrs systemd service
+## RaspiBlitz: Set up the Electrs systemd service
 
 Set up the systemd service to run electrs continuously in the background.
 
@@ -54,7 +54,7 @@ To check if the indexing is running use:
 
 A remote connection to Electrs must be encrypted.  
 
-The easiest option is to acivate Tor on the RaspiBlitz and on the computer used for Electrum and [configure a Tor Hidden Service for Electrs](Tor_Hidden_Service_for_Electrs.md)
+The easiest option is to activate Tor on the RaspiBlitz, on the computer used for Electrum and [configure a Tor Hidden Service for Electrs](Tor_Hidden_Service_for_Electrs.md)
 
 See the guide from @cryptomulde to connect to a VPS through a reverse ssh tunnel: https://medium.com/@cryptomulde/private-electrum-server-electrs-for-your-raspiblitz-full-node-without-forwarding-ports-417e4c3af975  
 
@@ -72,10 +72,11 @@ The script sets up the automatic start Nginx and Certbot.
 
 Assumes that electrs is already installed.
 
-Can be used as a secure backend of:
+Can be used as the secure backend of:
 
     Eclair Mobile Bitcoin and Ligthtning wallet
     Electrum wallet
+    BitBox App
 
 Take a look: [3_Nginx_and_Certbot_for_SSL.sh](3_Nginx_and_Certbot_for_SSL.sh)
 
