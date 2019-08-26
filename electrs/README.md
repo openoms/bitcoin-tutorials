@@ -22,7 +22,7 @@ This will only run the server until the terminal window is open.
 To restart electrs manually run (with your PASSWORD_B filled in) or install the Electrs systemd service (next step):  
 `$ /home/admin/electrs/target/release/electrs --index-batch-size=10 --jsonrpc-import --db-dir /mnt/hdd/electrs/db  --electrum-rpc-addr="0.0.0.0:50001" --cookie="raspibolt:PASSWORD_B" -vvvv`
 
-## To connect your Electrum wallet use these commands and ports: 
+## To connect the Electrum wallet use these commands and ports: 
 
 For an unencrypted TCP connection (suitable inside a secure LAN):  
 `electrum --oneserver --server RASPIBLITZ_IP:50001:t` 
@@ -32,7 +32,7 @@ To connect through SSL (requires setting up the Nginx server):
 
 ---
 
-## RaspiBlitz: Set up the Electrs systemd service
+## Set up the Electrs systemd service
 
 Set up the systemd service to run electrs continuously in the background.
 
@@ -41,15 +41,21 @@ Take a look: [2_electrs_systemd_service.sh](2_electrs_systemd_service.sh)
 To download and run:  
 `$ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/electrs/2_electrs_systemd_service.sh && bash 2_electrs_systemd_service.sh`
 
-If running the always-on electrs service is too much for your RPi stop it with:  
+If running the always-on electrs service is taking up too much RAM of your RPi stop it with:  
 `$ sudo systemctl stop electrs`  
 To stop running on boot:  
 `$  sudo systemctl disable electrs`  
-(To re-enable and start use the `enable`  and  `start`commands)
+(To re-enable and start use the `enable` and `start`commands)  
+
+To check if the indexing is running use:  
+`$ sudo systemctl status electrs` or `htop`
 
 ---
 
-A remote connection to Electrs should be encrypted.  
+A remote connection to Electrs must be encrypted.  
+
+The easiest option is to acivate Tor on the RaspiBlitz and on the computer used for Electrum and [configure a Tor Hidden Service for Electrs](Tor_Hidden_Service_for_Electrs.md)
+
 See the guide from @cryptomulde to connect to a VPS through a reverse ssh tunnel: https://medium.com/@cryptomulde/private-electrum-server-electrs-for-your-raspiblitz-full-node-without-forwarding-ports-417e4c3af975  
 
 The more secure option is to continue with setting up the SSL connection as described in the next section.
