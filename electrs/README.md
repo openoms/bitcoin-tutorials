@@ -22,7 +22,7 @@ This will only run the server until the terminal window is open.
 To restart electrs manually run (with your PASSWORD_B filled in) or install the Electrs systemd service (next step):  
 `$ /home/admin/electrs/target/release/electrs --index-batch-size=10 --jsonrpc-import --db-dir /mnt/hdd/electrs/db  --electrum-rpc-addr="0.0.0.0:50001" --cookie="raspibolt:PASSWORD_B" -vvvv`
 
-## To connect the Electrum wallet use these commands and ports: 
+### To connect the Electrum wallet use these commands and ports: 
 
 For an unencrypted TCP connection (suitable inside a secure LAN):  
 `electrum --oneserver --server RASPIBLITZ_IP:50001:t` 
@@ -52,17 +52,19 @@ To check if the indexing is running use:
 
 ---
 
-A remote connection to Electrs must be encrypted.  
+## Remote connection options to Electrs
+Any communication outside a secure LAN must be encrypted.  
 
-The easiest option is to activate Tor on the RaspiBlitz, on the computer used for Electrum and [configure a Tor Hidden Service for Electrs](Tor_Hidden_Service_for_Electrs.md)
+### Tor Hidden Service
 
+The easiest option is to activate Tor on the RaspiBlitz +  on the computer used for Electrum and [configure a Tor Hidden Service for Electrs](Tor_Hidden_Service_for_Electrs.md)
+
+### Reverse SSH tunnel
 See the guide from @cryptomulde to connect to a VPS through a reverse ssh tunnel: https://medium.com/@cryptomulde/private-electrum-server-electrs-for-your-raspiblitz-full-node-without-forwarding-ports-417e4c3af975  
 
 The more secure option is to continue with setting up the SSL connection as described in the next section.
 
----
-
-## RaspiBlitz: install Nginx and Certbot to connect over SSL 
+### Nginx and Certbot to serve an SSL connection
 
 For the SSL certificate to be obtained successfully a **dynamic DNS** and **port forwarding is necessary**.
 Forward the port 80 to the IP of your RaspiBlitz for Certbot.  
