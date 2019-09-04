@@ -2,6 +2,8 @@
 
 \`The server indexes the entire Bitcoin blockchain, and the resulting index enables fast queries for any given user wallet, allowing the user to keep real-time track of his balances and his transaction history using the Electrum wallet. Since it runs on the user's own machine, there is no need for the wallet to communicate with external Electrum servers, thus preserving the privacy of the user's addresses and balances.\` - [https:/github.com/romanz/electrs](https:/github.com/romanz/electrs)
 
+![electrum](/electrs/images/electrum.png)
+
 ## Install Electrs
 Based on https://github.com/romanz/electrs/blob/master/doc/usage.md  
 Shared experiences here: https://github.com/rootzoll/raspiblitz/issues/123 and https://github.com/openoms/bitcoin-tutorials/issues/2
