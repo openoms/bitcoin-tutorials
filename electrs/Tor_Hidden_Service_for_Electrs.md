@@ -33,6 +33,11 @@ No port forwarding or dynamicDNS required.
 ## Windows instructions:  
 http://docs.electrum.org/en/latest/tor.html#windows 
 
+---
+
+Check for the Blue circle when finished:
+
+![electrum behind Tor](/electrs/images/electrum_tor.png)
 
 
 ## Based on:  

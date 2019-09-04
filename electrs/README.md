@@ -72,8 +72,16 @@ To connect through SSL (requires setting up the Nginx server):
 
 Electrs will only start serving on the port 50001 when it has finished indexing.
 
+
+
 To check if the indexing is running run in the RaspiBlitz terminal:  
-`$ sudo systemctl status electrs` or `htop`
+`$ sudo systemctl status electrs`  
+
+Example output when running afte indexing has finished:
+![electrs status](/electrs/images/electrs_status.png)
+
+Find electrs between running processes with:
+`htop`
 
 To chack if it is serving on the port 50001:  
 `$ lsof -i`
