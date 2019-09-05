@@ -85,7 +85,7 @@ Example output when running afte indexing has finished:
 Find electrs between running processes with:
 `htop`
 
-To chack if it is serving on the port 50001:  
+Check if it is serving on the port 50001:  
 `$ lsof -i`
 
 Look for the output:
