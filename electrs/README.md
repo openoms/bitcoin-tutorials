@@ -19,7 +19,7 @@ Requires 47 Gb diskpace (March 2019).
 
 The install instructions are adapted to the RaspiBlitz are in this script, take a look: [1_electrs_on_RaspiBlitz.sh](1_electrs_on_RaspiBlitz.sh)
 
-To download and run on the RaspiBlitz::  
+To download and run on the RaspiBlitz (logged in as the user `admin`):  
 `$ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/electrs/1_electrs_on_RaspiBlitz.sh && bash 1_electrs_on_RaspiBlitz.sh`  
 
 This will only run the server until the terminal window is open.  
@@ -85,7 +85,7 @@ Example output when running afte indexing has finished:
 Find electrs between running processes with:
 `htop`
 
-Check if it is serving on the port 50001:  
+Cheack if it is serving on the port 50001:  
 `$ lsof -i`
 
 Look for the output:
