@@ -4,18 +4,14 @@
 
 ![electrum](/electrs/images/electrum.png)
 
-## Install Electrs
-Based on https://github.com/romanz/electrs/blob/master/doc/usage.md  
-Shared experiences here: https://github.com/rootzoll/raspiblitz/issues/123 and https://github.com/openoms/bitcoin-tutorials/issues/2
-
-
-
-
-Tested on the
+Tested on:
 * Odroid HC1 and XU4 (~18 hours)
 * Raspberry Pi 3 B+ (~two days to build the database from scratch)
+* Raspberry Pi 4
 
 Requires 47 Gb diskpace (March 2019).
+
+## Install Electrs
 
 The install instructions are adapted to the RaspiBlitz are in this script, take a look: [1_electrs_on_RaspiBlitz.sh](1_electrs_on_RaspiBlitz.sh)
 
@@ -46,6 +42,30 @@ To stop running on boot:
 
 ---
 
+## Check if Electrs is working:
+
+Electrs will only start serving on the port 50001 when it has finished indexing.
+
+To check if the indexing is running run in the RaspiBlitz terminal:  
+`$ sudo systemctl status electrs`  
+
+Example output when running afte indexing has finished:
+![electrs status](/electrs/images/electrs_status.png)
+
+Find electrs between running processes with:
+`htop`
+
+Cheack if it is serving on the port 50001:  
+`$ lsof -i`
+
+Look for the output:
+```
+electrs 2532 admin   17u  IPv4  32885      0t0  TCP *:50001 (LISTEN)
+```
+
+
+---
+
 ## Install Electrum wallet on your desktop
 
 **Warning: Electrum versions older than 3.3.4 are susceptible to phishing. Do not download Electrum from another source than electrum.org, and learn to verify GPG signatures.**
@@ -68,30 +88,6 @@ For an unencrypted TCP connection (suitable inside a secure LAN):
 
 To connect through SSL (requires setting up the Nginx server):  
 `electrum --oneserver --server YOUR_DOMAIN:50002:s`
-
-
-### Check if Electrs is working:
-
-Electrs will only start serving on the port 50001 when it has finished indexing.
-
-
-
-To check if the indexing is running run in the RaspiBlitz terminal:  
-`$ sudo systemctl status electrs`  
-
-Example output when running afte indexing has finished:
-![electrs status](/electrs/images/electrs_status.png)
-
-Find electrs between running processes with:
-`htop`
-
-Cheack if it is serving on the port 50001:  
-`$ lsof -i`
-
-Look for the output:
-```
-electrs 2532 admin   17u  IPv4  32885      0t0  TCP *:50001 (LISTEN)
-```
 
 ---
 
@@ -132,7 +128,13 @@ To download and run on the RaspiBlitz:
 
 ## Further help: 
 
-The script is a collection of commands. The whole setup has multiple components and dependencies which can change when updated or modified by the maintainers. 
+The script is a collection of commands. The whole setup has multiple components and dependencies which can change when updated or modified by the maintainers.  
+
+Based on:
+* https://github.com/romanz/electrs/blob/master/doc/usage.md  
+Shared experiences:
+* https://github.com/rootzoll/raspiblitz/issues/123 
+* https://github.com/openoms/bitcoin-tutorials/issues/2
 
 If you run into problems:
 *  try to run the commands manually one-by-one, spot which is causing the problem and copy the output
