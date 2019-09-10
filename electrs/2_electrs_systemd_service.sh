@@ -4,10 +4,9 @@
 # To download and run:
 # $ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/electrs/2_electrs_systemd_service.sh && bash 2_electrs_systemd_service.sh
 
-echo ""
-echo "***"
-echo "Type the PASSWORD B of your RaspiBlitz followed by [ENTER] for the electrs service:"
-read PASSWORD_B
+sudo systemctl stop electrs
+sudo systemctl disable electrs
+sudo rm /etc/systemd/system/electrs.service
 
 # sudo nano /etc/systemd/system/electrs.service 
 echo "
@@ -17,8 +16,7 @@ After=bitcoind.service
 
 [Service]
 WorkingDirectory=/home/admin/electrs
-ExecStart=/home/admin/electrs/target/release/electrs --index-batch-size=10 --jsonrpc-import --db-dir /mnt/hdd/electrs/db  --electrum-rpc-addr="0.0.0.0:50001" --cookie="raspibolt:$PASSWORD_B"
-
+ExecStart=/home/admin/electrs/target/release/electrs --index-batch-size=10 --electrum-rpc-addr=\"0.0.0.0:50001\"
 User=admin
 Group=admin
 Type=simple

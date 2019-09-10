@@ -4,20 +4,14 @@
 
 ![electrum](/electrs/images/electrum.png)
 
-Tested on:
-* Odroid HC1 and XU4 (~18 hours)
-* Raspberry Pi 3 B+ (~two days to build the database from scratch)
-* Raspberry Pi 4
-
 Requires 47 Gb diskpace (March 2019).
 
-## Install Electrs
+Tested on:
+* Raspberry Pi 4
+* Odroid HC1 and XU4 (~18 hours)
+* Raspberry Pi 3 B+ (~two days to build the database from scratch). For the RPi3 the lighter weight [Electrum Personal Server](https://stadicus.github.io/RaspiBolt/raspibolt_64_electrum.html) is a good alternative, but only watches the preconfigured addresses and xpubs.
 
-***
-**The new Electrs installs are currently not working**: https://github.com/romanz/electrs/issues/170  
-In the meantime the more lightweight Electrum Personal Server is a good alternative (and recommended for the RPi3-s by default): 
-https://stadicus.github.io/RaspiBolt/raspibolt_64_electrum.html
-***
+## Install Electrs
 
 The install instructions are adapted to the RaspiBlitz are in this script, take a look: [1_electrs_on_RaspiBlitz.sh](1_electrs_on_RaspiBlitz.sh)
 
@@ -25,13 +19,14 @@ To download and run on the RaspiBlitz (logged in as the user `admin`):
 `$ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/electrs/1_electrs_on_RaspiBlitz.sh && bash 1_electrs_on_RaspiBlitz.sh`  
 
 This will only run the server until the terminal window is open.  
-To restart electrs manually run (with your PASSWORD_B filled in) or install the Electrs systemd service (next step):  
-`$ /home/admin/electrs/target/release/electrs --index-batch-size=10 --jsonrpc-import --db-dir /mnt/hdd/electrs/db  --electrum-rpc-addr="0.0.0.0:50001" --cookie="raspibolt:PASSWORD_B" -vvvv`
+To restart electrs manually run: 
+`$ /home/admin/electrs/target/release/electrs --index-batch-size=10 --electrum-rpc-addr="0.0.0.0:50001"`
+
+or install the Electrs systemd service (next step)
 
 ---
 
-
-## RaspiBlitz: Set up the Electrs systemd service
+## Set up the Electrs systemd service
 
 Set up the systemd service to run electrs continuously in the background.
 
@@ -97,7 +92,7 @@ To connect through SSL (requires setting up the Nginx server):
 
 ---
 
-## Remote connection options to Electrs
+## Remote connection options
 Any communication outside a secure LAN must be encrypted.  
 
 ### Tor Hidden Service
@@ -138,6 +133,7 @@ The script is a collection of commands. The whole setup has multiple components 
 
 Based on:
 * https://github.com/romanz/electrs/blob/master/doc/usage.md  
+
 Shared experiences:
 * https://github.com/rootzoll/raspiblitz/issues/123 
 * https://github.com/openoms/bitcoin-tutorials/issues/2

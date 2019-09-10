@@ -3,8 +3,11 @@
 
 # https://github.com/romanz/electrs/blob/master/doc/usage.md
 
-echo "Type the PASSWORD B of your RaspiBlitz followed by [ENTER] (needed for Electrs to access the bitcoind RPC):"
-read PASSWORD_B
+#echo "Type the PASSWORD B of your RaspiBlitz followed by [ENTER] (needed for Electrs to access the bitcoind RPC):"
+#read PASSWORD_B
+echo "getting RPC credentials from the bitcoin.conf"
+RPC_USER=$(sudo cat /mnt/hdd/bitcoin/bitcoin.conf | grep rpcuser | cut -c 9-)
+PASSWORD_B=$(sudo cat /mnt/hdd/bitcoin/bitcoin.conf | grep rpcpassword | cut -c 13-)
 
 echo ""
 echo "***"
@@ -32,12 +35,28 @@ echo "The electrs database will be built in /mnt/hdd/electrs/db. Takes ~18 hours
 echo "***"
 echo ""
 
+
 sudo mkdir /mnt/hdd/electrs
 sudo chown -R admin:admin /mnt/hdd/electrs
 sudo ufw allow 50001
 
-# Run with password B filled in: 
-cargo run --release -- -vvvv --index-batch-size=10 --jsonrpc-import --db-dir /mnt/hdd/electrs/db --cookie="raspibolt:$PASSWORD_B" --electrum-rpc-addr="0.0.0.0:50001"
+# generate setting file: https://github.com/romanz/electrs/issues/170#issuecomment-530080134
+mkdir /home/admin/.electrs/
+sudo rm /home/admin/.electrs/config.toml
+touch /home/admin/.electrs/config.toml
+echo "generating electrs.toml setting file with the RPC passwords"
+(
+echo "
+verbose = 4
+timestamp = true
+jsonrpc_import = true
+db_dir = \"/mnt/hdd/electrs/db\"
+cookie = \"$RPC_USER:$PASSWORD_B\"
+" | tee -a /home/admin/.electrs/config.toml
+) &> /dev/null
+
+# Run electrs
+cargo run --release -- --index-batch-size=10 --electrum-rpc-addr="0.0.0.0:50001"
 
 # to preserve settings:
 # see https://github.com/romanz/electrs/blob/master/src/config.rs
