@@ -13,6 +13,12 @@ Requires 47 Gb diskpace (March 2019).
 
 ## Install Electrs
 
+***
+**The new Electrs installs are currently not working**: https://github.com/romanz/electrs/issues/170  
+In the meantime the more lightweight Electrum Personal Server is a good alternative (and recommended for the RPi3-s by default): 
+https://stadicus.github.io/RaspiBolt/raspibolt_64_electrum.html
+***
+
 The install instructions are adapted to the RaspiBlitz are in this script, take a look: [1_electrs_on_RaspiBlitz.sh](1_electrs_on_RaspiBlitz.sh)
 
 To download and run on the RaspiBlitz (logged in as the user `admin`):  
