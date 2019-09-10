@@ -21,6 +21,14 @@ echo "***"
 echo "Type the PASSWORD B of your RaspiBlitz followed by [ENTER] for the nbxplorer:"
 read PASSWORD_B
 
+# cleanup possible residual files from previus installs
+
+sudo rm /home/admin/.nbxplorer/Main/settings.config
+sudo rm /etc/systemd/system/nbxplorer.service
+sudo rm /etc/systemd/system/btcpayserver.service
+sudo rm /home/admin/.btcpayserver/Main/settings.config
+sudo rm /etc/nginx/sites-available/btcpayserver
+
 #dotNET
 
 cd /home/admin
