@@ -127,7 +127,7 @@ sudo ufw allow 443
 # get SSL cert
 sudo certbot certonly --authenticator standalone -d $YOUR_DOMAIN --pre-hook "service nginx stop" --post-hook "service nginx start
 
-sudo rm /etc/nginx/sites-enabled/default
+sudo mv /etc/nginx/sites-enabled/default /etc/nginx/sites-enabled/default.backup
 
 echo "
 server {
