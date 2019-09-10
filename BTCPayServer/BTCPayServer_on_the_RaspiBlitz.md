@@ -22,8 +22,8 @@ Log in to your RaspiBlitz as `admin` and work in the terminal:
     ```bash
     cd /home/admin
     sudo apt-get -y install libunwind8 gettext libssl1.0
-    wget https://download.visualstudio.microsoft.com/download/pr/   9650e3a6-0399-4330-a363-1add761127f9/14d80726c16d0e3d36db2ee5c11928e4/ dotnet-sdk-2.2.102-linux-arm.tar.gz
-    wget https://download.visualstudio.microsoft.com/download/pr/   9d049226-1f28-4d3d-a4ff-314e56b223c5/f67ab05a3d70b2bff46ff25e2b3acd2a/ aspnetcore-runtime-2.2.1-linux-arm.tar.gz
+    wget https://download.visualstudio.microsoft.com/download/pr/9650e3a6-0399-4330-a363-1add761127f9/14d80726c16d0e3d36db2ee5c11928e4/dotnet-sdk-2.2.102-linux-arm.tar.gz
+    wget https://download.visualstudio.microsoft.com/download/pr/9d049226-1f28-4d3d-a4ff-314e56b223c5/f67ab05a3d70b2bff46ff25e2b3acd2a/aspnetcore-runtime-2.2.1-linux-arm.tar.gzaspnetcore-runtime-2.2.1-linux-arm.tar.gz
     sudo mkdir /opt/dotnet
     sudo tar -xvf dotnet-sdk-2.2.102-linux-arm.tar.gz -C /opt/dotnet/
     sudo tar -xvf aspnetcore-runtime-2.2.1-linux-arm.tar.gz -C /opt/dotnet/
