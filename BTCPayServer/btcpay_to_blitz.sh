@@ -9,7 +9,7 @@
 file="/etc/nginx/nginx.conf"
 if [ -f "$file" ]
 then
-	echo "$file found."
+  echo "$file found."
   echo "There is an existing Nginx configuration which is likely to fail if the setup continues"
   echo "Press CRTL+C to abort or any key to continue"
   read key
@@ -30,7 +30,7 @@ echo "***"
 echo "Type the PASSWORD B of your RaspiBlitz followed by [ENTER] for the nbxplorer:"
 read PASSWORD_B
 
-# cleanup possible residual files from previus installs
+# cleanup possible residual files from previous installs
 
 sudo rm /home/admin/.nbxplorer/Main/settings.config
 sudo rm /etc/systemd/system/nbxplorer.service
