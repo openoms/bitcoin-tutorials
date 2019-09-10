@@ -53,7 +53,7 @@ Log in to your RaspiBlitz as `admin` and work in the terminal:
     After=bitcoind.service
 
     [Service]
-    ExecStart=/usr/local/bin/dotnet "/home/admin/NBXplorer/NBXplorer/bin/Release/   netcoreapp2.1/NBXplorer.dll" -c /home/admin/.nbxplorer/Main/settings.config
+    ExecStart=/usr/local/bin/dotnet "/home/admin/NBXplorer/NBXplorer/bin/Release/netcoreapp2.1/NBXplorer.dll" -c /home/admin/.nbxplorer/Main/settings.config
     User=admin
     Group=admin
     Type=simple
@@ -115,7 +115,7 @@ The username is raspibolt and the password is what you set while installing rasp
     After=nbxplorer.service
 
     [Service]
-    ExecStart=/usr/local/bin/dotnet run --no-launch-profile --no-build -c Release -p "/ home/admin/btcpayserver/BTCPayServer/BTCPayServer.csproj" -- $@
+    ExecStart=/usr/local/bin/dotnet run --no-launch-profile --no-build -c Release -p "/home/admin/btcpayserver/BTCPayServer/BTCPayServer.csproj" -- $@
     User=admin
     Group=admin
     Type=simple
@@ -154,7 +154,7 @@ The username is raspibolt and the password is what you set while installing rasp
 
     ### NBXplorer settings ###
     BTC.explorer.url=http://127.0.0.1:24444/
-    BTC.lightning=type=lnd-rest;server=https://127.0.0.1:8080/;macaroonfilepath=/home/  admin/.lnd/data/chain/bitcoin/mainnet/admin.macaroon;certthumbprint=<paste your   thumbprint here>
+    BTC.lightning=type=lnd-rest;server=https://127.0.0.1:8080/;macaroonfilepath=/home/admin/.lnd/data/chain/bitcoin/mainnet/admin.macaroon;certthumbprint=<paste your thumbprint here>
     ```
 * save the file we will get the cert thumbprint next
 * get your cert thumbprint for BTCPayServer Lightning configuration  
@@ -192,6 +192,7 @@ The username is raspibolt and the password is what you set while installing rasp
 * Change all 4x `btcpay.example.com`
     ```
     ## start of Nginx config
+
     server {
         listen 80 default_server;
         server_name _;
@@ -199,30 +200,31 @@ The username is raspibolt and the password is what you set while installing rasp
     }
 
     server {
-      listen 443 ssl;
-      server_name btcpay.example.com;
-      ssl on;
+    listen 443 ssl;
+    server_name btcpay.example.com;
+    ssl on;
 
-      ssl_certificate /etc/letsencrypt/live/btcpay.example.com/fullchain.pem;
-      ssl_certificate_key /etc/letsencrypt/live/btcpay.example.com/privkey.pem;
-      ssl_session_timeout 1d;
-      ssl_session_cache shared:SSL:50m;
-      ssl_session_tickets off;
-      ssl_protocols TLSv1.1 TLSv1.2;
-      ssl_ciphers   'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA38 4:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:k    EDH +AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-    ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-S   HA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA  256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:!aNULL:!eNULL:!EXPORT :!DES:!RC4:!3DES:!MD5:!PSK';
-      ssl_prefer_server_ciphers on;
-      ssl_stapling on;
-      ssl_stapling_verify on;
-      ssl_trusted_certificate /etc/letsencrypt/live/btcpay.example.com/chain.pem;
+    ssl_certificate /etc/letsencrypt/live/btcpay.example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/btcpay.example.com/privkey.pem;
+    ssl_session_timeout 1d;
+    ssl_session_cache shared:SSL:50m;
+    ssl_session_tickets off;
+    ssl_protocols TLSv1.1 TLSv1.2;
+    ssl_ciphers 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!3DES:!MD5:!PSK';
+    ssl_prefer_server_ciphers on;
+    ssl_stapling on;
+    ssl_stapling_verify on;
+    ssl_trusted_certificate /etc/letsencrypt/live/btcpay.example.com/chain.pem;
 
-      location / {
+    location / {
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_pass http://localhost:23000;
-      }
     }
+    }
+
     ## end of Nginx config
     ```
 
