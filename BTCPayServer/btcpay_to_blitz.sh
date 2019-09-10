@@ -1,6 +1,9 @@
 ## Install BTCPayServer on the RaspiBlitz
 #Heavily based on: https://gist.github.com/normandmickey/3f10fc077d15345fb469034e3697d0d0 
 
+# to download and run: 
+# wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/BTCPayServer/btcpay_to_blitz.sh && bash btcpay_to_blitz.sh
+
 # requirements
 
 echo ""
@@ -10,7 +13,7 @@ read key
 
 echo ""
 echo "***"
-echo "Please type the domain/ddns you have generated the certificate for followed by [ENTER]"
+echo "Please type the domain/ddns you want to use for BTCPayServer followed by [ENTER]"
 read YOUR_DOMAIN
 
 echo ""
@@ -125,7 +128,7 @@ sudo ufw allow 80
 sudo ufw allow 443
 
 # get SSL cert
-sudo certbot certonly --authenticator standalone -d $YOUR_DOMAIN --pre-hook "service nginx stop" --post-hook "service nginx start
+sudo certbot certonly --authenticator standalone -d $YOUR_DOMAIN --pre-hook "service nginx stop" --post-hook "service nginx start"
 
 sudo mv /etc/nginx/sites-enabled/default /etc/nginx/sites-enabled/default.backup
 
