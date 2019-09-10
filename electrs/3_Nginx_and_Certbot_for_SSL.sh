@@ -35,9 +35,13 @@ echo "Use the default settings in the other options"
 echo "***"
 echo ""
 
-wget https://dl.eff.org/certbot-auto
-chmod +x certbot-auto
-sudo ./certbot-auto --nginx
+#wget https://dl.eff.org/certbot-auto
+#chmod +x certbot-auto
+#sudo ./certbot-auto --nginx
+
+sudo apt install -y certbot
+# get SSL cert
+sudo certbot certonly --authenticator standalone -d $YOUR_DOMAIN --pre-hook "service nginx stop" --post-hook "service nginx start"
 
 # Your certificate and chain have been saved at:
 # /etc/letsencrypt/live/$YOUR_DOMAIN/fullchain.pem
