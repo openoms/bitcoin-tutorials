@@ -19,7 +19,7 @@ To download and run on the RaspiBlitz (logged in as the user `admin`):
 `$ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/electrs/1_electrs_on_RaspiBlitz.sh && bash 1_electrs_on_RaspiBlitz.sh`  
 
 This will only run the server until the terminal window is open.  
-To restart electrs manually run: 
+To restart electrs manually run:  
 `$ /home/admin/electrs/target/release/electrs --index-batch-size=10 --electrum-rpc-addr="0.0.0.0:50001"`
 
 or install the Electrs systemd service (next step)
