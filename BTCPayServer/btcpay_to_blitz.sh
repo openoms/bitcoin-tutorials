@@ -162,3 +162,7 @@ server {
   }
 }
 " | sudo tee -a /etc/nginx/sites-available/btcpayserver
+
+sudo ln -s /etc/nginx/sites-available/btcpayserver /etc/nginx/sites-enabled/
+
+sudo systemctl restart nginx
