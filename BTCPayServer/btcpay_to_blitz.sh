@@ -6,6 +6,15 @@
 
 # requirements
 
+file="/etc/nginx/nginx.conf"
+if [ -f "$file" ]
+then
+	echo "$file found."
+  echo "There is an existing Nginx configuration which is likely to fail if the setup continues"
+  echo "Press CRTL+C to abort or any key to continue"
+  read key
+fi
+
 echo ""
 echo "***"
 echo "Please confirm that the port 80, 443 and 9735 are forwarded to the IP of the RaspiBlitz by pressing [ENTER]" 
@@ -144,7 +153,7 @@ echo "
 server {
     listen 80 default_server;
     server_name _;
-    return 301 https://$host$request_uri;
+    return 301 https://\$host\$request_uri;
 }
 
 server {
@@ -165,10 +174,10 @@ server {
   ssl_trusted_certificate /etc/letsencrypt/live/$YOUR_DOMAIN/chain.pem;
 
   location / {
-    proxy_set_header Host $host;
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_set_header Host \$host;
+    proxy_set_header X-Real-IP \$remote_addr;
+    proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto \$scheme;
     proxy_pass http://localhost:23000;
   }
 }
