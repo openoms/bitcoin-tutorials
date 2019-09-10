@@ -15,6 +15,8 @@ then
   read key
 fi
 
+#use `sudo apt purge nginx-common certbot` to clean configuration
+
 echo ""
 echo "***"
 echo "Please confirm that the port 80, 443 and 9735 are forwarded to the IP of the RaspiBlitz by pressing [ENTER]" 
@@ -27,8 +29,12 @@ read YOUR_DOMAIN
 
 echo ""
 echo "***"
-echo "Type the PASSWORD B of your RaspiBlitz followed by [ENTER] for the nbxplorer:"
-read PASSWORD_B
+#echo "Type the PASSWORD B of your RaspiBlitz followed by [ENTER] (needed for Electrs to access the bitcoind RPC):"
+#read PASSWORD_B
+echo "getting RPC credentials from the bitcoin.conf"
+RPC_USER=$(sudo cat /mnt/hdd/bitcoin/bitcoin.conf | grep rpcuser | cut -c 9-)
+PASSWORD_B=$(sudo cat /mnt/hdd/bitcoin/bitcoin.conf | grep rpcpassword | cut -c 13-)
+
 
 # cleanup possible residual files from previous installs
 
@@ -93,6 +99,8 @@ echo "
 
 sudo systemctl restart nbxplorer
 
+# BTCPayServer
+
 cd /home/admin
 git clone https://github.com/btcpayserver/btcpayserver.git
 cd btcpayserver
@@ -120,9 +128,7 @@ sudo systemctl daemon-reload
 sudo systemctl enable btcpayserver
 sudo systemctl start btcpayserver
 
-
 # set thumbprint
-
 FINGERPRINT=$(openssl x509 -noout -fingerprint -sha256 -inform pem -in ~/.lnd/tls.cert | cut -c 20-)
 
 echo "
@@ -147,7 +153,8 @@ sudo ufw allow 443
 # get SSL cert
 sudo certbot certonly --authenticator standalone -d $YOUR_DOMAIN --pre-hook "service nginx stop" --post-hook "service nginx start"
 
-sudo mv /etc/nginx/sites-enabled/default /etc/nginx/sites-enabled/default.backup
+# set nginx
+sudo rm /etc/nginx/sites-enabled/default
 
 echo "
 server {
