@@ -138,7 +138,7 @@ network=mainnet
 ### Server settings ###
 port=23000
 bind=127.0.0.1
-externalurl=https://btcpay.example.com
+externalurl=https://$YOUR_DOMAIN
 
 ### NBXplorer settings ###
 BTC.explorer.url=http://127.0.0.1:24444/

@@ -176,8 +176,7 @@ The username is raspibolt and the password is what you set while installing rasp
     sudo ufw allow 80
     sudo ufw allow 443
     ```
-* Get your SSL certification using certbot
-* Change btcpay.example.com  
+* Get your SSL certification using certbot. Change `btcpay.example.com `  
 `sudo certbot certonly --authenticator standalone -d btcpay.example.com --pre-hook "service nginx stop" --post-hook "service nginx start"`
 
 * add reverse proxy for btcpayserver
@@ -188,8 +187,7 @@ The username is raspibolt and the password is what you set while installing rasp
 * create the btcpayserver configuration   
 `sudo nano /etc/nginx/sites-available/btcpayserver`
 
-* Paste the following, make sure you change the domain name to yours
-* Change all 4x `btcpay.example.com`
+* Paste the following, make sure you change the domain name to yours. Change all 4x `btcpay.example.com`
     ```
     ## start of Nginx config
 
