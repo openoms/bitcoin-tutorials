@@ -1,8 +1,5 @@
 ## Install BTCPayServer on the RaspiBlitz
 
-Heavily based on: https://gist.github.com/normandmickey/3f10fc077d15345fb469034e3697d0d0  
-Thanks to https://github.com/normandmickey
-
 This guide will make you have BTCPayServer running on your node using the already synced bitcoin blockchain and local LND node and benefit from the backup and security features of RaspiBlitz and the stock LND.  
 No added synchronization needed. 
 
@@ -241,3 +238,17 @@ The username is raspibolt and the password is what you set while installing rasp
  `type=lnd-rest;server=https://127.0.0.1:8080/;macaroonfilepath=/home/admin/.lnd/data/chain/bitcoin/mainnet/admin.macaroon;allowinsecure=true`
 
 * Continue with: https://docs.btcpayserver.org/btcpay-basics/gettingstarted
+
+
+---
+
+### Getting help
+
+* see the original guide this is based on: https://gist.github.com/normandmickey/3f10fc077d15345fb469034e3697d0d0  
+
+* Shared experiences: 
+https://github.com/rootzoll/raspiblitz/issues/214
+
+- if `Nginx` breaks:
+`sudo nginx -t`
+is a very useful debug tool. Runs a test and gets detailed info on which line is problematic.
