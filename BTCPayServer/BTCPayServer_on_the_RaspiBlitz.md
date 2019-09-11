@@ -158,7 +158,7 @@ The username is raspibolt and the password is what you set while installing rasp
     ```
 * save the file we will get the cert thumbprint next
 * get your cert thumbprint for BTCPayServer Lightning configuration  
-`cd /home/admin`
+`cd /home/admin`  
 `openssl x509 -noout -fingerprint -sha256 -inform pem -in ~/.lnd/tls.cert`
 
 * copy thumbprint output to clipboard
