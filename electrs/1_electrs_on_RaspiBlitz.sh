@@ -44,6 +44,8 @@ sudo ufw allow 50001
 mkdir /home/admin/.electrs/
 sudo rm /home/admin/.electrs/config.toml
 touch /home/admin/.electrs/config.toml
+chmod 600 /home/admin/.electrs/config.toml
+
 echo "generating electrs.toml setting file with the RPC passwords"
 (
 echo "
