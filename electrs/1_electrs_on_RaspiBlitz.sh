@@ -27,7 +27,7 @@ echo "Downloading and building electrs. This will take ~30 minutes" # ~22 min on
 echo "***"
 echo ""
 sudo -u electrs git clone https://github.com/romanz/electrs
-cd electrs
+cd /home/electrs/electrs
 sudo -u electrs /home/electrs/.cargo/bin/cargo build --release
 
 echo ""
@@ -58,7 +58,8 @@ echo ""
 # https://github.com/romanz/electrs/blob/master/doc/usage.md#configuration-files-and-environment-variables
 
 sudo rm /home/electrs/.electrs/config.toml 2>/dev/null
-sudo -u electrs mkdir .electrs 2>/dev/null
+sudo -u electrs mkdir /home/electrs/.electrs 2>/dev/null
+
 
 touch /home/admin/config.toml
 chmod 600 /home/admin/config.toml
