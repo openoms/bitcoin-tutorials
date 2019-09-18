@@ -174,43 +174,91 @@ The username is raspibolt and the password is what you set while installing rasp
 `sudo nano /etc/nginx/sites-available/btcpayserver`
 
 * Paste the following, make sure you change the domain name to yours. Change all 4x `btcpay.example.com`
-    ```
-    ## start of Nginx config
+```
+## start of Nginx config
 
-    server {
-        listen 80 default_server;
-        server_name _;
-        return 301 https://$host$request_uri;
-    }
+# If we receive X-Forwarded-Proto, pass it through; otherwise, pass along the
+# scheme used to connect to this server
+map $http_x_forwarded_proto $proxy_x_forwarded_proto {
+  default $http_x_forwarded_proto;
+  ''      $scheme;
+}
+# If we receive X-Forwarded-Port, pass it through; otherwise, pass along the
+# server port the client connected to
+map $http_x_forwarded_port $proxy_x_forwarded_port {
+  default $http_x_forwarded_port;
+  ''      $server_port;
+}
+# If we receive Upgrade, set Connection to "upgrade"; otherwise, delete any
+# Connection header that may have been passed to this server
+map $http_upgrade $proxy_connection {
+  default upgrade;
+  '' close;
+}
+# Apply fix for very long server names
+#server_names_hash_bucket_size 128;
+# Prevent Nginx Information Disclosure
+server_tokens off;
+# Default dhparam
+# Set appropriate X-Forwarded-Ssl header
+map $scheme $proxy_x_forwarded_ssl {
+  default off;
+  https on;
+}
 
-    server {
-      listen 443 ssl;
-      server_name btcpay.example.com;
-      ssl on;
+gzip_types text/plain text/css application/javascript application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+log_format vhost '$host $remote_addr - $remote_user [$time_local] '
+                 '"$request" $status $body_bytes_sent '
+                 '"$http_referer" "$http_user_agent"';
+access_log off;
+# HTTP 1.1 support
+proxy_http_version 1.1;
+proxy_buffering off;
+proxy_set_header Host $http_host;
+proxy_set_header Upgrade $http_upgrade;
+proxy_set_header Connection $proxy_connection;
+proxy_set_header X-Real-IP $remote_addr;
+proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+proxy_set_header X-Forwarded-Proto $proxy_x_forwarded_proto;
+proxy_set_header X-Forwarded-Ssl $proxy_x_forwarded_ssl;
+proxy_set_header X-Forwarded-Port $proxy_x_forwarded_port;
+# Mitigate httpoxy attack (see README for details)
+proxy_set_header Proxy "";
 
-      ssl_certificate /etc/letsencrypt/live/btcpay.example.com/fullchain.pem;
-      ssl_certificate_key /etc/letsencrypt/live/btcpay.example.com/privkey.pem;
-      ssl_session_timeout 1d;
-      ssl_session_cache shared:SSL:50m;
-      ssl_session_tickets off;
-      ssl_protocols TLSv1.1 TLSv1.2;
-      ssl_ciphers 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!3DES:!MD5:!PSK';
-      ssl_prefer_server_ciphers on;
-      ssl_stapling on;
-      ssl_stapling_verify on;
-      ssl_trusted_certificate /etc/letsencrypt/live/btcpay.example.com/chain.pem;
+server {
+    listen 80 default_server;
+    server_name _;
+    return 301 https://$host$request_uri;
+}
 
-      location / {
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_pass http://localhost:23000;
-      }
-    }
+server {
+  listen 443 ssl;
+  server_name btcpay.example.com;
+  ssl on;
 
-    ## end of Nginx config
-    ```
+  ssl_certificate /etc/letsencrypt/live/btcpay.example.com/fullchain.pem;
+  ssl_certificate_key /etc/letsencrypt/live/btcpay.example.com/privkey.pem;
+  ssl_session_timeout 1d;
+  ssl_session_cache shared:SSL:50m;
+  ssl_session_tickets off;
+  ssl_protocols TLSv1.1 TLSv1.2;
+  ssl_ciphers 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!3DES:!MD5:!PSK';
+  ssl_prefer_server_ciphers on;
+  ssl_stapling on;
+  ssl_stapling_verify on;
+  ssl_trusted_certificate /etc/letsencrypt/live/btcpay.example.com/chain.pem;
+
+  location / {
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_pass http://localhost:23000;
+  }
+}
+
+## end of Nginx config
+```
 
 * add symlink for btcpayserver site  
 `sudo ln -s /etc/nginx/sites-available/btcpayserver /etc/nginx/sites-enabled/`
