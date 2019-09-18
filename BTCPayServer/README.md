@@ -17,7 +17,7 @@ To download and run:
 `wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/BTCPayServer/btcpay_to_blitz.sh && bash btcpay_to_blitz.sh`
 
 
-### [Manual instructions](BTCPayServer/BTCPayServer_on_the_RaspiBlitz.md.md)
+### [Manual instructions](BTCPayServer/BTCPayServer_on_the_RaspiBlitz.md)
 
 ### Setting up BTCPayServer
 
