@@ -20,7 +20,7 @@ To download and run on the RaspiBlitz (logged in as the user `admin`):
 
 This will only run the server until the terminal window is open.  
 To restart electrs manually run:  
-`$ /home/admin/electrs/target/release/electrs --index-batch-size=10 --electrum-rpc-addr="0.0.0.0:50001"`
+`$ sudo -u electrs /home/electrs/electrs/target/release/electrs --index-batch-size=10 --electrum-rpc-addr="0.0.0.0:50001"`
 
 or install the Electrs systemd service (next step)
 
@@ -50,14 +50,14 @@ Electrs will only start serving on the port 50001 when it has finished indexing.
 To check if the indexing is running run in the RaspiBlitz terminal:  
 `$ sudo systemctl status electrs`  
 
-Example output when running afte indexing has finished:
+Example output when running after indexing has finished:
 ![electrs status](/electrs/images/electrs_status.png)
 
 Find electrs between running processes with:
 `htop`
 
 Cheack if it is serving on the port 50001:  
-`$ lsof -i`
+`$ sudo -u electrs lsof -i`
 
 Look for the output:
 ```
