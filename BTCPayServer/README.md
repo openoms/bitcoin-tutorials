@@ -21,14 +21,14 @@ To download and run:
 
 ### Setting up BTCPayServer
 
-* Go to your domain.
-* Create a Store.
+* Go to your domain
+* Register the first (administrator) account
+* Create a Store
 * In Store settings set up the derivation scheme (add an xpub)
 * Set up LN with the connection string:  
  `type=lnd-rest;server=https://127.0.0.1:8080/;macaroonfilepath=/home/admin/.lnd/data/chain/bitcoin/mainnet/admin.macaroon;allowinsecure=true`
 
-* Continue with: https://docs.btcpayserver.org/btcpay-basics/gettingstarted
-
+* Find more detailed info on https://docs.btcpayserver.org/btcpay-basics/gettingstarted
 
 ---
 

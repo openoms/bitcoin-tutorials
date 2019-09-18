@@ -57,12 +57,11 @@ echo ""
 # generate setting file: https://github.com/romanz/electrs/issues/170#issuecomment-530080134
 # https://github.com/romanz/electrs/blob/master/doc/usage.md#configuration-files-and-environment-variables
 
-sudo rm /home/electrs/.electrs/config.toml 2>/dev/null
+sudo rm -f /home/electrs/.electrs/config.toml 
 sudo -u electrs mkdir /home/electrs/.electrs 2>/dev/null
 
-
 touch /home/admin/config.toml
-chmod 600 /home/admin/config.toml
+chmod 600 /home/admin/config.toml || exit 1 
 cat > /home/admin/config.toml <<EOF
 verbose = 4
 timestamp = true
