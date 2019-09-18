@@ -93,8 +93,8 @@ sudo systemctl enable nbxplorer
 sudo systemctl start nbxplorer
 
 echo "
-    btc.rpc.user=raspibolt
-    btc.rpc.password=$PASSWORD_B
+btc.rpc.user=raspibolt
+btc.rpc.password=$PASSWORD_B
 " | sudo tee -a /home/admin/.nbxplorer/Main/settings.config
 
 sudo systemctl restart nbxplorer
