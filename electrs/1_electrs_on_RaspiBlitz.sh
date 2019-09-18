@@ -3,60 +3,101 @@
 
 # https://github.com/romanz/electrs/blob/master/doc/usage.md
 
-#echo "Type the PASSWORD B of your RaspiBlitz followed by [ENTER] (needed for Electrs to access the bitcoind RPC):"
-#read PASSWORD_B
-echo "getting RPC credentials from the bitcoin.conf"
-RPC_USER=$(sudo cat /mnt/hdd/bitcoin/bitcoin.conf | grep rpcuser | cut -c 9-)
-PASSWORD_B=$(sudo cat /mnt/hdd/bitcoin/bitcoin.conf | grep rpcpassword | cut -c 13-)
+echo ""
+echo "***"
+echo "Creating the electrs user"
+echo "***"
+echo ""
+sudo adduser --disabled-password --gecos "" electrs
+cd /home/electrs
 
 echo ""
 echo "***"
-echo "Installing Rust - press 1 and [ENTER] when prompted"
+echo "Installing Rust"
 echo "***"
 echo ""
-curl https://sh.rustup.rs -sSf | sh
-
-source $HOME/.cargo/env
+sudo -u electrs curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sudo -u electrs sh -s -- -y
+#source $HOME/.cargo/env
 sudo apt update
 sudo apt install -y clang cmake  # for building 'rust-rocksdb'
- 
+
 echo ""
 echo "***"
 echo "Downloading and building electrs. This will take ~30 minutes" # ~22 min on an Odroid XU4
 echo "***"
 echo ""
-git clone https://github.com/romanz/electrs
+sudo -u electrs git clone https://github.com/romanz/electrs
 cd electrs
-cargo build --release
- 
+sudo -u electrs /home/electrs/.cargo/bin/cargo build --release
+
 echo ""
 echo "***"
 echo "The electrs database will be built in /mnt/hdd/electrs/db. Takes ~18 hours and ~50Gb diskspace"
 echo "***"
 echo ""
+sudo -u electrs mkdir /mnt/hdd/electrs 2>/dev/null
+sudo chown -R electrs:electrs /mnt/hdd/electrs
 
+echo ""
+echo "***"
+echo "getting RPC credentials from the bitcoin.conf"
+echo "***"
+echo ""
+#echo "Type the PASSWORD B of your RaspiBlitz followed by [ENTER] (needed for Electrs to access the bitcoind RPC):"
+#read PASSWORD_B
+RPC_USER=$(sudo cat /mnt/hdd/bitcoin/bitcoin.conf | grep rpcuser | cut -c 9-)
+PASSWORD_B=$(sudo cat /mnt/hdd/bitcoin/bitcoin.conf | grep rpcpassword | cut -c 13-)
+echo "Done"
 
-sudo mkdir /mnt/hdd/electrs
-sudo chown -R admin:admin /mnt/hdd/electrs
-sudo ufw allow 50001
-
-# generate setting file: https://github.com/romanz/electrs/issues/170#issuecomment-530080134
-mkdir /home/admin/.electrs/
-sudo rm /home/admin/.electrs/config.toml
-touch /home/admin/.electrs/config.toml
-chmod 600 /home/admin/.electrs/config.toml
-
+echo ""
+echo "***"
 echo "generating electrs.toml setting file with the RPC passwords"
-cat > /home/admin/.electrs/config.toml <<EOF
+echo "***"
+echo ""
+# generate setting file: https://github.com/romanz/electrs/issues/170#issuecomment-530080134
+# https://github.com/romanz/electrs/blob/master/doc/usage.md#configuration-files-and-environment-variables
+
+sudo rm /home/electrs/.electrs/config.toml 2>/dev/null
+sudo -u electrs mkdir .electrs 2>/dev/null
+
+touch /home/admin/config.toml
+chmod 600 /home/admin/config.toml
+cat > /home/admin/config.toml <<EOF
 verbose = 4
 timestamp = true
 jsonrpc_import = true
-db_dir = \"/mnt/hdd/electrs/db\"
-cookie = \"$RPC_USER:$PASSWORD_B\"
+db_dir = "/mnt/hdd/electrs/db"
+cookie = "$RPC_USER:$PASSWORD_B"
 EOF
+sudo mv /home/admin/config.toml /home/electrs/.electrs/config.toml
+sudo chown electrs:electrs /home/electrs/.electrs/config.toml
 
-# Run electrs
-cargo run --release -- --index-batch-size=10 --electrum-rpc-addr="0.0.0.0:50001"
+echo ""
+echo "***"
+echo "Open port 50001 on UFW "
+echo "***"
+echo ""
+sudo ufw allow 50001
+
+echo ""
+echo "***"
+echo "Checking for config.toml"
+echo "***"
+echo ""
+if [ ! -f "/home/electrs/.electrs/config.toml" ]
+    then
+        echo "Failed to create config.toml"
+        exit 1
+    else
+        echo "OK"
+fi
+
+echo ""
+echo "***"
+echo "Start Electrs "
+echo "***"
+echo ""
+sudo -u electrs /home/electrs/.cargo/bin/cargo run --release -- --index-batch-size=10 --electrum-rpc-addr="0.0.0.0:50001"
 
 # to preserve settings:
 # see https://github.com/romanz/electrs/blob/master/src/config.rs
