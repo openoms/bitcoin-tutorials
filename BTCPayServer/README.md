@@ -5,7 +5,7 @@ No added synchronization needed.
 
 Requirements:
 * a domain name or dynamic DNS
-* the ports 80, 44 and 9735 forwarded on the router to the RaspiBlitz LAN IP
+* the ports 80, 443 and 9735 forwarded on the router to the RaspiBlitz LAN IP
 
 Tested successfully on:
 * RaspiBlitz v1.3 
