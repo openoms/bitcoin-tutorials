@@ -6,7 +6,7 @@ No port forwarding or dynamicDNS required.
 ### On the RaspiBlitz terminal: 
 
 * Open the Tor configuration file:  
-`$ sudo nano /mnt/hdd/tor/torrc`
+`$ sudo nano /etc/tor/torrc`
 
 * Insert the lines:
     ```
