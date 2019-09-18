@@ -34,11 +34,11 @@ sudo certbot certonly --authenticator standalone -d $YOUR_DOMAIN --pre-hook "ser
 
 # cleanup possible residual files from previous installs
 
-sudo rm /home/admin/.nbxplorer/Main/settings.config
-sudo rm /etc/systemd/system/nbxplorer.service
-sudo rm /etc/systemd/system/btcpayserver.service
-sudo rm /home/admin/.btcpayserver/Main/settings.config
-sudo rm /etc/nginx/sites-available/btcpayserver
+sudo rm -f /home/admin/.nbxplorer/Main/settings.config
+sudo rm -f /etc/systemd/system/nbxplorer.service
+sudo rm -f /etc/systemd/system/btcpayserver.service
+sudo rm -f /home/admin/.btcpayserver/Main/settings.config
+sudo rm -f /etc/nginx/sites-available/btcpayserver
 
 #dotNET
 
@@ -105,12 +105,12 @@ echo "***"
 echo "getting RPC credentials from the bitcoin.conf"
 RPC_USER=$(sudo cat /mnt/hdd/bitcoin/bitcoin.conf | grep rpcuser | cut -c 9-)
 PASSWORD_B=$(sudo cat /mnt/hdd/bitcoin/bitcoin.conf | grep rpcpassword | cut -c 13-)
-
+chmod 600 /home/admin/.nbxplorer/Main/settings.config || exit 1
 cat >> /home/admin/.nbxplorer/Main/settings.config <<EOF
 btc.rpc.user=raspibolt
 btc.rpc.password=$PASSWORD_B
 EOF
-chmod 600 /home/admin/.nbxplorer/Main/settings.config
+
 
 sudo systemctl restart nbxplorer
 
@@ -170,7 +170,7 @@ sudo ufw allow 80
 sudo ufw allow 443
 
 # set nginx
-sudo rm /etc/nginx/sites-enabled/default
+sudo rm -f /etc/nginx/sites-enabled/default
 
 echo "
 server {
