@@ -47,15 +47,13 @@ touch /home/admin/.electrs/config.toml
 chmod 600 /home/admin/.electrs/config.toml
 
 echo "generating electrs.toml setting file with the RPC passwords"
-(
-echo "
+cat > /home/admin/.electrs/config.toml <<EOF
 verbose = 4
 timestamp = true
 jsonrpc_import = true
 db_dir = \"/mnt/hdd/electrs/db\"
 cookie = \"$RPC_USER:$PASSWORD_B\"
-" | tee -a /home/admin/.electrs/config.toml
-) &> /dev/null
+EOF
 
 # Run electrs
 cargo run --release -- --index-batch-size=10 --electrum-rpc-addr="0.0.0.0:50001"
