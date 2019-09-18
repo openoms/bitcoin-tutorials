@@ -10,7 +10,7 @@ file="/etc/nginx/nginx.conf"
 if [ -f "$file" ]
 then
   echo "$file found."
-  echo "There is an existing Nginx configuration which is likely to fail if the setup continues"
+  echo "There is an existing Nginx configuration which might fail if the setup continues"
   echo "Press CRTL+C to abort or any key to continue"
   read key
 fi
@@ -27,14 +27,10 @@ echo "***"
 echo "Please type the domain/ddns you want to use for BTCPayServer followed by [ENTER]"
 read YOUR_DOMAIN
 
-echo ""
-echo "***"
-#echo "Type the PASSWORD B of your RaspiBlitz followed by [ENTER] (needed for Electrs to access the bitcoind RPC):"
-#read PASSWORD_B
-echo "getting RPC credentials from the bitcoin.conf"
-RPC_USER=$(sudo cat /mnt/hdd/bitcoin/bitcoin.conf | grep rpcuser | cut -c 9-)
-PASSWORD_B=$(sudo cat /mnt/hdd/bitcoin/bitcoin.conf | grep rpcpassword | cut -c 13-)
+sudo apt-get install nginx-full certbot -y
 
+# get SSL cert
+sudo certbot certonly --authenticator standalone -d $YOUR_DOMAIN --pre-hook "service nginx stop" --post-hook "service nginx start"
 
 # cleanup possible residual files from previous installs
 
@@ -56,9 +52,11 @@ sudo tar -xvf aspnetcore-runtime-2.2.1-linux-arm.tar.gz -C /opt/dotnet/
 sudo ln -s /opt/dotnet/dotnet /usr/local/bin
 dotnet --info
 
-sudo apt-get install nginx-full certbot -y
-
-# NBxplorer
+echo ""
+echo "***"
+echo "Installing NBXplorer"
+echo "***"
+echo ""
 
 cd /home/admin
 git clone https://github.com/dgarage/NBXplorer.git
@@ -89,17 +87,38 @@ WantedBy=multi-user.target
 " | sudo tee -a /etc/systemd/system/nbxplorer.service
 
 sudo systemctl daemon-reload
+# restart to create settings.config if was running already
+sudo systemctl restart nbxplorer
 sudo systemctl enable nbxplorer
 sudo systemctl start nbxplorer
 
-echo "
+
+echo "Checking for nbxplorer config"
+while [ ! -f "/home/admin/.nbxplorer/Main/settings.config" ]
+    do
+      echo "Waiting for nbxplorer to start - CTRL+C to abort"
+      sleep 10
+done
+
+echo ""
+echo "***"
+echo "getting RPC credentials from the bitcoin.conf"
+RPC_USER=$(sudo cat /mnt/hdd/bitcoin/bitcoin.conf | grep rpcuser | cut -c 9-)
+PASSWORD_B=$(sudo cat /mnt/hdd/bitcoin/bitcoin.conf | grep rpcpassword | cut -c 13-)
+
+cat >> /home/admin/.nbxplorer/Main/settings.config <<EOF
 btc.rpc.user=raspibolt
 btc.rpc.password=$PASSWORD_B
-" | sudo tee -a /home/admin/.nbxplorer/Main/settings.config
+EOF
+chmod 600 /home/admin/.nbxplorer/Main/settings.config
 
 sudo systemctl restart nbxplorer
 
-# BTCPayServer
+echo ""
+echo "***"
+echo "Installing BTCPayServer"
+echo "***"
+echo ""
 
 cd /home/admin
 git clone https://github.com/btcpayserver/btcpayserver.git
@@ -113,7 +132,7 @@ Requires=btcpayserver.service
 After=nbxplorer.service
 
 [Service]
-ExecStart=/usr/local/bin/dotnet run --no-launch-profile --no-build -c Release -p "/home/admin/btcpayserver/BTCPayServer/BTCPayServer.csproj" -- $@
+ExecStart=/usr/local/bin/dotnet run --no-launch-profile --no-build -c Release -p "/home/admin/btcpayserver/BTCPayServer/BTCPayServer.csproj" -- \$@
 User=admin
 Group=admin
 Type=simple
@@ -149,9 +168,6 @@ sudo systemctl restart btcpayserver
 
 sudo ufw allow 80
 sudo ufw allow 443
-
-# get SSL cert
-sudo certbot certonly --authenticator standalone -d $YOUR_DOMAIN --pre-hook "service nginx stop" --post-hook "service nginx start"
 
 # set nginx
 sudo rm /etc/nginx/sites-enabled/default
@@ -193,3 +209,6 @@ server {
 sudo ln -s /etc/nginx/sites-available/btcpayserver /etc/nginx/sites-enabled/
 
 sudo systemctl restart nginx
+
+echo ""
+echo "Visit your BTCpayServer instance on https://$YOUR_DOMAIN"
