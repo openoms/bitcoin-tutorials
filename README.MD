@@ -7,6 +7,11 @@ and continue https://stadicus.github.io/RaspiBolt/raspibolt_60_bonus.html
 
 More here:
 
+* [RaspiBlitz: Install BTCPayServer](BTCPayServer/README.md)
+
+    This guide will make you have BTCPayServer running on your node using the already synced bitcoin blockchain and local LND node and benefit from the backup and security features of RaspiBlitz and the stock LND.  
+    No added synchronization needed. 
+
 * #### [RaspiBlitz: install the Electrum Server in Rust (electrs) and set it up to connect over SSL](electrs/README.md)
     Can be used as the backend of:
     * Eclair Mobile Bitcoin and Ligthtning wallet
