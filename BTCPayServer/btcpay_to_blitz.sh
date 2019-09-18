@@ -111,7 +111,6 @@ btc.rpc.user=raspibolt
 btc.rpc.password=$PASSWORD_B
 EOF
 
-
 sudo systemctl restart nbxplorer
 
 echo ""
