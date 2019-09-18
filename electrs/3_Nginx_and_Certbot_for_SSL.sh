@@ -9,6 +9,17 @@
 # Forward port 50002 to be able to access you electrs from outside of your LAN
 
 # https://www.raspberrypi.org/documentation/remote-access/web-server/nginx.md
+
+echo ""
+echo "***"
+echo "Please type the domain/dynamicDNS you want to use for Electrs followed by [ENTER]"
+read YOUR_DOMAIN
+
+echo ""
+echo "***"
+echo "Please confirm that the port 80 is forwarded to the IP of the RaspiBlitz by pressing [ENTER]" 
+read key
+
 echo ""
 echo "***"
 echo "installing Nginx"
@@ -17,11 +28,6 @@ echo ""
 
 sudo apt-get install -y nginx
 sudo /etc/init.d/nginx start
-
-echo ""
-echo "***"
-echo "Please confirm that the port 80 is forwarded to the IP of the RaspiBlitz by pressing [ENTER]" 
-read key
 
 echo "allow port 80 on ufw"
 sudo ufw allow 80
@@ -87,11 +93,6 @@ RestartSec=60
 
 sudo systemctl enable certbot.timer
 
-echo ""
-echo "***"
-echo "Please type the domain/ddns you have generated the certificate for followed by [ENTER]"
-read YOUR_DOMAIN
-
 echo "Setting up nginx.conf"
 echo "***"
 echo ""
@@ -115,7 +116,7 @@ stream {
                 proxy_pass electrs;
                 ssl_certificate /etc/letsencrypt/live/$YOUR_DOMAIN/fullchain.pem;
                 ssl_certificate_key /etc/letsencrypt/live/$YOUR_DOMAIN/privkey.pem;
-                ssl_session_cache shared:SSL:1m;
+                ssl_session_cache shared:SSL-electrs:1m;
                 ssl_session_timeout 4h;
                 ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
                 ssl_prefer_server_ciphers on;
@@ -134,7 +135,7 @@ stream {
                 proxy_pass electrs;
                 ssl_certificate /etc/letsencrypt/live/$YOUR_DOMAIN/fullchain.pem;
                 ssl_certificate_key /etc/letsencrypt/live/$YOUR_DOMAIN/privkey.pem;
-                ssl_session_cache shared:SSL:1m;
+                ssl_session_cache shared:SSL-electrs:1m;
                 ssl_session_timeout 4h;
                 ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
                 ssl_prefer_server_ciphers on;
