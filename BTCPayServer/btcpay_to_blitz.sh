@@ -4,17 +4,6 @@
 # to download and run: 
 # wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/BTCPayServer/btcpay_to_blitz.sh && bash btcpay_to_blitz.sh
 
-#file="/etc/nginx/nginx.conf"
-#if [ -f "$file" ]
-#then
-#  echo "$file found."
-#  echo "There is an existing Nginx configuration which might fail if the setup continues"
-#  echo "Press CRTL+C to abort or any key to continue"
-#  read key
-#fi
-
-#use `sudo apt purge nginx-common certbot` to clean configuration
-
 echo ""
 echo "***"
 echo "Confirm that the port 80, 443 and 9735 are forwarded to the IP of the RaspiBlitz by pressing [ENTER]" 
