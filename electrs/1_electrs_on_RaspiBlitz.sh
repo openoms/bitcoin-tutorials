@@ -35,7 +35,7 @@ echo "***"
 echo "The electrs database will be built in /mnt/hdd/electrs/db. Takes ~18 hours and ~50Gb diskspace"
 echo "***"
 echo ""
-sudo -u electrs mkdir /mnt/hdd/electrs 2>/dev/null
+sudo mkdir /mnt/hdd/electrs 2>/dev/null
 sudo chown -R electrs:electrs /mnt/hdd/electrs
 
 echo ""
