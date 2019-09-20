@@ -8,43 +8,31 @@
 # Forward port 3002 to be able to access RTL from outside of your LAN
 
 # https://www.raspberrypi.org/documentation/remote-access/web-server/nginx.md
-echo ""
-echo "***"
-echo "installing Nginx"
-echo "***"
-echo ""
-
-sudo apt-get install -y nginx
-sudo /etc/init.d/nginx start
 
 echo ""
 echo "***"
 echo "Please confirm that the port 80 is forwarded to the IP of the RaspiBlitz by pressing [ENTER]" 
 read key
 
+echo ""
+echo "***"
+echo "Please type the domain/ddns you have generated the certificate for followed by [ENTER]"
+read YOUR_DOMAIN
+
+echo ""
+echo "***"
+echo "Type an email address that will be used to register the SSL certificate and press [ENTER]"
+read YOUR_EMAIL
+
+echo "installing Nginx and certbot"
+sudo apt-get install -y nginx-full certbot
+sudo /etc/init.d/nginx start
+
 echo "allow port 80 on ufw"
 sudo ufw allow 80
 
-# https://certbot.eff.org/lets-encrypt/debianother-nginx
-echo ""
-echo "***"
-echo "Installing certbot"
-echo " you will be asked for and email address and your domain name - a dynamic DNS can be used"
-echo " give a 4-11 character password and press [ENTER] to save default options for the certificate"
-echo "***"
-echo ""
-
-# wget https://dl.eff.org/certbot-auto
-# chmod +x certbot-auto
-# sudo ./certbot-auto --nginx
-sudo apt install -y certbot
 # get SSL cert
-sudo certbot certonly --authenticator standalone -d $YOUR_DOMAIN --pre-hook "service nginx stop" --post-hook "service nginx start"
-
-# Your certificate and chain have been saved at:
-# /etc/letsencrypt/live/$YOUR_DOMAIN/fullchain.pem
-# Your key file has been saved at:
-# /etc/letsencrypt/live/$YOUR_DOMAIN/privkey.pem
+sudo certbot certonly -a standalone -m $YOUR_EMAIL --agree-tos -d $YOUR_DOMAIN --pre-hook "service nginx stop" --post-hook "service nginx start"
 
 echo ""
 echo "***"
@@ -52,6 +40,7 @@ echo "Setting up certbot-auto renewal service"
 echo "***"
 echo ""
 
+sudo rm -f /etc/systemd/system/certbot.timer
 echo "
 [Unit]
 Description=Certbot-auto renewal service
@@ -59,20 +48,20 @@ Description=Certbot-auto renewal service
 [Timer]
 OnBootSec=20min
 OnCalendar=*-*-* 4:00:00
-OnCalendar=*-*-* 16:00:00 
 
 [Install]
 WantedBy=timers.target
 " | sudo tee -a /etc/systemd/system/certbot.timer
 
+sudo rm -f /etc/systemd/system/certbot.service
 echo "
 [Unit]
-Description=certbot-auto renew timer
+Description=Certbot-auto renewal service
 After=bitcoind.service
 
 [Service]
 WorkingDirectory=/home/admin/
-ExecStart=/home/admin/certbot-auto renew
+ExecStart=sudo certbot renew --pre-hook \"service nginx stop\" --post-hook \"service nginx start\"
 
 User=admin
 Group=admin
@@ -85,10 +74,6 @@ RestartSec=60
 
 sudo systemctl enable certbot.timer
 
-echo ""
-echo "***"
-echo "Please type the domain/ddns you have generated the certificate for followed by [ENTER]"
-read YOUR_DOMAIN
 
 echo "Setting up nginx.conf"
 echo "***"

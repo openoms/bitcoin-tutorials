@@ -16,7 +16,7 @@ After=bitcoind.service
 
 [Service]
 WorkingDirectory=/home/electrs/electrs
-ExecStart=/home/electrs/electrs/target/release/electrs --index-batch-size=10 --electrum-rpc-addr="0.0.0.0:50001"
+ExecStart=/home/electrs/electrs/target/release/electrs --index-batch-size=10 --electrum-rpc-addr=\"0.0.0.0:50001\"
 User=electrs
 Group=electrs
 Type=simple

@@ -4,33 +4,77 @@
 # to download and run: 
 # wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/BTCPayServer/btcpay_to_blitz.sh && bash btcpay_to_blitz.sh
 
-# requirements
-
-file="/etc/nginx/nginx.conf"
-if [ -f "$file" ]
-then
-  echo "$file found."
-  echo "There is an existing Nginx configuration which might fail if the setup continues"
-  echo "Press CRTL+C to abort or any key to continue"
-  read key
-fi
+#file="/etc/nginx/nginx.conf"
+#if [ -f "$file" ]
+#then
+#  echo "$file found."
+#  echo "There is an existing Nginx configuration which might fail if the setup continues"
+#  echo "Press CRTL+C to abort or any key to continue"
+#  read key
+#fi
 
 #use `sudo apt purge nginx-common certbot` to clean configuration
 
 echo ""
 echo "***"
-echo "Please confirm that the port 80, 443 and 9735 are forwarded to the IP of the RaspiBlitz by pressing [ENTER]" 
+echo "Confirm that the port 80, 443 and 9735 are forwarded to the IP of the RaspiBlitz by pressing [ENTER]" 
 read key
 
 echo ""
 echo "***"
-echo "Please type the domain/ddns you want to use for BTCPayServer followed by [ENTER]"
+echo "Type the domain/ddns you want to use for BTCPayServer and press [ENTER]"
 read YOUR_DOMAIN
 
+echo ""
+echo "***"
+echo "Type an email address that will be used to register the SSL certificate and press [ENTER]"
+read YOUR_EMAIL
+
+# install nginx
 sudo apt-get install nginx-full certbot -y
 
 # get SSL cert
-sudo certbot certonly --authenticator standalone -d $YOUR_DOMAIN --pre-hook "service nginx stop" --post-hook "service nginx start"
+sudo certbot certonly -a standalone -m $YOUR_EMAIL --agree-tos -d $YOUR_DOMAIN --pre-hook "service nginx stop" --post-hook "service nginx start"
+
+echo ""
+echo "***"
+echo "Setting up certbot-auto renewal service"
+echo "***"
+echo ""
+
+sudo rm -f /etc/systemd/system/certbot.timer
+echo "
+[Unit]
+Description=Certbot-auto renewal service
+
+[Timer]
+OnBootSec=20min
+OnCalendar=*-*-* 4:00:00
+
+[Install]
+WantedBy=timers.target
+" | sudo tee -a /etc/systemd/system/certbot.timer
+
+sudo rm -f /etc/systemd/system/certbot.service
+echo "
+[Unit]
+Description=Certbot-auto renewal service
+After=bitcoind.service
+
+[Service]
+WorkingDirectory=/home/admin/
+ExecStart=sudo certbot renew --pre-hook \"service nginx stop\" --post-hook \"service nginx start\"
+
+User=admin
+Group=admin
+Type=simple
+KillMode=process
+TimeoutSec=60
+Restart=always
+RestartSec=60
+" | sudo tee -a /etc/systemd/system/certbot.service
+
+sudo systemctl enable certbot.timer
 
 # cleanup possible residual files from previous installs
 
@@ -131,7 +175,7 @@ Requires=btcpayserver.service
 After=nbxplorer.service
 
 [Service]
-ExecStart=/usr/local/bin/dotnet run --no-launch-profile --no-build -c Release -p "/home/admin/btcpayserver/BTCPayServer/BTCPayServer.csproj" -- \$@
+ExecStart=/usr/local/bin/dotnet run --no-launch-profile --no-build -c Release -p \"/home/admin/btcpayserver/BTCPayServer/BTCPayServer.csproj\" -- \$@
 User=admin
 Group=admin
 Type=simple

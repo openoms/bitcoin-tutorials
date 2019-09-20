@@ -12,8 +12,13 @@
 
 echo ""
 echo "***"
-echo "Please type the domain/dynamicDNS you want to use for Electrs followed by [ENTER]"
+echo "Please type the domain/dynamicDNS you want to use for Electrs and press [ENTER]"
 read YOUR_DOMAIN
+
+echo ""
+echo "***"
+echo "Please type an email that will be used to register the SSL certificate and press [ENTER]"
+read YOUR_EMAIL
 
 echo ""
 echo "***"
@@ -47,7 +52,8 @@ echo ""
 
 sudo apt install -y certbot
 # get SSL cert
-sudo certbot certonly --authenticator standalone -d $YOUR_DOMAIN --pre-hook "service nginx stop" --post-hook "service nginx start"
+sudo certbot certonly -a standalone -m $YOUR_EMAIL --agree-tos -d $YOUR_DOMAIN --pre-hook "service nginx stop" --post-hook "service nginx start"
+
 
 # Your certificate and chain have been saved at:
 # /etc/letsencrypt/live/$YOUR_DOMAIN/fullchain.pem
@@ -67,7 +73,6 @@ Description=Certbot-auto renewal service
 [Timer]
 OnBootSec=20min
 OnCalendar=*-*-* 4:00:00
-OnCalendar=*-*-* 16:00:00 
 
 [Install]
 WantedBy=timers.target
@@ -80,7 +85,7 @@ After=bitcoind.service
 
 [Service]
 WorkingDirectory=/home/admin/
-ExecStart=/home/admin/certbot-auto renew
+ExecStart=sudo certbot renew --pre-hook \"service nginx stop\" --post-hook \"service nginx start\"
 
 User=admin
 Group=admin
