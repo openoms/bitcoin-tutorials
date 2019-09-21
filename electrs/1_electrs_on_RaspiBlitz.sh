@@ -98,10 +98,3 @@ echo "Start Electrs "
 echo "***"
 echo ""
 sudo -u electrs /home/electrs/.cargo/bin/cargo run --release -- --index-batch-size=10 --electrum-rpc-addr="0.0.0.0:50001"
-
-# to preserve settings:
-# see https://github.com/romanz/electrs/blob/master/src/config.rs
-# sudo nano $HOME/electrs/src/config.rs 
-# change the lines:
-# 73: from: .takes_value(true), to: .default_value("raspibolt:PASSWORD B"),
-# 132: from .default_value("Welcome to electrs (Electrum Rust Server)!") to your custom message
