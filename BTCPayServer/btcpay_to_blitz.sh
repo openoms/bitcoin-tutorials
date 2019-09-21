@@ -1,5 +1,5 @@
 ## Install BTCPayServer on the RaspiBlitz
-#Heavily based on: https://gist.github.com/normandmickey/3f10fc077d15345fb469034e3697d0d0 
+# Based on: https://gist.github.com/normandmickey/3f10fc077d15345fb469034e3697d0d0 
 
 # to download and run: 
 # wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/BTCPayServer/btcpay_to_blitz.sh && bash btcpay_to_blitz.sh
@@ -19,71 +19,50 @@ echo "***"
 echo "Type an email address that will be used to register the SSL certificate and press [ENTER]"
 read YOUR_EMAIL
 
-# install nginx
-sudo apt-get install nginx-full certbot -y
-
-# get SSL cert
-sudo certbot certonly -a standalone -m $YOUR_EMAIL --agree-tos -d $YOUR_DOMAIN --pre-hook "service nginx stop" --post-hook "service nginx start"
-
-echo ""
-echo "***"
-echo "Setting up certbot-auto renewal service"
-echo "***"
-echo ""
-
-sudo rm -f /etc/systemd/system/certbot.timer
-echo "
-[Unit]
-Description=Certbot-auto renewal service
-
-[Timer]
-OnBootSec=20min
-OnCalendar=*-*-* 4:00:00
-
-[Install]
-WantedBy=timers.target
-" | sudo tee -a /etc/systemd/system/certbot.timer
-
-sudo rm -f /etc/systemd/system/certbot.service
-echo "
-[Unit]
-Description=Certbot-auto renewal service
-After=bitcoind.service
-
-[Service]
-WorkingDirectory=/home/admin/
-ExecStart=sudo certbot renew --pre-hook \"service nginx stop\" --post-hook \"service nginx start\"
-
-User=admin
-Group=admin
-Type=simple
-KillMode=process
-TimeoutSec=60
-Restart=always
-RestartSec=60
-" | sudo tee -a /etc/systemd/system/certbot.service
-
-sudo systemctl enable certbot.timer
-
-# cleanup possible residual files from previous installs
-
+# cleanup previous installs
+sudo systemctl stop nbxplorer
+sudo systemctl disable nbxplorer
 sudo rm -f /home/admin/.nbxplorer/Main/settings.config
+sudo rm -f /home/btcpay/.nbxplorer/Main/settings.config
 sudo rm -f /etc/systemd/system/nbxplorer.service
-sudo rm -f /etc/systemd/system/btcpayserver.service
+
+sudo systemctl stop btcpayserver
+sudo systemctl disable btcpayserver
 sudo rm -f /home/admin/.btcpayserver/Main/settings.config
+sudo rm -f /home/btcpay/.btcpayserver/Main/settings.config
+sudo rm -f /etc/systemd/system/btcpayserver.service
 sudo rm -f /etc/nginx/sites-available/btcpayserver
 
-#dotNET
+sudo rm -f /home/admin/dotnet-sdk*
+sudo rm -f /home/btcpay/dotnet-sdk*
+sudo rm -f /home/admin/dotnet-sdk*
+sudo rm -f /home/btcpay/aspnetcore*
+sudo rm -rdf /home/btcpay/dotnet
+sudo rm -f /usr/local/bin/dotnet
+sudo rm -rdf /opt/dotnet
 
-cd /home/admin
-wget https://download.visualstudio.microsoft.com/download/pr/9650e3a6-0399-4330-a363-1add761127f9/14d80726c16d0e3d36db2ee5c11928e4/dotnet-sdk-2.2.102-linux-arm.tar.gz
-wget https://download.visualstudio.microsoft.com/download/pr/9d049226-1f28-4d3d-a4ff-314e56b223c5/f67ab05a3d70b2bff46ff25e2b3acd2a/aspnetcore-runtime-2.2.1-linux-arm.tar.gz
-sudo mkdir /opt/dotnet
+echo ""
+echo "***"
+echo "Creating the btcpay user"
+echo "***"
+echo ""
+sudo adduser --disabled-password --gecos "" btcpay
+cd /home/btcpay
+
+echo ""
+echo "***"
+echo "Installing .NET"
+echo "***"
+echo ""
+
 sudo apt-get -y install libunwind8 gettext libssl1.0
-sudo tar -xvf dotnet-sdk-2.2.102-linux-arm.tar.gz -C /opt/dotnet/
-sudo tar -xvf aspnetcore-runtime-2.2.1-linux-arm.tar.gz -C /opt/dotnet/
-sudo ln -s /opt/dotnet/dotnet /usr/local/bin
-dotnet --info
+sudo -u btcpay wget https://download.visualstudio.microsoft.com/download/pr/9650e3a6-0399-4330-a363-1add761127f9/14d80726c16d0e3d36db2ee5c11928e4/dotnet-sdk-2.2.102-linux-arm.tar.gz
+sudo -u btcpay wget https://download.visualstudio.microsoft.com/download/pr/9d049226-1f28-4d3d-a4ff-314e56b223c5/f67ab05a3d70b2bff46ff25e2b3acd2a/aspnetcore-runtime-2.2.1-linux-arm.tar.gz
+sudo -u btcpay mkdir /home/btcpay/dotnet
+sudo -u btcpay tar -xvf dotnet-sdk-2.2.102-linux-arm.tar.gz -C /home/btcpay/dotnet
+sudo -u btcpay tar -xvf aspnetcore-runtime-2.2.1-linux-arm.tar.gz -C /home/btcpay/dotnet
+sudo ln -s /home/btcpay/dotnet/dotnet /usr/local/bin
+sudo -u btcpay /home/btcpay/dotnet/dotnet --info
 
 echo ""
 echo "***"
@@ -91,10 +70,10 @@ echo "Installing NBXplorer"
 echo "***"
 echo ""
 
-cd /home/admin
-git clone https://github.com/dgarage/NBXplorer.git
+cd /home/btcpay
+sudo -u btcpay git clone https://github.com/dgarage/NBXplorer.git
 cd NBXplorer
-./build.sh
+sudo -u btcpay ./build.sh
 
 echo "
 [Unit]
@@ -103,9 +82,9 @@ Requires=bitcoind.service
 After=bitcoind.service
 
 [Service]
-ExecStart=/usr/local/bin/dotnet \"/home/admin/NBXplorer/NBXplorer/bin/Release/netcoreapp2.1/NBXplorer.dll\" -c /home/admin/.nbxplorer/Main/settings.config
-User=admin
-Group=admin
+ExecStart=/usr/local/bin/dotnet \"/home/btcpay/NBXplorer/NBXplorer/bin/Release/netcoreapp2.1/NBXplorer.dll\" -c /home/btcpay/.nbxplorer/Main/settings.config
+User=btcpay
+Group=btcpay
 Type=simple
 PIDFile=/run/nbxplorer/nbxplorer.pid
 Restart=on-failure
@@ -127,7 +106,7 @@ sudo systemctl start nbxplorer
 
 
 echo "Checking for nbxplorer config"
-while [ ! -f "/home/admin/.nbxplorer/Main/settings.config" ]
+while [ ! -f "/home/btcpay/.nbxplorer/Main/settings.config" ]
     do
       echo "Waiting for nbxplorer to start - CTRL+C to abort"
       sleep 10
@@ -138,12 +117,17 @@ echo "***"
 echo "getting RPC credentials from the bitcoin.conf"
 RPC_USER=$(sudo cat /mnt/hdd/bitcoin/bitcoin.conf | grep rpcuser | cut -c 9-)
 PASSWORD_B=$(sudo cat /mnt/hdd/bitcoin/bitcoin.conf | grep rpcpassword | cut -c 13-)
-chmod 600 /home/admin/.nbxplorer/Main/settings.config || exit 1
-cat >> /home/admin/.nbxplorer/Main/settings.config <<EOF
+#sudo mv /home/btcpay/.nbxplorer/Main/settings.config /home/admin/settings.config
+#sudo chown admin:admin /home/admin/settings.config
+mv /home/btcpay/.nbxplorer/Main/settings.config /home/btcpay/.nbxplorer/Main/settings.config.backup
+touch /home/admin/settings.config
+sudo chmod 600 /home/admin/settings.config || exit 1
+cat >> /home/admin/settings.config <<EOF
 btc.rpc.user=raspibolt
 btc.rpc.password=$PASSWORD_B
 EOF
-
+sudo mv /home/admin/settings.config /home/btcpay/.nbxplorer/Main/settings.config
+sudo chown btcpay:btcpay /home/btcpay/.nbxplorer/Main/settings.config
 sudo systemctl restart nbxplorer
 
 echo ""
@@ -152,10 +136,10 @@ echo "Installing BTCPayServer"
 echo "***"
 echo ""
 
-cd /home/admin
-git clone https://github.com/btcpayserver/btcpayserver.git
-cd btcpayserver
-./build.sh
+cd /home/btcpay
+sudo -u btcpay git clone https://github.com/btcpayserver/btcpayserver.git
+btcpay cd btcpayserver
+sudo -u btcpay ./build.sh
 
 echo "
 [Unit]
@@ -164,9 +148,9 @@ Requires=btcpayserver.service
 After=nbxplorer.service
 
 [Service]
-ExecStart=/usr/local/bin/dotnet run --no-launch-profile --no-build -c Release -p \"/home/admin/btcpayserver/BTCPayServer/BTCPayServer.csproj\" -- \$@
-User=admin
-Group=admin
+ExecStart=/usr/local/bin/dotnet run --no-launch-profile --no-build -c Release -p \"/home/btcpay/btcpayserver/BTCPayServer/BTCPayServer.csproj\" -- \$@
+User=btcpay
+Group=btcpay
 Type=simple
 PIDFile=/run/btcpayserver/btcpayserver.pid
 Restart=on-failure
@@ -194,12 +178,24 @@ externalurl=https://$YOUR_DOMAIN
 ### NBXplorer settings ###
 BTC.explorer.url=http://127.0.0.1:24444/
 BTC.lightning=type=lnd-rest;server=https://127.0.0.1:8080/;macaroonfilepath=/home/admin/.lnd/data/chain/bitcoin/mainnet/admin.macaroon;certthumbprint=$FINGERPRINT
-" | sudo tee -a /home/admin/.btcpayserver/Main/settings.config
+" | sudo -u btcpay tee -a /home/btcpay/.btcpayserver/Main/settings.config
 
 sudo systemctl restart btcpayserver
 
+echo ""
+echo "***"
+echo "Setting up Nginx and Certbot"
+echo "***"
+echo ""
+
+# install nginx and certbot
+sudo apt-get install nginx-full certbot -y
+
 sudo ufw allow 80
 sudo ufw allow 443
+
+# get SSL cert
+sudo certbot certonly -a standalone -m $YOUR_EMAIL --agree-tos -d $YOUR_DOMAIN --pre-hook "service nginx stop" --post-hook "service nginx start"
 
 # set nginx
 sudo rm -f /etc/nginx/sites-enabled/default
@@ -290,6 +286,46 @@ server {
 sudo ln -s /etc/nginx/sites-available/btcpayserver /etc/nginx/sites-enabled/
 
 sudo systemctl restart nginx
+
+echo ""
+echo "***"
+echo "Setting up certbot-auto renewal service"
+echo "***"
+echo ""
+
+sudo rm -f /etc/systemd/system/certbot.timer
+echo "
+[Unit]
+Description=Certbot-auto renewal service
+
+[Timer]
+OnBootSec=20min
+OnCalendar=*-*-* 4:00:00
+
+[Install]
+WantedBy=timers.target
+" | sudo tee -a /etc/systemd/system/certbot.timer
+
+sudo rm -f /etc/systemd/system/certbot.service
+echo "
+[Unit]
+Description=Certbot-auto renewal service
+After=bitcoind.service
+
+[Service]
+WorkingDirectory=/home/admin/
+ExecStart=sudo certbot renew --pre-hook \"service nginx stop\" --post-hook \"service nginx start\"
+
+User=admin
+Group=admin
+Type=simple
+KillMode=process
+TimeoutSec=60
+Restart=always
+RestartSec=60
+" | sudo tee -a /etc/systemd/system/certbot.service
+
+sudo systemctl enable certbot.timer
 
 echo ""
 echo "Visit your BTCpayServer instance on https://$YOUR_DOMAIN"
