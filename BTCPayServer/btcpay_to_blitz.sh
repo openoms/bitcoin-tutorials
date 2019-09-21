@@ -165,7 +165,9 @@ sudo systemctl start btcpayserver
 
 # set thumbprint
 FINGERPRINT=$(openssl x509 -noout -fingerprint -sha256 -inform pem -in ~/.lnd/tls.cert | cut -c 20-)
-
+sudo cp /mnt/hdd/lnd/data/chain/bitcoin/mainnet/admin.macaroon /home/btcpay/admin.macaroon
+sudo chown btcpay:btcpay /home/btcpay/admin.macaroon
+sudo chmod 600 /home/btcpay/admin.macaroon
 echo "
 ### Global settings ###
 network=mainnet
@@ -177,7 +179,7 @@ externalurl=https://$YOUR_DOMAIN
 
 ### NBXplorer settings ###
 BTC.explorer.url=http://127.0.0.1:24444/
-BTC.lightning=type=lnd-rest;server=https://127.0.0.1:8080/;macaroonfilepath=/home/admin/.lnd/data/chain/bitcoin/mainnet/admin.macaroon;certthumbprint=$FINGERPRINT
+BTC.lightning=type=lnd-rest;server=https://127.0.0.1:8080/;macaroonfilepath=/home/btcpay/admin.macaroon;certthumbprint=$FINGERPRINT
 " | sudo -u btcpay tee -a /home/btcpay/.btcpayserver/Main/settings.config
 
 sudo systemctl restart btcpayserver
