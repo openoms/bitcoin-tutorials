@@ -3,6 +3,12 @@
 
 # https://github.com/romanz/electrs/blob/master/doc/usage.md
 
+#cleanup
+sudo systemctl stop electrs
+sudo systemctl disable electrs
+sudo rm -f /etc/systemd/system/electrs.service
+sudo rm -f /home/electrs/.electrs/config.toml 
+
 echo ""
 echo "***"
 echo "Creating the electrs user"
@@ -57,9 +63,7 @@ echo ""
 # generate setting file: https://github.com/romanz/electrs/issues/170#issuecomment-530080134
 # https://github.com/romanz/electrs/blob/master/doc/usage.md#configuration-files-and-environment-variables
 
-sudo rm -f /home/electrs/.electrs/config.toml 
 sudo -u electrs mkdir /home/electrs/.electrs 2>/dev/null
-
 touch /home/admin/config.toml
 chmod 600 /home/admin/config.toml || exit 1 
 cat > /home/admin/config.toml <<EOF
@@ -112,7 +116,7 @@ echo ""
 
 echo "
 [req]
-prompt=no
+prompt             = no
 default_bits       = 2048
 default_keyfile    = localhost.key
 distinguished_name = req_distinguished_name
@@ -120,19 +124,13 @@ req_extensions     = req_ext
 x509_extensions    = v3_ca
 
 [req_distinguished_name]
-countryName                 = Country Name (2 letter code)
-countryName_default         = US
-stateOrProvinceName         = State or Province Name (full name)
-stateOrProvinceName_default = New York
-localityName                = Locality Name (eg, city)
-localityName_default        = Rochester
-organizationName            = Organization Name (eg, company)
-organizationName_default    = localhost
-organizationalUnitName      = organizationalunit
-organizationalUnitName_default = Development
-commonName                  = Common Name (e.g. server FQDN or YOUR name)
-commonName_default          = localhost
-commonName_max              = 64
+C = US
+ST = California
+L = Los Angeles
+O = Our Company Llc
+#OU = Org Unit Name
+CN = Our Company Llc
+#emailAddress = info@example.com
 
 [req_ext]
 subjectAltName = @alt_names
@@ -221,10 +219,6 @@ echo "Installing the systemd service"
 echo "***"
 echo ""
 
-sudo systemctl stop electrs
-sudo systemctl disable electrs
-sudo rm /etc/systemd/system/electrs.service
-
 # sudo nano /etc/systemd/system/electrs.service 
 echo "
 [Unit]
@@ -283,5 +277,5 @@ sudo systemctl start electrs
 
 echo ""
 echo "To connect from outside of the local network make sure the port 50002 is forwarded on the router"
-echo "Electrum wallet: start with the options \`electrum --oneserver --server RaspiBlitz_IP:50002:s"
+echo "Electrum wallet: start with the options \`electrum --oneserver --server RaspiBlitz_IP:50002:s\`"
 echo ""
