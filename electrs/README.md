@@ -51,7 +51,6 @@ Look for the output:
 electrs 2532 admin   17u  IPv4  32885      0t0  TCP *:50001 (LISTEN)
 ```
 
-
 ---
 
 ## Install Electrum wallet on your desktop
@@ -64,16 +63,19 @@ Follow the instructions on https://electrum.org/#download
 The instruction are in the script: [electrum_wallet.sh](electrum_wallet.sh)  
 Tested on Ubuntu 18.04.  
 To download and run on the Linux desktop:  
-`$ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/electrs/4_electrum_install.sh && bash 4_electrum_install.sh`  
+`$ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/electrs/electrum_wallet.sh && bash electrum_wallet.sh`  
 
 
 ### Connect the Electrum wallet to Electrs:
 
-For an unencrypted TCP connection (suitable inside a secure LAN):  
+For an unencrypted TCP connection (only to be used inside a secure LAN):  
 `electrum --oneserver --server RASPIBLITZ_IP:50001:t` 
 
-To connect through SSL (requires setting up the Nginx server):  
+To connect through SSL:  
 `electrum --oneserver --server YOUR_DOMAIN:50002:s`
+
+After a reinstall will need to delete the SSL certificate from the Electrum data directory to be able to connect again to the same domain:
+* on Linux delete the relevant file from  the `~/.electrs/certs` directory
 
 ---
 
@@ -89,12 +91,11 @@ Can be used as the secure backend of:
     Electrum wallet (desktop and mobile)
     BitBox App
 
-For the Eclair Mobile Bitcoin and Ligthtning wallet the server needs to have a CA validated certificate
-for which the usage of certbot/letsencypt is required.
+For the Eclair Mobile Bitcoin and Lightning wallet the server needs to have a CA validated certificate for which the usage of certbot/letsencypt is required.
 
 ### Tor Hidden Service
 
-The easiest option is to activate Tor on the RaspiBlitz + on the computer used for Electrum and [configure a Tor Hidden Service for Electrs](Tor_Hidden_Service_for_Electrs.md)
+Need to activate Tor on the RaspiBlitz + on the computer used for Electrum and [configure a Tor Hidden Service for Electrs](Tor_Hidden_Service_for_Electrs.md)
 
 ### Reverse SSH tunnel
 See the guide from @cryptomulde to connect to a VPS through a reverse ssh tunnel: https://medium.com/@cryptomulde/private-electrum-server-electrs-for-your-raspiblitz-full-node-without-forwarding-ports-417e4c3af975  
@@ -114,9 +115,8 @@ Shared experiences:
 
 If you run into problems:
 
-* if after a reinstall Electrum would not connect try deleting the relevant certificate form the .electrum/certs directory on your desktop.
+* if after a reinstall Electrum would not connect try deleting the relevant certificate from the .electrum/certs directory on your desktop.
 * try to run the commands manually one-by-one, spot which is causing the problem and copy the output
 * open an issue here with the details and I will be happy to help to solve it  
-* join the Community Raspiblitz Telegram group on https://t.me/raspiblitz 
 
 Bear in mind that this guide and the parts used are free-opensource projects, you use them at your own responsibility and there are no guarantees of any kind.
