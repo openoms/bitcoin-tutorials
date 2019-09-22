@@ -1,6 +1,7 @@
 ## Install BTCPayServer on the RaspiBlitz
 
-This guide will make you have BTCPayServer running on your node using the already synced bitcoin blockchain and local LND node and benefit from the backup and security features of RaspiBlitz and the stock LND.  
+Run BTCPayServer on your RaspiBlitz using the already synced bitcoin blockchain and local LND node.
+Benefit from the backup and security features of the RaspiBlitz and LND.  
 No added synchronization needed. 
 
 Requirements:
@@ -9,7 +10,7 @@ Requirements:
 
 Tested successfully on:
 * RaspiBlitz v1.3 
-* RPi4 4GB (2GB RAM should be sufficient)
+* RPi4 4GB (2GB RAM is sufficient)
 
 ### [Automated Script](/BTCPayServer/btcpay_to_blitz.sh)
 
@@ -17,16 +18,18 @@ To download and run:
 `wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/BTCPayServer/btcpay_to_blitz.sh && bash btcpay_to_blitz.sh`
 
 
-### [Manual instructions](/BTCPayServer/BTCPayServer_on_the_RaspiBlitz.md)
+* BTCpayServer, NBXplorer and the .NET Core is confined to the user `btcpay`.
+* The BTCPay data and store settings are stored on the HDD `/mnt/hdd/.btcpayserver` and recoverable on a reinstall / SDcard update.
+* Sets up a Tor Hidden Service if Tor is active
 
 ### Setting up BTCPayServer
 
 * Go to your domain
 * Register the first (administrator) account
 * Create a Store
-* In Store settings set up the derivation scheme (add an xpub)
+* In Store settings set up the derivation scheme (add an xpub from a secure/hardware wallet)
 * Set up LN with the connection string:  
- `type=lnd-rest;server=https://127.0.0.1:8080/;macaroonfilepath=/home/admin/.lnd/data/chain/bitcoin/mainnet/admin.macaroon;allowinsecure=true`
+ `type=lnd-rest;server=https://127.0.0.1:8080/;macaroonfilepath=/home/btcpay/admin.macaroon;allowinsecure=true`
 
 * Find more detailed info on https://docs.btcpayserver.org/btcpay-basics/gettingstarted
 
