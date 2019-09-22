@@ -339,5 +339,29 @@ RestartSec=60
 
 sudo systemctl enable certbot.timer
 
+# Hidden Service for BTCPay if Tor active
+source /mnt/hdd/raspiblitz.conf
+if [ "${runBehindTor}" = "on" ]; then
+    isElectrsTor=$(sudo cat /etc/tor/torrc 2>/dev/null | grep -c 'btcpay')
+    if [ ${isElectrsTor} -eq 0 ]; then
+        echo "
+        # Hidden Service for BTCPayServer
+        HiddenServiceDir /mnt/hdd/tor/btcpay
+        HiddenServiceVersion 3
+        HiddenServicePort 80 127.0.0.1:23000
+        " | sudo tee -a /etc/tor/torrc
+
+        sudo systemctl restart tor
+        sudo systemctl restart tor@default
+    fi
+    TOR_ADDRESS=$(sudo cat /mnt/hdd/tor/btcpay/hostname)
+    echo ""
+    echo "***"
+    echo "The Tor Hidden Service address for BTCPayServer is:"
+    echo "$TOR_ADDRESS"
+    echo "***"
+    echo "" 
+fi
+
 echo ""
 echo "Visit your BTCpayServer instance on https://$YOUR_DOMAIN"
