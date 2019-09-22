@@ -146,7 +146,7 @@ DNS.2   = 127.0.0.1
 " | sudo tee /mnt/hdd/electrs/localhost.conf
 
 cd /mnt/hdd/electrs
-sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout localhost.key -out localhost.crt -config localhost.conf
+sudo openssl req -x509 -nodes -days 1825 -newkey rsa:2048 -keyout localhost.key -out localhost.crt -config localhost.conf
 
 sudo cp localhost.crt /etc/ssl/certs/localhost.crt
 sudo cp localhost.key /etc/ssl/private/localhost.key
