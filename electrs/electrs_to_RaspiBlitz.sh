@@ -240,10 +240,18 @@ RestartSec=60
 WantedBy=multi-user.target
 " | sudo tee -a /etc/systemd/system/electrs.service 
 
+sudo systemctl enable electrs
+sudo systemctl start electrs
+# manual start:
+# sudo -u electrs /home/electrs/.cargo/bin/cargo run --release -- --index-batch-size=10 --electrum-rpc-addr="0.0.0.0:50001"
+echo ""
+echo "***"
+echo "Starting electrs in the background"
+echo "***"
+echo ""
+
 # Hidden Service for electrs if Tor active
-
 source /mnt/hdd/raspiblitz.conf
-
 if [ "${runBehindTor}" = "on" ]; then
     isElectrsTor=$(sudo cat /etc/tor/torrc 2>/dev/null | grep -c 'electrs')
     if [ ${isElectrsTor} -eq 0 ]; then
@@ -260,20 +268,11 @@ if [ "${runBehindTor}" = "on" ]; then
     TOR_ADDRESS=$(sudo cat /mnt/hdd/tor/electrs/hostname)
     echo ""
     echo "***"
-    echo "The hidden service address for electrs is:"
+    echo "The Tor Hidden Service address for electrs is:"
     echo "$TOR_ADDRESS"
     echo "***"
     echo "" 
 fi
-
-echo ""
-echo "***"
-echo "Starting electrs in the background"
-echo "***"
-echo ""
-# sudo -u electrs /home/electrs/.cargo/bin/cargo run --release -- --index-batch-size=10 --electrum-rpc-addr="0.0.0.0:50001"
-sudo systemctl enable electrs
-sudo systemctl start electrs
 
 echo ""
 echo "To connect from outside of the local network make sure the port 50002 is forwarded on the router"
