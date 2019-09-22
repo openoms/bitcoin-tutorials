@@ -19,28 +19,6 @@ echo "***"
 echo "Type an email address that will be used to register the SSL certificate and press [ENTER]"
 read YOUR_EMAIL
 
-# cleanup previous installs
-sudo systemctl stop nbxplorer
-sudo systemctl disable nbxplorer
-sudo rm -f /home/admin/.nbxplorer/Main/settings.config
-sudo rm -f /home/btcpay/.nbxplorer/Main/settings.config
-sudo rm -f /etc/systemd/system/nbxplorer.service
-
-sudo systemctl stop btcpayserver
-sudo systemctl disable btcpayserver
-sudo rm -f /home/admin/.btcpayserver/Main/settings.config
-sudo rm -f /home/btcpay/.btcpayserver/Main/settings.config
-sudo rm -f /etc/systemd/system/btcpayserver.service
-sudo rm -f /etc/nginx/sites-available/btcpayserver
-
-sudo rm -f /home/admin/dotnet-sdk*
-sudo rm -f /home/btcpay/dotnet-sdk*
-sudo rm -f /home/admin/dotnet-sdk*
-sudo rm -f /home/btcpay/aspnetcore*
-sudo rm -rdf /home/btcpay/dotnet
-sudo rm -f /usr/local/bin/dotnet
-sudo rm -rdf /opt/dotnet
-
 echo ""
 echo "***"
 echo "Creating the btcpay user"
@@ -48,6 +26,38 @@ echo "***"
 echo ""
 sudo adduser --disabled-password --gecos "" btcpay
 cd /home/btcpay
+
+# store BTCpay data on HDD
+sudo mkdir /mnt/hdd/.btcpayserver
+
+sudo mv -f /home/admin/.btcpayserver /mnt/hdd/
+sudo rm -rf /home/admin/.btcpayserver
+sudo mv -f /home/btcpay/.btcpayserver /mnt/hdd/
+
+sudo chown -R btcpay:btcpay /mnt/hdd/.btcpayserver
+sudo ln -s /mnt/hdd/.btcpayserver /home/btcpay/
+
+# clean when installed as admin
+sudo rm -f /home/admin/dotnet-sdk*
+sudo rm -f /home/admin/dotnet-sdk*
+sudo rm -f /home/admin/.nbxplorer/Main/settings.config
+
+# cleanup previous installs
+sudo rm -f /home/btcpay/dotnet-sdk*
+sudo rm -f /home/btcpay/aspnetcore*
+sudo rm -rdf /home/btcpay/dotnet
+sudo rm -f /usr/local/bin/dotnet
+
+sudo systemctl stop nbxplorer
+sudo systemctl disable nbxplorer
+sudo rm -f /home/btcpay/.nbxplorer/Main/settings.config
+sudo rm -f /etc/systemd/system/nbxplorer.service
+
+sudo systemctl stop btcpayserver
+sudo systemctl disable btcpayserver
+sudo rm -f /home/btcpay/.btcpayserver/Main/settings.config
+sudo rm -f /etc/systemd/system/btcpayserver.service
+sudo rm -f /etc/nginx/sites-available/btcpayserver
 
 echo ""
 echo "***"
@@ -164,7 +174,7 @@ sudo systemctl enable btcpayserver
 sudo systemctl start btcpayserver
 
 # set thumbprint
-FINGERPRINT=$(openssl x509 -noout -fingerprint -sha256 -inform pem -in ~/.lnd/tls.cert | cut -c 20-)
+FINGERPRINT=$(openssl x509 -noout -fingerprint -sha256 -inform pem -in /home/admin/.lnd/tls.cert | cut -c 20-)
 sudo cp /mnt/hdd/lnd/data/chain/bitcoin/mainnet/admin.macaroon /home/btcpay/admin.macaroon
 sudo chown btcpay:btcpay /home/btcpay/admin.macaroon
 sudo chmod 600 /home/btcpay/admin.macaroon
