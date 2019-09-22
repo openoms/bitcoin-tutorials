@@ -11,29 +11,16 @@ Tested on:
 * Odroid HC1 and XU4 (~18 hours)
 * Raspberry Pi 3 B+ (~two days to build the database from scratch). For the RPi3 the lighter weight [Electrum Personal Server](https://stadicus.github.io/RaspiBolt/raspibolt_64_electrum.html) is a good alternative, but only watches the preconfigured addresses and xpubs.
 
-## Install Electrs
-
-The install instructions are adapted to the RaspiBlitz are in this script, take a look: [1_electrs_on_RaspiBlitz.sh](1_electrs_on_RaspiBlitz.sh)
+## [Install Electrs](1_electrs_on_RaspiBlitz.sh)
 
 To download and run on the RaspiBlitz (logged in as the user `admin`):  
-`$ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/electrs/1_electrs_on_RaspiBlitz.sh && bash 1_electrs_on_RaspiBlitz.sh`  
+`$ wget https://github.com/openoms/bitcoin-tutorials/raw/master/electrs/electrs_to_RaspiBlitz.sh && bash electrs_to_RaspiBlitz.sh`  
 
-This will only run the server until the terminal window is open.  
-To restart electrs manually run:  
-`$ sudo -u electrs /home/electrs/electrs/target/release/electrs --index-batch-size=10 --electrum-rpc-addr="0.0.0.0:50001"`
-
-or install the Electrs systemd service (next step)
-
----
-
-## Set up the Electrs systemd service
-
-Set up the systemd service to run electrs continuously in the background.
-
-Take a look: [2_electrs_systemd_service.sh](2_electrs_systemd_service.sh)
-
-To download and run:  
-`$ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/electrs/2_electrs_systemd_service.sh && bash 2_electrs_systemd_service.sh`
+This will install:
+* Rust
+* Electrs
+* Nginx for connecting through SSL with a self-signed certificate
+* Tor Hidden Service if Tor is active
 
 If running the always-on electrs service is taking up too much RAM of your RPi3 stop it with:  
 `$ sudo systemctl stop electrs`  
@@ -64,7 +51,6 @@ Look for the output:
 electrs 2532 admin   17u  IPv4  32885      0t0  TCP *:50001 (LISTEN)
 ```
 
-
 ---
 
 ## Install Electrum wallet on your desktop
@@ -74,56 +60,45 @@ electrs 2532 admin   17u  IPv4  32885      0t0  TCP *:50001 (LISTEN)
 Follow the instructions on https://electrum.org/#download
 
 ### Linux desktop: install, configure and run the Electrum wallet
-The instruction are in the script: [4_electrum_install.sh](4_electrum_install.sh)  
+The instruction are in the script: [electrum_wallet.sh](electrum_wallet.sh)  
 Tested on Ubuntu 18.04.  
 To download and run on the Linux desktop:  
-`$ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/electrs/4_electrum_install.sh && bash 4_electrum_install.sh`  
-
-
+`$ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/electrs/electrum_wallet.sh && bash electrum_wallet.sh`  
 
 
 ### Connect the Electrum wallet to Electrs:
 
-For an unencrypted TCP connection (suitable inside a secure LAN):  
+For an unencrypted TCP connection (only to be used inside a secure LAN):  
 `electrum --oneserver --server RASPIBLITZ_IP:50001:t` 
 
-To connect through SSL (requires setting up the Nginx server):  
+To connect through SSL:  
 `electrum --oneserver --server YOUR_DOMAIN:50002:s`
+
+After a reinstall will need to delete the SSL certificate from the Electrum data directory to be able to connect again to the same domain:
+* on Linux delete the relevant file from  the `~/.electrs/certs` directory
 
 ---
 
 ## Remote connection options
 Any communication outside a secure LAN must be encrypted.  
 
-### Tor Hidden Service
+### Remote SSL connection
 
-The easiest option is to activate Tor on the RaspiBlitz +  on the computer used for Electrum and [configure a Tor Hidden Service for Electrs](Tor_Hidden_Service_for_Electrs.md)
-
-### Reverse SSH tunnel
-See the guide from @cryptomulde to connect to a VPS through a reverse ssh tunnel: https://medium.com/@cryptomulde/private-electrum-server-electrs-for-your-raspiblitz-full-node-without-forwarding-ports-417e4c3af975  
-
-The more secure option is to continue with setting up the SSL connection as described in the next section.
-
-### Nginx and Certbot to serve an SSL connection
-
-For the SSL certificate to be obtained successfully a **dynamic DNS** and **port forwarding is necessary**.
-Forward the port 80 to the IP of your RaspiBlitz for Certbot.  
-Forward the port 50002 to be able to access electrs from the outside of your LAN (optional).
-
-The script sets up the automatic start Nginx and Certbot.
-
-Assumes that electrs is already installed.
+Forward the port 50002 on the router to be able to access electrs from the outside of the LAN.
 
 Can be used as the secure backend of:
 
-    Eclair Mobile Bitcoin and Ligthtning wallet
-    Electrum wallet
+    Electrum wallet (desktop and mobile)
     BitBox App
 
-Take a look: [3_Nginx_and_Certbot_for_SSL.sh](3_Nginx_and_Certbot_for_SSL.sh)
+For the Eclair Mobile Bitcoin and Lightning wallet the server needs to have a CA validated certificate for which the usage of certbot/letsencypt is required.
 
-To download and run on the RaspiBlitz:  
-`$ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/electrs/3_Nginx_and_Certbot_for_SSL.sh && bash 3_Nginx_and_Certbot_for_SSL.sh`
+### Tor Hidden Service
+
+Need to activate Tor on the RaspiBlitz + on the computer used for Electrum and [configure a Tor Hidden Service for Electrs](Tor_Hidden_Service_for_Electrs.md)
+
+### Reverse SSH tunnel
+See the guide from @cryptomulde to connect to a VPS through a reverse ssh tunnel: https://medium.com/@cryptomulde/private-electrum-server-electrs-for-your-raspiblitz-full-node-without-forwarding-ports-417e4c3af975  
 
 ---
 
@@ -139,8 +114,9 @@ Shared experiences:
 * https://github.com/openoms/bitcoin-tutorials/issues/2
 
 If you run into problems:
-*  try to run the commands manually one-by-one, spot which is causing the problem and copy the output
+
+* if after a reinstall Electrum would not connect try deleting the relevant certificate from the .electrum/certs directory on your desktop.
+* try to run the commands manually one-by-one, spot which is causing the problem and copy the output
 * open an issue here with the details and I will be happy to help to solve it  
-* join the Community Raspiblitz Telegram group on https://t.me/raspiblitz 
 
 Bear in mind that this guide and the parts used are free-opensource projects, you use them at your own responsibility and there are no guarantees of any kind.
