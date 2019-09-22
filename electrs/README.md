@@ -11,7 +11,7 @@ Tested on:
 * Odroid HC1 and XU4 (~18 hours)
 * Raspberry Pi 3 B+ (~two days to build the database from scratch). For the RPi3 the lighter weight [Electrum Personal Server](https://stadicus.github.io/RaspiBolt/raspibolt_64_electrum.html) is a good alternative, but only watches the preconfigured addresses and xpubs.
 
-## [Install Electrs](1_electrs_on_RaspiBlitz.sh)
+## [Install Electrs](electrs_to_RaspiBlitz.sh)
 
 To download and run on the RaspiBlitz (logged in as the user `admin`):  
 `$ wget https://github.com/openoms/bitcoin-tutorials/raw/master/electrs/electrs_to_RaspiBlitz.sh && bash electrs_to_RaspiBlitz.sh`  
