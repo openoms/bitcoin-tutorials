@@ -147,7 +147,7 @@ echo ""
 
 cd /home/btcpay
 sudo -u btcpay git clone https://github.com/btcpayserver/btcpayserver.git
-btcpay cd btcpayserver
+cd btcpayserver
 sudo -u btcpay ./build.sh
 
 echo "
