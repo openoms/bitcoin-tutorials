@@ -37,13 +37,19 @@ To download and run:
 
 ### Getting help
 
+The setup has multiple components and dependencies which can change when updated or modified by the maintainers.
+
 * see the original guide this is based on: https://gist.github.com/normandmickey/3f10fc077d15345fb469034e3697d0d0  
 
-* Shared experiences: 
+* shared experiences: 
 https://github.com/rootzoll/raspiblitz/issues/214
 
-- if `Nginx` breaks:
+* if `Nginx` breaks:
 `sudo nginx -t`
-is a very useful debug tool. Runs a test and gets detailed info on which line is problematic.
+is a very useful debug tool. Runs a test and displays detailed info on which line in the configuration is problematic.
+
+* Try to run the commands manually one-by-one, spot which is causing the problem and copy the output
+
+* Open an issue here with the details of your harware and software environment (SBC model, RaspiBlitz version) and I will be happy to help to solve it.
 
 * Join the BTCPay Server Community Chat on https://chat.btcpayserver.org/

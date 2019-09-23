@@ -121,7 +121,7 @@ Any communication outside a secure LAN must be encrypted.
 
 ## Further help: 
 
-The script is a collection of commands. The whole setup has multiple components and dependencies which can change when updated or modified by the maintainers.  
+The setup has multiple components and dependencies which can change when updated or modified by the maintainers.  
 
 Based on:
 * https://github.com/romanz/electrs/blob/master/doc/usage.md  
