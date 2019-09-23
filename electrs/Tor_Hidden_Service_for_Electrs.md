@@ -3,7 +3,7 @@
 Tor needs to be active on the RaspiBlitz to use this method.  
 No port forwarding or dynamicDNS required.
 
-### On the RaspiBlitz terminal: 
+### Activate the Hidden Service in  the RaspiBlitz terminal 
 
 * Open the Tor configuration file:  
 `$ sudo nano /etc/tor/torrc`
@@ -22,7 +22,10 @@ No port forwarding or dynamicDNS required.
 * Take note of the Tor address:  
 `$ sudo cat /mnt/hdd/tor/electrs/hostname`
 
-## On a Linux PC:
+## Connect the Electrum wallet
+### On a Linux PC
+
+Consider using an USB bootable [Tails](https://tails.boum.org/) - a Linux based operating system which runs all communication through Tor and has the Electrum wallet built in.
 
 * Start electrum with the Tor Browser open (proxy on port 9150):  
 `$ electrum --oneserver --server Tor_address.onion:50001:t --proxy socks5:127.0.0.1:9150`
@@ -30,7 +33,7 @@ No port forwarding or dynamicDNS required.
 * With Tor installed and running (proxy on port 9050):   
 `$ electrum --oneserver --server Tor_address.onion:50001:t --proxy socks5:127.0.0.1:9050`
 
-## Windows instructions:  
+### Windows instructions:  
 http://docs.electrum.org/en/latest/tor.html#windows 
 
 ---

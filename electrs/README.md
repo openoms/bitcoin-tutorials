@@ -40,10 +40,10 @@ To check if the indexing is running run in the RaspiBlitz terminal:
 Example output when running after indexing has finished:
 ![electrs status](/electrs/images/electrs_status.png)
 
-Find electrs between running processes with:
+Find electrs between the running processes with:
 `htop`
 
-Cheack if it is serving on the port 50001:  
+Check if it is serving on the port 50001:  
 `$ sudo -u electrs lsof -i`
 
 Look for the output:
@@ -53,52 +53,61 @@ electrs 2532 admin   17u  IPv4  32885      0t0  TCP *:50001 (LISTEN)
 
 ---
 
-## Install Electrum wallet on your desktop
+## Install the Electrum wallet on your desktop
 
 **Warning: Electrum versions older than 3.3.4 are susceptible to phishing. Do not download Electrum from another source than electrum.org, and learn to verify GPG signatures.**
 
 Follow the instructions on https://electrum.org/#download
 
-### Linux desktop: install, configure and run the Electrum wallet
-The instruction are in the script: [electrum_wallet.sh](electrum_wallet.sh)  
-Tested on Ubuntu 18.04.  
-To download and run on the Linux desktop:  
-`$ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/electrs/electrum_wallet.sh && bash electrum_wallet.sh`  
+* #### Linux desktop: download, validate and run the Electrum wallet
+    The instruction are in the script: [electrum_wallet.sh](electrum_wallet.sh)  
+    Tested on Ubuntu 18.04.  
+    To download and run on the Linux desktop:  
+    `$ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/electrs/electrum_wallet.sh && bash electrum_wallet.sh`  
 
 
-### Connect the Electrum wallet to Electrs:
+## Connect the Electrum wallet to Electrs
 
-For an unencrypted TCP connection (only to be used inside a secure LAN):  
-`electrum --oneserver --server RASPIBLITZ_IP:50001:t` 
+* #### For an unencrypted TCP connection (only to be used inside a secure LAN)
+    `$ electrum --oneserver --server RASPIBLITZ_IP:50001:t`
 
-To connect through SSL:  
-`electrum --oneserver --server YOUR_DOMAIN:50002:s`
+* #### To connect through SSL  
+    `$ electrum --oneserver --server YOUR_DOMAIN:50002:s`
 
-After a reinstall will need to delete the SSL certificate from the Electrum data directory to be able to connect again to the same domain:
-* on Linux delete the relevant file from  the `~/.electrs/certs` directory
+    After a reinstall will need to delete the SSL certificate from the Electrum     data directory to be able to connect again to the same domain:
+    * on Linux delete the relevant file from  the `~/.electrs/certs` directory
 
+* #### To connect through Tor (see [how to set up a Hidden Service](Tor_Hidden_Service_for_Electrs.md))
+
+    * Start electrum with the Tor Browser open (proxy on port 9150):  
+    `$ electrum --oneserver --server Tor_address.onion:50001:t --proxy socks5:127.0.0.1:9150`
+
+    * With Tor installed and running (proxy on port 9050):   
+    `$ electrum --oneserver --server Tor_address.onion:50001:t --proxy socks5:127.0.0.1:9050`  
+    This works in [Tails](https://tails.boum.org/) too.
 ---
 
 ## Remote connection options
 Any communication outside a secure LAN must be encrypted.  
 
-### Remote SSL connection
+* ### Remote SSL connection
 
-Forward the port 50002 on the router to be able to access electrs from the outside of the LAN.
+    Forward the port 50002 on the router to be able to access electrs from the outside of the LAN.
 
-Can be used as the secure backend of:
+    Can be used as the secure backend of:
 
-    Electrum wallet (desktop and mobile)
-    BitBox App
+        Electrum wallet (desktop and mobile)
+        BitBox App
 
-For the Eclair Mobile Bitcoin and Lightning wallet the server needs to have a CA validated certificate for which the usage of certbot/letsencypt is required.
+    For the Eclair Mobile Bitcoin and Lightning wallet the server needs to have a CA validated certificate for which the usage of certbot/letsencypt is required.
 
-### Tor Hidden Service
+* ### Tor Hidden Service
 
-Need to activate Tor on the RaspiBlitz + on the computer used for Electrum and [configure a Tor Hidden Service for Electrs](Tor_Hidden_Service_for_Electrs.md)
+    Need to activate Tor on the RaspiBlitz + on the computer used for Electrum and [configure a Tor Hidden Service for Electrs](Tor_Hidden_Service_for_Electrs.md).  
+    Consider using an USB bootable [Tails](https://tails.boum.org/) - a Linux based operating system which runs all communication through Tor and has the Electrum wallet built in.
 
-### Reverse SSH tunnel
-See the guide from @cryptomulde to connect to a VPS through a reverse ssh tunnel: https://medium.com/@cryptomulde/private-electrum-server-electrs-for-your-raspiblitz-full-node-without-forwarding-ports-417e4c3af975  
+* ### Reverse SSH tunnel
+    See the guide from @cryptomulde to connect to a VPS through a reverse ssh tunnel: https://medium.com/@cryptomulde/private-electrum-server-electrs-for-your-raspiblitz-full-node-without-forwarding-ports-417e4c3af975  
 
 ---
 
