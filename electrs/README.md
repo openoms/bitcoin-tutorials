@@ -62,12 +62,9 @@ Electrs will only start serving on the port 50001 when it has finished indexing.
 ---
 
 ## Install the Electrum wallet on your desktop
+Follow the instructions on https://electrum.org/#download and verify the GPG signature.
 
-**Warning: Electrum versions older than 3.3.4 are susceptible to phishing. Do not download Electrum from another source than electrum.org, and learn to verify GPG signatures.**
-
-Follow the instructions on https://electrum.org/#download
-
-* #### Linux desktop: download, validate and run the Electrum wallet
+* #### Linux desktop: download, verify and run the Electrum wallet
     The instruction are in the script: [electrum_wallet.sh](electrum_wallet.sh)  
     Tested on Ubuntu 18.04.  
     To download and run on the Linux desktop:  
@@ -136,4 +133,4 @@ If you run into problems:
 * try to run the commands manually one-by-one, spot which is causing the problem and copy the output
 * open an issue here with the details and I will be happy to help to solve it  
 
-Bear in mind that this guide and the parts used are free-opensource projects, you use them at your own responsibility and there are no guarantees of any kind.
+Bear in mind that this guide and the parts used are free-opensource projects, use them at your own responsibility and there are no guarantees of any kind.
