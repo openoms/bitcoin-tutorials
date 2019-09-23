@@ -45,7 +45,7 @@ sudo rm -f /home/admin/.nbxplorer/Main/settings.config
 # cleanup previous installs
 sudo rm -f /home/btcpay/dotnet-sdk*
 sudo rm -f /home/btcpay/aspnetcore*
-sudo rm -rdf /home/btcpay/dotnet
+sudo rm -rf /home/btcpay/dotnet
 sudo rm -f /usr/local/bin/dotnet
 
 sudo systemctl stop nbxplorer
@@ -114,7 +114,6 @@ sudo systemctl restart nbxplorer
 sudo systemctl enable nbxplorer
 sudo systemctl start nbxplorer
 
-
 echo "Checking for nbxplorer config"
 while [ ! -f "/home/btcpay/.nbxplorer/Main/settings.config" ]
     do
@@ -129,7 +128,7 @@ RPC_USER=$(sudo cat /mnt/hdd/bitcoin/bitcoin.conf | grep rpcuser | cut -c 9-)
 PASSWORD_B=$(sudo cat /mnt/hdd/bitcoin/bitcoin.conf | grep rpcpassword | cut -c 13-)
 #sudo mv /home/btcpay/.nbxplorer/Main/settings.config /home/admin/settings.config
 #sudo chown admin:admin /home/admin/settings.config
-mv /home/btcpay/.nbxplorer/Main/settings.config /home/btcpay/.nbxplorer/Main/settings.config.backup
+sudo mv /home/btcpay/.nbxplorer/Main/settings.config /home/btcpay/.nbxplorer/Main/settings.config.backup
 touch /home/admin/settings.config
 sudo chmod 600 /home/admin/settings.config || exit 1
 cat >> /home/admin/settings.config <<EOF
