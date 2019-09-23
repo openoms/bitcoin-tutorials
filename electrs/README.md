@@ -21,36 +21,44 @@ This will install:
 * Electrs
 * Nginx for connecting through SSL with a self-signed certificate
 * Tor Hidden Service if Tor is active
-
-If running the always-on electrs service is taking up too much RAM of your RPi3 stop it with:  
-`$ sudo systemctl stop electrs`  
-To stop running on boot:  
-`$  sudo systemctl disable electrs`  
-(To re-enable and start use the `enable` and `start`commands)  
-
 ---
 
 ## Check if Electrs is working:
 
 Electrs will only start serving on the port 50001 when it has finished indexing.
 
-To check if the indexing is running run in the RaspiBlitz terminal:  
-`$ sudo systemctl status electrs`  
+* #### Service status  
+    `$ sudo systemctl status electrs`  
 
-Example output when running after indexing has finished:
-![electrs status](/electrs/images/electrs_status.png)
+    Example output when running after indexing has finished:
+    ![electrs status](/electrs/images/electrs_status.png)
 
-Find electrs between the running processes with:
-`htop`
+* #### Filter the last 10000 lines of system logs  
+    `sudo journalctl -n 10000 | grep electrs`  
+    
+    To monitor continuously add `-f`
+* #### Check if it is serving on the port 50001 (only after indexing is complete)  
+    `$ sudo -u electrs lsof -i`
 
-Check if it is serving on the port 50001:  
-`$ sudo -u electrs lsof -i`
+    Look for the output:
+    ```
+    electrs 2532 admin   17u  IPv4  32885      0t0  TCP *:50001 (LISTEN)
+    ```
+* #### Find electrs between the running processes with  
+    `htop`
 
-Look for the output:
-```
-electrs 2532 admin   17u  IPv4  32885      0t0  TCP *:50001 (LISTEN)
-```
+    Take note of the CPU and RAM usage.
 
+    If running the always-on electrs service is taking up too much RAM of your RPi3:
+    * stop the service with:  
+    `$ sudo systemctl stop electrs`  
+    * stop running on boot:  
+    `$  sudo systemctl disable electrs`  
+
+    * start again (and wait for it to catch up):  
+    `sudo systemctl start electrs`
+    * re-enable on boot  
+    `sudo systemctl enable electrs`
 ---
 
 ## Install the Electrum wallet on your desktop
