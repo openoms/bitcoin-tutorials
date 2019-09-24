@@ -8,7 +8,7 @@ sudo apt-get install -y python3-pyqt5
 wget https://download.electrum.org/3.3.8/Electrum-3.3.8.tar.gz
 
 #Verify signature:
-https://raw.githubusercontent.com/spesmilo/electrum/master/pubkeys/ThomasV.asc
+wget https://raw.githubusercontent.com/spesmilo/electrum/master/pubkeys/ThomasV.asc
 gpg --import ThomasV.asc
 wget https://download.electrum.org/3.3.8/Electrum-3.3.8.tar.gz.asc
 verifyResult=$(gpg --verify Electrum-3.3.8.tar.gz.asc 2>&1)
