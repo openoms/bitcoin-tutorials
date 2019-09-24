@@ -59,6 +59,7 @@ Electrs will only start serving on the port 50001 when it has finished indexing.
     `sudo systemctl start electrs`
     * re-enable on boot  
     `sudo systemctl enable electrs`
+    
 ---
 
 ## Install the Electrum wallet on your desktop
@@ -72,6 +73,8 @@ Follow the instructions on https://electrum.org/#download and verify the GPG sig
 
 
 ## Connect the Electrum wallet to Electrs
+On Windows or Mac set the server in the Electrum GUI or adapt the config file.  
+Command syntax for Linux systems:
 
 * #### For an unencrypted TCP connection (only to be used inside a secure LAN)
     `$ electrum --oneserver --server RASPIBLITZ_IP:50001:t`
@@ -83,13 +86,14 @@ Follow the instructions on https://electrum.org/#download and verify the GPG sig
     * on Linux delete the relevant file from  the `~/.electrs/certs` directory
 
 * #### To connect through Tor (see [how to set up a Hidden Service](Tor_Hidden_Service_for_Electrs.md))
-
+    Take note of the Hidden Service address on the RaspiBlitz:  
+    `$ sudo cat /mnt/hdd/tor/electrs/hostname`
     * Start electrum with the Tor Browser open (proxy on port 9150):  
     `$ electrum --oneserver --server Tor_address.onion:50001:t --proxy socks5:127.0.0.1:9150`
 
     * With Tor installed and running (proxy on port 9050):   
     `$ electrum --oneserver --server Tor_address.onion:50001:t --proxy socks5:127.0.0.1:9050`  
-    This works in [Tails](https://tails.boum.org/) too.
+
 ---
 
 ## Remote connection options
@@ -109,10 +113,11 @@ Any communication outside a secure LAN must be encrypted.
 * ### Tor Hidden Service
 
     Need to activate Tor on the RaspiBlitz + on the computer used for Electrum and [configure a Tor Hidden Service for Electrs](Tor_Hidden_Service_for_Electrs.md).  
-    Consider using an USB bootable [Tails](https://tails.boum.org/) - a Linux based operating system which runs all communication through Tor and has the Electrum wallet built in.
+
+    See the [guide from @cryptomulde](https://medium.com/@cryptomulde/connect-electrum-to-raspiblitz-electrs-server-via-tor-bonus-20cd14bae9af) about How to Connect Electrum to Raspiblitz electrs-server via Tor - based on this guide
 
 * ### Reverse SSH tunnel
-    See the guide from @cryptomulde to connect to a VPS through a reverse ssh tunnel: https://medium.com/@cryptomulde/private-electrum-server-electrs-for-your-raspiblitz-full-node-without-forwarding-ports-417e4c3af975  
+    See the [guide from @cryptomulde](https://medium.com/@cryptomulde/private-electrum-server-electrs-for-your-raspiblitz-full-node-without-forwarding-ports-417e4c3af975  ) to connect to a VPS through a reverse ssh tunnel.
 
 ---
 
@@ -121,11 +126,13 @@ Any communication outside a secure LAN must be encrypted.
 The setup has multiple components and dependencies which can change when updated or modified by the maintainers.  
 
 Based on:
-* https://github.com/romanz/electrs/blob/master/doc/usage.md  
+* <https://github.com/romanz/electrs/blob/master/doc/usage.md>  
 
 Shared experiences:
-* https://github.com/rootzoll/raspiblitz/issues/123 
-* https://github.com/openoms/bitcoin-tutorials/issues/2
+* <https://github.com/rootzoll/raspiblitz/issues/123>
+* <https://github.com/openoms/bitcoin-tutorials/issues/2>
+
+[Notes on using Electrum with Tails](https://electrum.readthedocs.io/en/latest/tails.html#using-the-most-current-electrum-on-tails)
 
 If you run into problems:
 

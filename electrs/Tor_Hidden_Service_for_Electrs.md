@@ -25,8 +25,6 @@ No port forwarding or dynamicDNS required.
 ## Connect the Electrum wallet
 ### On a Linux PC
 
-Consider using an USB bootable [Tails](https://tails.boum.org/) - a Linux based operating system which runs all communication through Tor and has the Electrum wallet built in.
-
 * Start electrum with the Tor Browser open (proxy on port 9150):  
 `$ electrum --oneserver --server Tor_address.onion:50001:t --proxy socks5:127.0.0.1:9150`
 
@@ -34,7 +32,7 @@ Consider using an USB bootable [Tails](https://tails.boum.org/) - a Linux based 
 `$ electrum --oneserver --server Tor_address.onion:50001:t --proxy socks5:127.0.0.1:9050`
 
 ### Windows instructions:  
-http://docs.electrum.org/en/latest/tor.html#windows 
+https://electrum.readthedocs.io/en/latest/tor.html#windows
 
 ---
 
