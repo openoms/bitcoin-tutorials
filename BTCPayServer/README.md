@@ -12,7 +12,7 @@ Tested successfully on:
 * RaspiBlitz v1.3 
 * RPi4 4GB (2GB RAM is sufficient)
 
-### [Automated Script](/BTCPayServer/btcpay_to_blitz.sh)
+### [Automated Script](https://github.com/openoms/bitcoin-tutorials/blob/master/BTCPayServer/btcpay_to_blitz.sh)
 
 To download and run:  
 `wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/BTCPayServer/btcpay_to_blitz.sh && bash btcpay_to_blitz.sh`
@@ -49,6 +49,6 @@ is a very useful debug tool. Runs a test and displays detailed info on which lin
 
 * Try to run the commands manually one-by-one, spot which is causing the problem and copy the output
 
-* Open an issue here with the details of your harware and software environment (SBC model, RaspiBlitz version) and I will be happy to help to solve it.
+* Open an issue [here](https://github.com/openoms/bitcoin-tutorials/issues) with the details of your harware and software environment (SBC model, RaspiBlitz version) and I will be happy to help to solve it.
 
 * Join the BTCPay Server Community Chat on <https://chat.btcpayserver.org/>

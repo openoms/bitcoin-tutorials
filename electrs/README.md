@@ -11,7 +11,7 @@ Tested on:
 * Odroid HC1 and XU4 (~18 hours)
 * Raspberry Pi 3 B+ (~two days to build the database from scratch). For the RPi3 the lighter weight [Electrum Personal Server](https://stadicus.github.io/RaspiBolt/raspibolt_64_electrum.html) is a good alternative, but only watches the preconfigured addresses and xpubs.
 
-## [Install Electrs](electrs_to_RaspiBlitz.sh)
+## [Install Electrs](https://github.com/openoms/bitcoin-tutorials/blob/master/electrs/electrs_to_RaspiBlitz.sh)
 
 To download and run on the RaspiBlitz (logged in as the user `admin`):  
 `$ wget https://github.com/openoms/bitcoin-tutorials/raw/master/electrs/electrs_to_RaspiBlitz.sh && bash electrs_to_RaspiBlitz.sh`  
@@ -138,6 +138,6 @@ If you run into problems:
 
 * if after a reinstall Electrum would not connect try deleting the relevant certificate from the .electrum/certs directory on your desktop.
 * try to run the commands manually one-by-one, spot which is causing the problem and copy the output
-* open an issue here with the details and I will be happy to help to solve it  
+* open an issue [here](https://github.com/openoms/bitcoin-tutorials/issues) with the details and I will be happy to help to solve it  
 
 Bear in mind that this guide and the parts used are free-opensource projects, use them at your own responsibility and there are no guarantees of any kind.
