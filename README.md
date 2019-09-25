@@ -14,7 +14,7 @@ Start at <https://github.com/rootzoll/raspiblitz>
     * Eclair Mobile Bitcoin and Ligthtning wallet
     * Electrum wallet
 
-    \`The server indexes the entire Bitcoin blockchain, and the resulting index enables fast queries for any given user wallet, allowing the user to keep real-time track of his balances and his transaction history using the Electrum wallet. Since it runs on the user's own machine, there is no need for the wallet to communicate with external Electrum servers, thus preserving the privacy of the user's addresses and balances.\` - https://github.com/romanz/electrs
+    \`The server indexes the entire Bitcoin blockchain, and the resulting index enables fast queries for any given user wallet, allowing the user to keep real-time track of his balances and his transaction history using the Electrum wallet. Since it runs on the user's own machine, there is no need for the wallet to communicate with external Electrum servers, thus preserving the privacy of the user's addresses and balances.\` - <https://github.com/romanz/electrs>
 
 * #### [RTL SSL/HTTPS access](nginx/README.md)
     Secure remote connection for the Ride the Lightning Web UI
@@ -34,10 +34,9 @@ Start at <https://github.com/rootzoll/raspiblitz>
     The desktop app [ZAP](https://github.com/LN-Zap/zap-desktop) is a cross platform Lightning Network wallet focused on user experience and ease of use.
 
 * #### [Joule browser extension](JouleToRaspiBlitz.md) 
-    https://lightningjoule.com/
-    Bring the power of lightning to the web with in-browser payments and identity, all with your own node.
+    Bring the power of lightning to the web with in-browser payments and identity, all with your own node. <https://lightningjoule.com/>
 
-* #### [Electrum wallet on Linux with support for ColdCard, Trezor and Ledger](Electrum_ColdCard_Trezor_Ledger_EPS.md)
+* #### [Electrum wallet installation on Linux with support for ColdCard, Trezor and Ledger](Electrum_ColdCard_Trezor_Ledger_EPS.md)
 
 * #### [OpenBazaar installation and store migration](https://gist.github.com/openoms/ba843f7c44ff9c7ca0b5a80e12a0aeb4)
     Truly decentralized, peer-to-peer ecommerce - https://openbazaar.org/
