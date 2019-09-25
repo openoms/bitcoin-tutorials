@@ -39,10 +39,10 @@ To download and run:
 
 The setup has multiple components and dependencies which can change when updated or modified by the maintainers.
 
-* see the original guide this is based on: https://gist.github.com/normandmickey/3f10fc077d15345fb469034e3697d0d0  
+* see the original guide this is based on: <https://gist.github.com/normandmickey/3f10fc077d15345fb469034e3697d0d0>  
 
 * shared experiences: 
-https://github.com/rootzoll/raspiblitz/issues/214
+<https://github.com/rootzoll/raspiblitz/issues/214>
 
 * if `Nginx` breaks:
 `sudo nginx -t`
@@ -52,4 +52,4 @@ is a very useful debug tool. Runs a test and displays detailed info on which lin
 
 * Open an issue here with the details of your harware and software environment (SBC model, RaspiBlitz version) and I will be happy to help to solve it.
 
-* Join the BTCPay Server Community Chat on https://chat.btcpayserver.org/
+* Join the BTCPay Server Community Chat on <https://chat.btcpayserver.org/>
