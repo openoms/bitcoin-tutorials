@@ -41,8 +41,7 @@ The setup has multiple components and dependencies which can change when updated
 
 * see the original guide this is based on: <https://gist.github.com/normandmickey/3f10fc077d15345fb469034e3697d0d0>  
 
-* shared experiences: 
-<https://github.com/rootzoll/raspiblitz/issues/214>
+* shared experiences: <https://github.com/rootzoll/raspiblitz/issues/214>
 
 * if `Nginx` breaks:
 `sudo nginx -t`
