@@ -71,6 +71,10 @@ sudo -u btcpay wget https://download.visualstudio.microsoft.com/download/pr/9d04
 sudo -u btcpay mkdir /home/btcpay/dotnet
 sudo -u btcpay tar -xvf dotnet-sdk-2.2.102-linux-arm.tar.gz -C /home/btcpay/dotnet
 sudo -u btcpay tar -xvf aspnetcore-runtime-2.2.1-linux-arm.tar.gz -C /home/btcpay/dotnet
+
+# opt out of telemetry
+echo "DOTNET_CLI_TELEMETRY_OPTOUT=1" | sudo tee -a /etc/environment
+
 sudo ln -s /home/btcpay/dotnet/dotnet /usr/local/bin
 sudo -u btcpay /home/btcpay/dotnet/dotnet --info
 
