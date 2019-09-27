@@ -31,7 +31,7 @@ To download and run:
 * Set up LN with the connection string:  
  `type=lnd-rest;server=https://127.0.0.1:8080/;macaroonfilepath=/home/btcpay/admin.macaroon;allowinsecure=true`
 
-* Find more detailed info on https://docs.btcpayserver.org/btcpay-basics/gettingstarted
+* Find more detailed info on https://docs.btcpayserver.org/getting-started/
 
 ---
 
