@@ -105,16 +105,20 @@ echo ""
 sudo apt-get install -y nginx
 sudo /etc/init.d/nginx start
 
-echo ""
-echo "***"
-echo "Create a self signed SSL certificate"
-echo "***"
-echo ""
+# Only generate if there is none. Or Electrum will not connect if the cert changed.
+if [ -f /etc/ssl/certs/localhost.crt ] ; then
+    echo "skiping self signed SSL certificate" 
+else
+    echo ""
+    echo "***"
+    echo "Create a self signed SSL certificate"
+    echo "***"
+    echo ""
+    
+    #https://www.humankode.com/ssl/create-a-selfsigned-certificate-for-nginx-in-5-minutes
+    #https://stackoverflow.com/questions/8075274/is-it-possible-making-openssl-skipping-the-country-common-name-prompts
 
-#https://www.humankode.com/ssl/create-a-selfsigned-certificate-for-nginx-in-5-minutes
-#https://stackoverflow.com/questions/8075274/is-it-possible-making-openssl-skipping-the-country-common-name-prompts
-
-echo "
+    echo "
 [req]
 prompt             = no
 default_bits       = 2048
@@ -143,11 +147,13 @@ DNS.1   = localhost
 DNS.2   = 127.0.0.1
 " | sudo tee /mnt/hdd/electrs/localhost.conf
 
-cd /mnt/hdd/electrs
-sudo openssl req -x509 -nodes -days 1825 -newkey rsa:2048 -keyout localhost.key -out localhost.crt -config localhost.conf
+    cd /mnt/hdd/electrs
+    sudo openssl req -x509 -nodes -days 1825 -newkey rsa:2048 -keyout localhost.key -out localhost.crt -config localhost.conf
 
-sudo cp localhost.crt /etc/ssl/certs/localhost.crt
-sudo cp localhost.key /etc/ssl/private/localhost.key
+    sudo cp localhost.crt /etc/ssl/certs/localhost.crt
+    sudo cp localhost.key /etc/ssl/private/localhost.key
+
+fi
 
 echo ""
 echo "***"
@@ -270,11 +276,15 @@ if [ "${runBehindTor}" = "on" ]; then
     echo "***"
     echo "The Tor Hidden Service address for electrs is:"
     echo "$TOR_ADDRESS"
+    echo "Electrum wallet: start with the options:" 
+    echo "\`electrum --oneserver --server=$TOR_ADDRESS:50001:t --proxy socks5:127.0.0.1:9150
+\'"
     echo "***"
     echo "" 
+else
+    echo ""
+    echo "To connect from outside of the local network make sure the port 50002 is forwarded on the router"
+    echo "Electrum wallet: start with the options \`electrum --oneserver --server RaspiBlitz_IP:50002:s\`"
+    echo ""
 fi
 
-echo ""
-echo "To connect from outside of the local network make sure the port 50002 is forwarded on the router"
-echo "Electrum wallet: start with the options \`electrum --oneserver --server RaspiBlitz_IP:50002:s\`"
-echo ""
