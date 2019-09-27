@@ -344,11 +344,11 @@ if [ "${runBehindTor}" = "on" ]; then
     isElectrsTor=$(sudo cat /etc/tor/torrc 2>/dev/null | grep -c 'btcpay')
     if [ ${isElectrsTor} -eq 0 ]; then
         echo "
-        # Hidden Service for BTCPayServer
-        HiddenServiceDir /mnt/hdd/tor/btcpay
-        HiddenServiceVersion 3
-        HiddenServicePort 80 127.0.0.1:23000
-        " | sudo tee -a /etc/tor/torrc
+# Hidden Service for BTCPayServer
+HiddenServiceDir /mnt/hdd/tor/btcpay
+HiddenServiceVersion 3
+HiddenServicePort 80 127.0.0.1:23000
+" | sudo tee -a /etc/tor/torrc
 
         sudo systemctl restart tor
         sudo systemctl restart tor@default
