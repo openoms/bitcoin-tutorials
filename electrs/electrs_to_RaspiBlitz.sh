@@ -23,6 +23,11 @@ echo "Installing Rust"
 echo "***"
 echo ""
 sudo -u electrs curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sudo -u electrs sh -s -- -y
+# workaround to keep Rust at v1.37.0
+# check with: $ /home/electrs/.rustup/toolchains/stable-armv7-unknown-linux-gnueabihf/bin/rustc --version
+sudo -u electrs /home/electrs/.cargo/bin/rustup install 1.37.0
+sudo -u electrs /home/electrs/.cargo/bin/rustup override set 1.37.0
+
 #source $HOME/.cargo/env
 sudo apt update
 sudo apt install -y clang cmake  # for building 'rust-rocksdb'
