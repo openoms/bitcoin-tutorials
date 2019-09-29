@@ -3,21 +3,19 @@
 Tor needs to be active on the RaspiBlitz to use this method.  
 No port forwarding or dynamicDNS required.
 
-### Activate the Hidden Service in  the RaspiBlitz terminal 
-
+### Activate the Hidden Service in the RaspiBlitz terminal
 * Open the Tor configuration file:  
 `$ sudo nano /etc/tor/torrc`
 
 * Insert the lines:
-    ```
-    # Hidden Service for Electrum Server
+    ```bash
+    # Hidden Service v3 for the Electrum desktop
     HiddenServiceDir /mnt/hdd/tor/electrs
     HiddenServiceVersion 3
-    HiddenServicePort 50001 127.0.0.1:50001
+    HiddenServicePort 50002 127.0.0.1:50002
     ```
 * Restart Tor:   
-`$ sudo systemctl restart tor`  
-`$ sudo systemctl restart tor@default` 
+`$ sudo systemctl restart tor` 
 
 * Take note of the Tor address:  
 `$ sudo cat /mnt/hdd/tor/electrs/hostname`
@@ -34,12 +32,26 @@ No port forwarding or dynamicDNS required.
 ### Windows instructions:  
 https://electrum.readthedocs.io/en/latest/tor.html#windows
 
----
 
 Check for the blue dot when finished:
 
 ![electrum behind Tor](/electrs/images/electrum_tor.png)
 
+### [Electrum wallet on Android](https://play.google.com/store/apps/details?id=org.electrum.electrum&hl=en)
 
-## Based on:  
+### On Android
+* Open [Orbot](https://play.google.com/store/apps/details?id=org.torproject.android&hl=en)
+* Add Electrum to the Tor-Enabled Apps
+* Start Electrum from Orbot
+* In Electrum tap the dots in the right upper corner and select `Network`
+* Switch `One-server mode:` `ON`
+* In the `Server:` settings:   
+    * Fill the `Host:` with the .onion address
+    * Set the `Port:` to `50002` and press `OK`
+* In the `Proxy:` settings set:
+    * `Proxy mode` `socks5`
+    * `Host` `127.0.0.1` and press `OK`
+* Now should see the `Status; 1 connections.` on the top
+
+### Based on:  
 https://github.com/romanz/electrs/blob/master/doc/usage.md#tor-hidden-service
