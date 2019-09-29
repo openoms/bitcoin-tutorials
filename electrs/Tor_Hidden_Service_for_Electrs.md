@@ -38,8 +38,6 @@ Check for the blue dot when finished:
 ![electrum behind Tor](/electrs/images/electrum_tor.png)
 
 ### [Electrum wallet on Android](https://play.google.com/store/apps/details?id=org.electrum.electrum&hl=en)
-
-### On Android
 * Open [Orbot](https://play.google.com/store/apps/details?id=org.torproject.android&hl=en)
 * Add Electrum to the Tor-Enabled Apps
 * Start Electrum from Orbot
