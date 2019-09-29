@@ -270,7 +270,7 @@ if [ "${runBehindTor}" = "on" ]; then
         # Hidden Service for Electrum Server
         HiddenServiceDir /mnt/hdd/tor/electrs
         HiddenServiceVersion 3
-        HiddenServicePort 50001 127.0.0.1:50001
+        HiddenServicePort 50002 127.0.0.1:50002
         " | sudo tee -a /etc/tor/torrc
 
         sudo systemctl restart tor
@@ -281,15 +281,14 @@ if [ "${runBehindTor}" = "on" ]; then
     echo "***"
     echo "The Tor Hidden Service address for electrs is:"
     echo "$TOR_ADDRESS"
-    echo "Electrum wallet: start with the options:" 
-    echo "\`electrum --oneserver --server=$TOR_ADDRESS:50001:t --proxy socks5:127.0.0.1:9150
-\'"
+    echo "Electrum wallet: to connect through Tor open the Tor Browser  and start with the options:" 
+    echo "\`electrum --oneserver --server=$TOR_ADDRESS:50002:t --proxy socks5:127.0.0.1:9150\'"
     echo "***"
     echo "" 
-else
-    echo ""
-    echo "To connect from outside of the local network make sure the port 50002 is forwarded on the router"
-    echo "Electrum wallet: start with the options \`electrum --oneserver --server RaspiBlitz_IP:50002:s\`"
-    echo ""
 fi
+
+echo ""
+echo "To connect through SSL from outside of the local network make sure the port 50002 is forwarded on the router"
+echo "Electrum wallet: start with the options \`electrum --oneserver --server RaspiBlitz_IP:50002:s\`"
+echo ""
 
