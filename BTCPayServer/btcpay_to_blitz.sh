@@ -87,6 +87,10 @@ echo ""
 cd /home/btcpay
 sudo -u btcpay git clone https://github.com/dgarage/NBXplorer.git
 cd NBXplorer
+# checkout from last known to work commit:
+# https://github.com/dgarage/NBXplorer/commit/6069d0a06aae467cab41ea509450222d45fb9c04
+# check https://github.com/dgarage/NBXplorer/commits/master
+sudo -u btcpay git checkout 6069d0a06aae467cab41ea509450222d45fb9c04
 sudo -u btcpay ./build.sh
 
 echo "
@@ -152,6 +156,10 @@ echo ""
 cd /home/btcpay
 sudo -u btcpay git clone https://github.com/btcpayserver/btcpayserver.git
 cd btcpayserver
+# checkout from last known to work commit: 
+# https://github.com/btcpayserver/btcpayserver/commit/2257b9573202e580611e9c2776883d00aeec0d96
+# check https://github.com/btcpayserver/btcpayserver/commits/master
+sudo -u btcpay git checkout 2257b9573202e580611e9c2776883d00aeec0d96
 sudo -u btcpay ./build.sh
 
 echo "
