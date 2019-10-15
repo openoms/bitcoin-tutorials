@@ -34,7 +34,7 @@ Electrs will only start serving on the port 50001 when it has finished indexing.
     ![electrs status](/electrs/images/electrs_status.png)
 
 * #### Filter the last 10000 lines of system logs  
-    `sudo journalctl -n 10000 | grep electrs`  
+    `$ sudo journalctl -n 10000 | grep electrs`  
     
     To monitor continuously add `-f`
 * #### Check if it is serving on the port 50001 (only after indexing is complete)  
