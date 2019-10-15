@@ -52,5 +52,7 @@ Check for the blue dot when finished:
     * `Port` `9050` and press `OK`
 * Now should see the `Status; 1 connections.` on the top
 
+Note: if the Android Electrum wallet does not connect it worth trying to switch to a HiddenServiceVersion 2
+
 ### Based on:  
 https://github.com/romanz/electrs/blob/master/doc/usage.md#tor-hidden-service
