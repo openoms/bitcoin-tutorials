@@ -48,7 +48,8 @@ Check for the blue dot when finished:
     * Set the `Port:` to `50002` and press `OK`
 * In the `Proxy:` settings set:
     * `Proxy mode` `socks5`
-    * `Host` `127.0.0.1` and press `OK`
+    * `Host` `127.0.0.1`
+    * `Port` `9050` and press `OK`
 * Now should see the `Status; 1 connections.` on the top
 
 ### Based on:  
