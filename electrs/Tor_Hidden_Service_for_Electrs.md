@@ -12,7 +12,7 @@ No port forwarding or dynamicDNS required.
     # Hidden Service v3 for the Electrum desktop
     HiddenServiceDir /mnt/hdd/tor/electrs
     HiddenServiceVersion 3
-    HiddenServicePort 50002 127.0.0.1:50002
+    HiddenServicePort 50001 127.0.0.1:50001
     ```
 * Restart Tor:   
 `$ sudo systemctl restart tor` 
@@ -45,7 +45,7 @@ Check for the blue dot when finished:
 * Switch `One-server mode:` `ON`
 * In the `Server:` settings:   
     * Fill the `Host:` with the .onion address
-    * Set the `Port:` to `50002` and press `OK`
+    * Set the `Port:` to `50001` and press `OK`
 * In the `Proxy:` settings set:
     * `Proxy mode` `socks5`
     * `Host` `127.0.0.1`
