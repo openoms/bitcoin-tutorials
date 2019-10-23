@@ -157,9 +157,9 @@ cd /home/btcpay
 sudo -u btcpay git clone https://github.com/btcpayserver/btcpayserver.git
 cd btcpayserver
 # checkout from last known to work commit: 
-# https://github.com/btcpayserver/btcpayserver/commit/2257b9573202e580611e9c2776883d00aeec0d96
+# https://github.com/btcpayserver/btcpayserver/commit/1cb02b2913a5d8c9d2113e3603cc0de0c4d1084e
 # check https://github.com/btcpayserver/btcpayserver/commits/master
-sudo -u btcpay git checkout 2257b9573202e580611e9c2776883d00aeec0d96
+sudo -u btcpay git checkout 1cb02b2913a5d8c9d2113e3603cc0de0c4d1084e
 sudo -u btcpay ./build.sh
 
 echo "
