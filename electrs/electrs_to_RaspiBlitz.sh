@@ -25,7 +25,7 @@ echo ""
 sudo -u electrs curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sudo -u electrs sh -s -- -y
 # workaround to keep Rust at v1.37.0
 # check rust version with: $ sudo -u electrs /home/electrs/.cargo/bin/cargo --version
-sudo -u electrs /home/electrs/.cargo/bin/rustup install 1.37.0
+sudo -u electrs /home/electrs/.cargo/bin/rustup install 1.37.0 --force
 sudo -u electrs /home/electrs/.cargo/bin/rustup override set 1.37.0
 
 #source $HOME/.cargo/env
