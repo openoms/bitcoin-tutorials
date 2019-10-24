@@ -24,10 +24,10 @@ No port forwarding or dynamicDNS required.
 ### On a Linux PC
 
 * Start electrum with the Tor Browser open (proxy on port 9150):  
-`$ electrum --oneserver --server Tor_address.onion:50001:t --proxy socks5:127.0.0.1:9150`
+`$ electrum --oneserver --server Tor_address.onion:50002:s --proxy socks5:127.0.0.1:9150`
 
 * With Tor installed and running (proxy on port 9050):   
-`$ electrum --oneserver --server Tor_address.onion:50001:t --proxy socks5:127.0.0.1:9050`
+`$ electrum --oneserver --server Tor_address.onion:50002:s --proxy socks5:127.0.0.1:9050`
 
 ### Windows instructions:  
 https://electrum.readthedocs.io/en/latest/tor.html#windows
