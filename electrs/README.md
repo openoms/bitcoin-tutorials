@@ -89,10 +89,10 @@ Command syntax for Linux systems:
     Take note of the Hidden Service address on the RaspiBlitz:  
     `$ sudo cat /mnt/hdd/tor/electrs/hostname`
     * Start electrum with the Tor Browser open (proxy on port 9150):  
-    `$ electrum --oneserver --server Tor_address.onion:50001:t --proxy socks5:127.0.0.1:9150`
+    `$ electrum --oneserver --server Tor_address.onion:50002:s --proxy socks5:127.0.0.1:9150`
 
     * With Tor installed and running (proxy on port 9050):   
-    `$ electrum --oneserver --server Tor_address.onion:50001:t --proxy socks5:127.0.0.1:9050`  
+    `$ electrum --oneserver --server Tor_address.onion:50002:s --proxy socks5:127.0.0.1:9050`  
 
 ---
 
