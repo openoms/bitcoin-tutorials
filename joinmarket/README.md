@@ -1,0 +1,98 @@
+## JoinMarket on the RaspiBlitz
+
+Testing on a RPi4 4GB with RaspiBlitz v1.3
+
+Open the [Tor browser](https://www.torproject.org/download/) and check out the current fees and available liquidity in the JoinMarket order book: https://joinmarket.me/ob/
+
+### Installation
+
+* Run in the RaspiBlitz terminal:
+
+    ```bash
+    $ git clone https://github.com/JoinMarket-Org/joinmarket-clientserver.git
+    $ cd joinmarket-clientserver
+    $ ./install.sh
+    # (follow instructions on screen; provide sudo password when prompted)
+    # do not install QT-dependencies - running headless on the RPi
+    ```
+
+* Activate the virtual environment to see the prompt: `(jmvenv) $`  
+This needs to be done at every new login.
+
+    ```bash
+    $ cd joinmarket-clientserver
+    $ source jmvenv/bin/activate
+    $ cd scripts
+    ```
+
+### Generate a wallet
+* Using the JoinMarket wallet: https://github.com/JoinMarket-Org/joinmarket/wiki/Using-the-JoinMarket-internal-wallet
+
+    `(jmvenv) $ python wallet-tool.py generate`  
+    ```
+    Created a new `joinmarket.cfg`. Please review and adopt the settings and restart joinmarket.
+    ```
+    * JoinMarket uses a hot wallet sitting on your Raspberry Pi. Keep it safe.
+    * Backup your seed and store safely. Best to not keep the seed and the passphrase together.
+    * The wallet encryption password will be needed every time when there is interaction with the wallet. Store it somewhere accessible, best if encrypted.
+
+* Fill in the PasswordB to the `joinmarket.cfg`  
+ (as in `/mnt/hdd/bitcoin/bitcoin.conf`)  
+
+    `(jmvenv) $ nano joinmarket.cfg`  
+
+
+
+    ```
+    [BLOCKCHAIN]
+    rpc_user = raspibolt
+    rpc_password = PasswordB-as-in-bitcoin.conf
+    rpc_host = localhost #default usually correct 
+    rpc_port = 8332 # default for mainnet
+    ```
+* Display the addresses to fund (look in mixdepth 0):  
+
+    `(jmvenv) $ python wallet-tool.py wallet.jmdat`  
+
+    and run again after the first time
+
+### Send payments through coinjoins with `sendpayment.py`
+
+* Described in: https://github.com/JoinMarket-Org/joinmarket-clientserver/blob/master/docs/USAGE.md#try-out-a-coinjoin-using-sendpaymentpy
+
+### Run a Yield Generator
+* Read the basics: https://github.com/JoinMarket-Org/joinmarket/wiki/Running-a-Yield-Generator  
+
+* Edit the settings:  
+    `(jmvenv) $ nano yield-generator-basic.py`
+
+    ```
+    """THESE SETTINGS CAN SIMPLY BE EDITED BY HAND IN THIS FILE:
+    """
+    txfee = 100
+    cjfee_a = 500
+    cjfee_r = '0.00002'
+    ordertype = 'swreloffer' #'swreloffer' or 'swabsoffer'
+    nickserv_password = ''
+    max_minsize = 1000
+    gaplimit = 6
+    ```
+
+    * set the `txfee` to 0 to reduce the minimum offer amount
+    * `cjfee_a` is the fixed coinjoin fee to be earned
+    * `cjfee_r = '0.00002'` is the relative fee depending on the used amount
+    * to use an absolute fee swap `swreloffer` to `swabsoffer`
+
+* Once set up run: 
+
+    `(jmvenv) $ python yield-generator-basic.py wallet.jmdat`
+
+* To check the transaction history:  
+
+    (`jmvenv) $ python wallet-tool.py wallet.jmdat history`
+
+### Resources:
+* Latest codebase: https://github.com/JoinMarket-Org/joinmarket-clientserver
+* Installation instructions: https://github.com/JoinMarket-Org/joinmarket-clientserver#quickstart---recommended-installation-method-linux-only
+
+* Video demonstration: https://youtu.be/hwmvZVQ4C4M
