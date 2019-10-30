@@ -4,6 +4,20 @@ Testing on a RPi4 4GB with RaspiBlitz v1.3
 
 Open the [Tor browser](https://www.torproject.org/download/) and check out the current fees and available liquidity in the JoinMarket order book: https://joinmarket.me/ob/
 
+### Prerequisite
+
+* Need to activate the wallet and txindex for bitcoind
+    
+    `$ sudo nano /mnt/hdd/bitcoin/bitcoin.conf`
+    
+    ```
+    disablewallet=0
+    txindex=1
+    ```
+    `$ sudo systemctl restart bitcoind`
+
+    * building the txindex takes ~7h for a RPi4 with an SSD
+
 ### Installation
 
 * Run in the RaspiBlitz terminal:
@@ -88,14 +102,13 @@ This needs to be done at every new login.
     `(jmvenv) $ python yield-generator-basic.py wallet.jmdat`
 
 ### Check the transaction history
-* use the wallet tool: 
-
+* use the wallet tool:  
     `(jmvenv) $ python wallet-tool.py wallet.jmdat history`
 
 * View the log of the transactions of the Yield Generator:  
-
     `$ cat ~/joinmarket-clientserver/scripts/logs/yigen-statement.csv`
-
+* Monitor continously with:  
+    `$ tail -f -n 100 ~/joinmarket-clientserver/scripts/logs/yigen-statement.csv`
 
 ### Keep the offers running in the background with [Tmux](https://github.com/tmux/tmux#welcome-to-tmux)
 
