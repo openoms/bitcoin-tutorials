@@ -3,6 +3,7 @@
 
 Start at <https://github.com/rootzoll/raspiblitz>
 
+* #### [JoinMarket on the RaspiBlitz](joinmarket/README.md)
 
 * #### [BTCPayServer on the RaspiBlitz](BTCPayServer/README.md)
 
