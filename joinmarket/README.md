@@ -91,8 +91,27 @@ This needs to be done at every new login.
 
     (`jmvenv) $ python wallet-tool.py wallet.jmdat history`
 
+
+### Keep the offers running in the background with [Tmux](https://github.com/tmux/tmux#welcome-to-tmux)
+
+* Install on the RaspiBlitz:  
+`$ sudo apt install tmux`
+* Start:  
+`$ tmux`
+* Work in the terminal as described above.  
+Find a basic introduction at https://www.ocf.berkeley.edu/~ckuehl/tmux/
+* If the terminal is disconnected the processes in tmux keep running (as it is running the Blitz) and can be reopened
+* when logged in after a disconnection run:  
+`$ tmux a`  
+to pick up where left off
+
+
 ### Resources:
 * Latest codebase: https://github.com/JoinMarket-Org/joinmarket-clientserver
 * Installation instructions: https://github.com/JoinMarket-Org/joinmarket-clientserver#quickstart---recommended-installation-method-linux-only
 
 * Video demonstration: https://youtu.be/hwmvZVQ4C4M
+
+* Tmux  will be included in the next release of the RaspiBlitz: https://github.com/rootzoll/raspiblitz/issues/793
+
+* Discuss JoinMarket usage on the RaspiBlitz in https://github.com/rootzoll/raspiblitz/issues/842
