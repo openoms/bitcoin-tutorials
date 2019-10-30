@@ -39,7 +39,7 @@ This needs to be done at every new login.
 * Fill in the PasswordB to the `joinmarket.cfg`  
  (as in `/mnt/hdd/bitcoin/bitcoin.conf`)  
 
-    `(jmvenv) $ nano joinmarket.cfg`  
+    `$ nano joinmarket.cfg`  
 
 
 
@@ -64,7 +64,7 @@ This needs to be done at every new login.
 * Read the basics: https://github.com/JoinMarket-Org/joinmarket/wiki/Running-a-Yield-Generator  
 
 * Edit the settings:  
-    `(jmvenv) $ nano yield-generator-basic.py`
+    `$ nano yield-generator-basic.py`
 
     ```
     """THESE SETTINGS CAN SIMPLY BE EDITED BY HAND IN THIS FILE:
@@ -87,9 +87,14 @@ This needs to be done at every new login.
 
     `(jmvenv) $ python yield-generator-basic.py wallet.jmdat`
 
-* To check the transaction history:  
+### Check the transaction history
+* use the wallet tool: 
 
-    (`jmvenv) $ python wallet-tool.py wallet.jmdat history`
+    `(jmvenv) $ python wallet-tool.py wallet.jmdat history`
+
+* View the log of the transactions of the Yield Generator:  
+
+    `$ cat ~/joinmarket-clientserver/scripts/logs/yigen-statement.csv`
 
 
 ### Keep the offers running in the background with [Tmux](https://github.com/tmux/tmux#welcome-to-tmux)
