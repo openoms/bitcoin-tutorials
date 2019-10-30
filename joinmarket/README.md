@@ -2,7 +2,9 @@
 
 Testing on a RPi4 4GB with RaspiBlitz v1.3
 
-Open the [Tor browser](https://www.torproject.org/download/) and check out the current fees and available liquidity in the JoinMarket order book: https://joinmarket.me/ob/
+The current fees and available liquidity can be seen in the JoinMarket order book on https://joinmarket.me/ob/.  
+When installed can also check:  
+`$ python ~/joinmarket-clientserver/scripts/obwatch/ob-watcher.py `
 
 ### Prerequisite
 
