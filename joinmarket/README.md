@@ -27,6 +27,8 @@ When installed can also check:
     ```bash
     $ git clone https://github.com/JoinMarket-Org/joinmarket-clientserver.git
     $ cd joinmarket-clientserver
+    # latest release: https://github.com/JoinMarket-Org/joinmarket-clientserver/releases
+    $ git reset --hard v0.5.5
     $ ./install.sh
     # (follow instructions on screen; provide sudo password when prompted)
     # do not install QT-dependencies - running headless on the RPi
@@ -56,8 +58,6 @@ This needs to be done at every new login.
  (as in `/mnt/hdd/bitcoin/bitcoin.conf`)  
 
     `$ nano joinmarket.cfg`  
-
-
 
     ```
     [BLOCKCHAIN]
@@ -120,11 +120,10 @@ This needs to be done at every new login.
 `$ tmux`
 * Work in the terminal as described above.  
 Find a basic introduction at https://www.ocf.berkeley.edu/~ckuehl/tmux/
-* If the terminal is disconnected the processes in tmux keep running (as it is running the Blitz) and can be reopened
+* If the terminal is disconnected the processes in tmux keep running (as it is running on the Blitz) and can be returned to
 * when logged in after a disconnection run:  
 `$ tmux a`  
 to pick up where left off
-
 
 ### Resources:
 * Latest codebase: https://github.com/JoinMarket-Org/joinmarket-clientserver
