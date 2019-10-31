@@ -94,7 +94,7 @@ This needs to be done at every new login.
     gaplimit = 6
     ```
 
-    * set the `txfee` to 0 to reduce the minimum offer amount
+    * `txfee` is the maker's contribution to the miner fees (still paid by the taker). To reduce the minimum offer amount for `swreloffer` set it to 0.
     * `cjfee_a` is the fixed coinjoin fee to be earned
     * `cjfee_r = '0.00002'` is the relative fee depending on the used amount
     * to use an absolute fee swap `swreloffer` to `swabsoffer`
