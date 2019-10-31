@@ -8,17 +8,14 @@ When installed can also check:
 
 ### Prerequisite
 
-* Need to activate the wallet and txindex for bitcoind
+* Need to activate the wallet of bitcoind
     
     `$ sudo nano /mnt/hdd/bitcoin/bitcoin.conf`
     
     ```
     disablewallet=0
-    txindex=1
     ```
     `$ sudo systemctl restart bitcoind`
-
-    * building the txindex takes ~7h for a RPi4 with an SSD
 
 ### Installation
 
