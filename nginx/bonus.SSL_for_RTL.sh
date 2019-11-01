@@ -98,7 +98,7 @@ stream {
                 proxy_pass RTL;
                 ssl_certificate /etc/letsencrypt/live/$YOUR_DOMAIN/fullchain.pem;
                 ssl_certificate_key /etc/letsencrypt/live/$YOUR_DOMAIN/privkey.pem;
-                ssl_session_cache shared:SSL:1m;
+                ssl_session_cache shared:SSL-RTL:1m;
                 ssl_session_timeout 4h;
                 ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
                 ssl_prefer_server_ciphers on;
