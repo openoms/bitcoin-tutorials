@@ -60,8 +60,6 @@ This needs to be done at every new login.
     [BLOCKCHAIN]
     rpc_user = raspibolt
     rpc_password = PasswordB-as-in-bitcoin.conf
-    rpc_host = localhost #default usually correct 
-    rpc_port = 8332 # default for mainnet
     ```
 * Display the addresses to fund (look in mixdepth 0):  
 
@@ -72,6 +70,10 @@ This needs to be done at every new login.
 ### Send payments through coinjoins with `sendpayment.py`
 
 * Described in: https://github.com/JoinMarket-Org/joinmarket-clientserver/blob/master/docs/USAGE.md#try-out-a-coinjoin-using-sendpaymentpy
+
+* See the walkthrough for the JoinMarket-Qt GUI to send payments with coinjoin or run multiple coinjoins (tumbler): <https://github.com/JoinMarket-Org/joinmarket-clientserver/blob/master/docs/JOINMARKET-QT-GUIDE.md>
+
+* Video demonstration of using the JoinMarket-Qt GUI: <https://youtu.be/hwmvZVQ4C4M>
 
 ### Run a Yield Generator
 * Read the basics: https://github.com/JoinMarket-Org/joinmarket/wiki/Running-a-Yield-Generator  
@@ -90,18 +92,19 @@ This needs to be done at every new login.
     max_minsize = 1000
     gaplimit = 6
     ```
-
     * `txfee` is the maker's contribution to the miner fees (still paid by the taker). To reduce the minimum offer amount for `swreloffer` set it to 0.
-    * `cjfee_a` is the fixed coinjoin fee to be earned
-    * `cjfee_r = '0.00002'` is the relative fee depending on the used amount
-    * to use an absolute fee swap `swreloffer` to `swabsoffer`
+    * `cjfee_a` is the fixed coinjoin fee to be earned when using `swabsoffer`
+    * `cjfee_r` is the relative fee when using `swreloffer`. Specified as the fraction of the used amount.
+    * `max_minsize` specifies the minimum offer size in satoshis (this is the minimum size the UTXO will end up to be after participating in coinjoin)
+    * `ordertype` sets either a relative (`swreloffer`) or an absolute (`swabsoffer`) coinjoin fee model
 
-* Once set up run: 
+* Once set up run:
 
     `(jmvenv) $ python yield-generator-basic.py wallet.jmdat`
 
 ### Check the transaction history
-* use the wallet tool:  
+
+* use the wallet tool:
     `(jmvenv) $ python wallet-tool.py wallet.jmdat history`
 
 * View the log of the transactions of the Yield Generator:  
@@ -123,11 +126,11 @@ Find a basic introduction at https://www.ocf.berkeley.edu/~ckuehl/tmux/
 to pick up where left off
 
 ### Resources:
-* Latest codebase: https://github.com/JoinMarket-Org/joinmarket-clientserver
-* Installation instructions: https://github.com/JoinMarket-Org/joinmarket-clientserver#quickstart---recommended-installation-method-linux-only
+* Latest codebase: <https://github.com/JoinMarket-Org/joinmarket-clientserver>
+* Installation instructions: <https://github.com/JoinMarket-Org/joinmarket-clientserver#quickstart---recommended-installation-method-linux-only>
 
-* Video demonstration: https://youtu.be/hwmvZVQ4C4M
+* Tmux  will be included in the next release of the RaspiBlitz: <https://github.com/rootzoll/raspiblitz/issues/793>
 
-* Tmux  will be included in the next release of the RaspiBlitz: https://github.com/rootzoll/raspiblitz/issues/793
+* Discuss JoinMarket usage on the RaspiBlitz in <https://github.com/rootzoll/raspiblitz/issues/842>
 
-* Discuss JoinMarket usage on the RaspiBlitz in https://github.com/rootzoll/raspiblitz/issues/842
+* More links and info in 6102bitcoin/CoinJoin-Research: https://github.com/6102bitcoin/CoinJoin-Research/blob/master/CoinJoin_Implementations/11_JoinMarket-JoinMarket-Org/summary.md
