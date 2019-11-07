@@ -1,4 +1,4 @@
-## JoinMarket on the RaspiBlitz
+## JoinMarket on the RaspiBlitz <img src="joinmarket_logo.png" style="float: right" alt="drawing" width="100"/>
 
 Testing on a RPi4 4GB with RaspiBlitz v1.3
 
