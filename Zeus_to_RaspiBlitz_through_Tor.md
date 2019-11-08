@@ -58,7 +58,7 @@ $ go version
 If need to install Go, run these:
 
 ```
-$ wget https://storage.googleapis.com/golang/go1.11.linux-armv6l.tar.gz
+$ wget https://storage.googleapis.com/golang/go1.13.linux-armv6l.tar.gz
 $ sudo tar -C /usr/local -xzf go1.11.linux-armv6l.tar.gz
 $ sudo rm *.gz
 $ sudo mkdir /usr/local/gocode
