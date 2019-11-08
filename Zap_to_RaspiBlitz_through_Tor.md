@@ -3,7 +3,8 @@ Confirmed to work with the mainnet Zap version >0.4.075.3 on iOS TestFlight
 
 ### Create the Hidden Service:
 * In the RaspiBlitz terminal:  
-`sudo nano /etc/tor/torrc`
+
+    `$ sudo nano /etc/tor/torrc`
 
 * paste on the end of the file
     ```
@@ -11,33 +12,32 @@ Confirmed to work with the mainnet Zap version >0.4.075.3 on iOS TestFlight
     HiddenServiceVersion 3
     HiddenServicePort 8080 127.0.0.1:8080
     ```
+
+    Save (Ctrl+O, ENTER) and exit (Ctrl+X)
+
     If you want to use a different port:
     ```
     HiddenServicePort THIS_CAN_BE_ANY_PORT 127.0.0.1:8080
     ```
-* Take note of the .onion address into a word processor (like notepad)  
-`sudo cat /mnt/hdd/tor/lnd_REST/hostname`
+
+* Restart Tor:  
+
+    `$ sudo systemctl restart tor`
+    
+* Take note of the .onion address into a word processor (like notepad)
+
+    `$ sudo cat /mnt/hdd/tor/lnd_REST/hostname`
 
 ### Install lndconnect 
 
-* Can install from the RaspiBlitz MOBILE menu by attempting to connect Zap in the traditional way.
+* Install Go and lndconnect manually:
 
-* For Raspiblitz 1.3 add Go to the PATH by pasting this to the terminal (even if Go is installed already):
-    ```
-    export GOROOT=/usr/local/go
-    export PATH=$PATH:$GOROOT/bin
-    export GOPATH=/usr/local/gocode
-    export PATH=$PATH:$GOPATH/bin
-    sudo bash -c "echo 'PATH=\$PATH:/usr/local/gocode/bin/' >> /etc/profile"
-    ```
-
-* Alternatively install Go and lndconnect manually:
     ```
     # check if  Go is installed (should be v1.11 or higher):  
     go version 
     # If need to install Go, run these:
     wget https://storage.googleapis.com/golang/go1.13.linux-armv6l.tar.gz
-    sudo tar -C /usr/local -xzf go1.11.linux-armv6l.tar.gz
+    sudo tar -C /usr/local -xzf go1.13.linux-armv6l.tar.gz
     sudo rm *.gz
     sudo mkdir /usr/local/gocode
     sudo chmod 777 /usr/local/gocode
@@ -47,9 +47,9 @@ Confirmed to work with the mainnet Zap version >0.4.075.3 on iOS TestFlight
     export PATH=$PATH:$GOPATH/bin
 
     # Install lndconnect:
-    cd /tmp
-    wget https://github.com/LN-Zap/lndconnect/releases/download/v0.1.0/lndconnect-linux-armv7-v0.1.0.tar.gz
-    sudo tar -xvf lndconnect-linux-armv7-v0.1.0.tar.gz --strip=1 -C /usr/local/bin
+    go get -d github.com/LN-Zap/lndconnect
+    cd $GOPATH/src/github.com/LN-Zap/lndconnect
+    make
     ```
 
 ### Generate the lndconnect string
@@ -66,11 +66,10 @@ Confirmed to work with the mainnet Zap version >0.4.075.3 on iOS TestFlight
 
 ### Connect Zap through Tor
 * Scan the QR code with your Tor enabled Zap  
+
     or
 * Share the string to your phone in an encrypted chat message to yourself and paste the string into Zap 
 
 * Enjoy your private and encrypted remote connection!
 
-<p align="center">
-<img src="images/zap_on_tor.jpg" alt="drawing" width="350/>
-</p>
+<div style="text-align:center"><img src="images/zap_on_tor.jpg" width="350//></div>
