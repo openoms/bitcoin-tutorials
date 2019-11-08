@@ -1,88 +1,109 @@
 
-### Connect the Zeus Lightning Wallet on Android to the RaspiBlitz over Tor
+### Connect Zeus over Tor to the RaspiBlitz
 
-This guide is heavily based on: https://github.com/seth586/guides/blob/master/FreeNAS/wallets/zeusln.md.
-
-Tested on the RaspiBlitz v1.1 with Tor installed already.
-
-Have a look at the proposal of @seth586 about connecting light wallets through Tor: https://medium.com/@seth586/neutrino-can-be-dangerous-so-lets-grow-bitcoins-immunity-with-a-bip-bolt-2135956f147
+<p align="left">
+  <img width="380" src="images/zeus_on_tor_logo.jpg">
+</p>
 
 
-Download the Zeus app, APKs available here: https://github.com/ZeusLN/zeus/releases, 
-on F-Droid and Google Play.
+Tested on the RaspiBlitz v1.3 with Tor activated.
 
-Log in to your RaspiBlitz through ssh.
+Download the [Zeus](https://zeusln.app/) app.  
+Available on:
+* [GitHub](https://github.com/ZeusLN/zeus/releases), 
+* [F-Droid](https://f-droid.org/en/packages/com.zeusln.zeus/) 
+* [Google Play](https://play.google.com/store/apps/details?id=com.zeusln.zeus)
 
-Edit `torrc` with `sudo nano /etc/tor/torrc` and add the following lines (`myandroid` can be unique):
-```
-HiddenServiceDir /mnt/hdd/tor/lnd_api/
-HiddenServiceVersion 2
-HiddenServiceAuthorizeClient stealth myandroid
-HiddenServicePort 8080 127.0.0.1:8080
-HiddenServicePort 10009 127.0.0.1:10009
-```
-Save (Ctrl+O, ENTER) and exit (Ctrl+X)
+### Create the Hidden Service:
+* In the RaspiBlitz terminal:  
 
-Restart Tor:
-```
-$ sudo systemctl restart tor
-```
+    `$ sudo nano /etc/tor/torrc`
 
-View the private credentials of your new hidden service. The first part is the onion address, the second part is the secret.
-```
-$ sudo cat /mnt/hdd/tor/lnd_api/hostname
-z1234567890abc.onion AbyZXCfghtG+E0r84y/nR # client: myandroid
-```
+* paste on the end of the file:
+    ```
+    HiddenServiceDir /mnt/hdd/tor/lnd_REST/
+    HiddenServiceVersion 3
+    HiddenServicePort 8080 127.0.0.1:8080
+    ```
+    Save (Ctrl+O, ENTER) and exit (Ctrl+X)
 
-Download Orbot for Android. https://guardianproject.info/apps/orbot/
+    If you want to use a different port:
+    ```
+    HiddenServicePort THIS_CAN_BE_ANY_PORT 127.0.0.1:8080
+    ```
+* Restart Tor:
 
-Open Orbot. Click the `⋮`, select `hidden services ˃`, select `Client cookies`.
+    `$ sudo systemctl restart tor` 
 
-Press the + button on the lower right. Type in the the onion address and secret cookie you revealed with `sudo cat /mnt/hdd/tor/lnd_api/hostname`.  
- Must enter onion address and add .onion to end in address area.  
-For the cookie you
-need all the information including [cookie] # client : [client]  
- So for example:AbyZXCfghtG+E0r84y/nR # client: myandroid
+* Take note of the .onion address 
 
-Go back to Orbot's main screen, and select the gear icon under `tor enabled apps`.  
+    `$ sudo cat /mnt/hdd/tor/lnd_REST/hostname`
+
+### Install lndconnect 
+
+* Install Go and the latest lndconnect manually:
+
+    ```
+    # check if  Go is installed (should be v1.11 or higher):  
+    go version 
+    # If need to install Go, run these:
+    wget https://storage.googleapis.com/golang/go1.13.linux-armv6l.tar.gz
+    sudo tar -C /usr/local -xzf go1.13.linux-armv6l.tar.gz
+    sudo rm *.gz
+    sudo mkdir /usr/local/gocode
+    sudo chmod 777 /usr/local/gocode
+    export GOROOT=/usr/local/go
+    export PATH=$PATH:$GOROOT/bin
+    export GOPATH=/usr/local/gocode
+    export PATH=$PATH:$GOPATH/bin
+
+    # Install lndconnect from source:
+    go get -d github.com/LN-Zap/lndconnect
+    cd $GOPATH/src/github.com/LN-Zap/lndconnect
+    make
+    ```
+### Generate the lndconnect string
+* Run lndconnect with the .onion address filled in:  
+
+    `$ lndconnect --host=HIDDEN_SERVICE_ADDRESS.onion --port=8080`
+
+    Maximise the window and reduce the text size to fit the screen.   
+    Use CTRL + - or the middle mouse wheel on Windows.
+
+### Set up [Orbot](https://guardianproject.info/apps/orbot/ )
+Available on
+* [F-Droid](https://guardianproject.info/fdroid) 
+* [Google Play](https://market.android.com/details?id=org.torproject.android)
+* [Direct link](https://guardianproject.info/releases/orbot-latest.apk)
+
+On Orbot's main screen select the gear icon under `tor enabled apps`.  
 Add `Zeus`, then press back.  
-Click `stop` on the big onion logo.  
-Exit orbot and reopen it. Turn on `VPN Mode`.  
+Click `STOP` on the big onion logo.  
+Exit Orbot and reopen it. Turn on `VPN Mode`.  
 Start your connection to the Tor network by clicking on the big onion (if it has not automatically connected already)
 
+If Orbot is misbehaving try stopping other VPN services on the phone and/or restart.
 
-Make sure Go is installed (should be v1.11 or higher):  
-```
-$ go version 
-```
-If need to install Go, run these:
+To open Zeus click on it's icon at the `Tor_Enabled-Apps`:
 
-```
-$ wget https://storage.googleapis.com/golang/go1.13.linux-armv6l.tar.gz
-$ sudo tar -C /usr/local -xzf go1.11.linux-armv6l.tar.gz
-$ sudo rm *.gz
-$ sudo mkdir /usr/local/gocode
-$ sudo chmod 777 /usr/local/gocode
-$ export GOROOT=/usr/local/go
-$ export PATH=$PATH:$GOROOT/bin
-$ export GOPATH=/usr/local/gocode
-$ export PATH=$PATH:$GOPATH/bin
-```
+<p align="left">
+  <img width="380" src="images/orbot.jpg">
+</p>
 
-Install [lndconnect](https://github.com/LN-Zap/lndconnect):
-```
-$ cd /tmp
-$ wget https://github.com/LN-Zap/lndconnect/releases/download/v0.1.0/lndconnect-linux-armv7-v0.1.0.tar.gz
-$ sudo tar -xvf lndconnect-linux-armv7-v0.1.0.tar.gz --strip=1 -C /usr/local/bin
-```
-Generate the LND connect URI QR code:  
-It will be a big QR code so maximize your terminal window and use CTRL - to shrink the code further to fit the screen
+### Connect Zeus
+* Scan the QR code with your Zeus  
+* Enjoy your private and encrypted remote connection!
 
-```
-$ lndconnect --lnddir=/home/admin/.lnd --host=z1234567890abc.onion --port=8080
-```
-Scan it with Zeus and you are done.
+<p align="left">
+  <img width="380" src="images/zeus_on_tor.jpg">
+</p>
 
 SEND SATOSHIS PRIVATELY!  
 Get that beautiful onion png in the top left of Zeus.  
 Self Sovereignty for the streets!
+
+### Resources:
+
+* this guide is based on: https://github.com/seth586/guides/blob/master/FreeNAS/wallets/zeusln.md
+
+* Have a look at the proposal of @seth586 about connecting light wallets through Tor: https://medium.com/@seth586/neutrino-can-be-dangerous-so-lets-grow-bitcoins-immunity-with-a-bip-bolt-2135956f147
