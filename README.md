@@ -20,7 +20,10 @@ Start at <https://github.com/rootzoll/raspiblitz>
 * #### [RTL SSL/HTTPS access](nginx/README.md)
     Secure remote connection for the Ride the Lightning Web UI
 
-* #### [ZeusLN Tor connection](Zeus_to_RaspiBlitz_through_Tor.md)
+* #### [Zap iOS Tor Connection](Zap_to_RaspiBlitz_through_Tor.md)
+    Remote wallet for LND connected through Tor on iOS TestFlight
+    
+* #### [ZeusLN Android Tor connection](Zeus_to_RaspiBlitz_through_Tor.md)
     Remote wallet for LND connected through Tor on Android
 
 * #### [ZeroTier remote access](zerotier/README.md)

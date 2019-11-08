@@ -1,4 +1,5 @@
-## Connect the Zap Lightning Wallet on iOS TestFlight to the RaspiBlitz over Tor 
+## Connect Zap over Tor to the RaspiBlitz
+Confirmed to work with the mainnet Zap version >0.4.075.3 on iOS TestFlight
 
 ### Create the Hidden Service:
 * In the RaspiBlitz terminal:  
@@ -14,14 +15,14 @@
     ```
     HiddenServicePort THIS_CAN_BE_ANY_PORT 127.0.0.1:8080
     ```
-* Take note of the .onion address  
+* Take note of the .onion address into a word processor (like notepad)  
 `sudo cat /mnt/hdd/tor/lnd_REST/hostname`
 
 ### Install lndconnect 
 
 * Can install from the RaspiBlitz MOBILE menu by attempting to connect Zap in the traditional way.
 
-* Add Go to the PATH by pasting this to the RaspiBlitz terminal:
+* For Raspiblitz 1.3 add Go to the PATH by pasting this to the terminal (even if Go is installed already):
     ```
     export GOROOT=/usr/local/go
     export PATH=$PATH:$GOROOT/bin
@@ -30,7 +31,7 @@
     sudo bash -c "echo 'PATH=\$PATH:/usr/local/gocode/bin/' >> /etc/profile"
     ```
 
-* Alternatively install go and lndconnect manually:
+* Alternatively install Go and lndconnect manually:
     ```
     # check if  Go is installed (should be v1.11 or higher):  
     go version 
@@ -52,15 +53,15 @@
     ```
 
 ### Generate the lndconnect string
-* Run lndconnect with the -j option to display the text string:
+* Run lndconnect with the -j option to display the text string:  
 `lndconnect -j`
 
-* Edit the string:
-Change the IP address to the .onion address noted previously.
-Change the port to 8080 (or your custom port set in the torrc)
-delete the `cert=` until the `macaroon=` entry.
+* Edit the string in a word processor:
+    * change the IP address to the .onion address noted previously  
+    * change the port 10009 to 8080 (or your custom port set in the torrc)
+    * delete the part startig with `cert=` until the `macaroon=` entry
 
-    Ends up in the format:
+    * ends up in the format:
 
     ```
     lndconnect://YOUR_HIDDEN_SERVICE_ADDRESS.onion:8080?macaroon=<base64adminmacaroon>
@@ -72,4 +73,6 @@ delete the `cert=` until the `macaroon=` entry.
 * Paste the string into the Tor enabled Zap 
 * Enjoy your private and encrypted remote connection!
 
-<img src="images/zap_on_tor.jpg" alt="drawing" width="400"/>
+<p align="center">
+<img src="images/zap_on_tor.jpg" alt="drawing" width="350/>
+</p>
