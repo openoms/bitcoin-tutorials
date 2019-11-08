@@ -11,7 +11,7 @@ Confirmed to work with the mainnet Zap version >0.4.075.3 on iOS TestFlight
     HiddenServiceVersion 3
     HiddenServicePort 8080 127.0.0.1:8080
     ```
-    If you want to you a different port:
+    If you want to use a different port:
     ```
     HiddenServicePort THIS_CAN_BE_ANY_PORT 127.0.0.1:8080
     ```
@@ -53,24 +53,22 @@ Confirmed to work with the mainnet Zap version >0.4.075.3 on iOS TestFlight
     ```
 
 ### Generate the lndconnect string
-* Run lndconnect with the -j option to display the text string:  
-`lndconnect -j`
+* Run lndconnect with the .onion address filled in:  
+`lndconnect --host=HIDDEN_SERVICE_ADDRESS.onion --port=8080 --nocert`
 
-* Edit the string in a word processor:
-    * change the IP address to the .onion address noted previously  
-    * change the port 10009 to 8080 (or your custom port set in the torrc)
-    * delete the part startig with `cert=` until the `macaroon=` entry
+* Alternatively run lndconnect with the -j option to display the text string:  
+`lndconnect --host=HIDDEN_SERVICE_ADDRESS.onion --port=8080 --nocert -j`
 
-    * ends up in the format:
-
+    * The correct string format is:
     ```
     lndconnect://YOUR_HIDDEN_SERVICE_ADDRESS.onion:8080?macaroon=<base64adminmacaroon>
     ```
 
 ### Connect Zap through Tor
-* Share the string to your phone in an encrypted chat message to yourself (for example).
+* Scan the QR code with your Tor enabled Zap  
+    or
+* Share the string to your phone in an encrypted chat message to yourself and paste the string into Zap 
 
-* Paste the string into the Tor enabled Zap 
 * Enjoy your private and encrypted remote connection!
 
 <p align="center">
