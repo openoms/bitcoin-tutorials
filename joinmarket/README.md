@@ -51,8 +51,9 @@ This needs to be done at every new login.
     `Tips`: the commands can be run as one line if joined by `&&`
     (meaning continue to run if successful):
 
-    `cd joinmarket-clientserver && source jmvenv/bin/activate && cd scripts`
-
+    ```bash
+    $ cd joinmarket-clientserver && source jmvenv/bin/activate && cd scripts
+    ```
     The previously run commands can be easly searched from the prompt by pressing
     `CTRL+R` thanks to the [command line fuzzy finder](https://github.com/junegunn/fzf)
 ### Generate a wallet
@@ -76,6 +77,8 @@ This needs to be done at every new login.
     rpc_user = raspibolt
     rpc_password = PasswordB-as-in-bitcoin.conf
     ```
+    Press `CTRL+O` and `ENTER` to save and `CRTL+X` to exit.
+
 * Display the addresses to fund (look in mixdepth 0):  
 
     `(jmvenv) $ python wallet-tool.py wallet.jmdat`  
@@ -170,7 +173,6 @@ Find a basic introduction at https://www.ocf.berkeley.edu/~ckuehl/tmux/
     #for tor
     host = darksci3bfoka7tw.onion
     socks5 = true
-
     ```
 
 ### Resources:
