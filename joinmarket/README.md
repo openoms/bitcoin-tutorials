@@ -48,7 +48,13 @@ This needs to be done at every new login.
     $ source jmvenv/bin/activate
     $ cd scripts
     ```
+    `Tips`: the commands can be run as one line if joined by `&&`
+    (meaning continue to run if successful):
 
+    `cd joinmarket-clientserver && source jmvenv/bin/activate && cd scripts`
+
+    The previously run commands can be easly searched from the prompt by pressing
+    `CTRL+R` thanks to the [command line fuzzy finder](https://github.com/junegunn/fzf)
 ### Generate a wallet
 * Using the JoinMarket wallet: https://github.com/JoinMarket-Org/joinmarket/wiki/Using-the-JoinMarket-internal-wallet
 
@@ -113,8 +119,10 @@ This needs to be done at every new login.
 
 ### Check the transaction history
 
-* use the wallet tool:
+* use the wallet tool:  
     `(jmvenv) $ python wallet-tool.py wallet.jmdat history`
+
+    add `-v 4` to the end of the commadn for a more detailed list.
 
 * View the log of the transactions of the Yield Generator:  
     `$ cat ~/joinmarket-clientserver/scripts/logs/yigen-statement.csv`
@@ -127,19 +135,59 @@ This needs to be done at every new login.
 `$ sudo apt install tmux`
 * Start:  
 `$ tmux`
+
 * Work in the terminal as described above.  
 Find a basic introduction at https://www.ocf.berkeley.edu/~ckuehl/tmux/
 * If the terminal is disconnected the processes in tmux keep running (as it is running on the Blitz) and can be returned to
 * when logged in after a disconnection run:  
 `$ tmux a`  
-to pick up where left off
+    to pick up where left off
+
+### Make JoinMarket communicate behind Tor
+
+* Activate Tor in the SERVICE menu of the RaspiBlitz if not running already
+* Edit the `joinmarket.cfg`  
+    `$ nano joinmarket.cfg` 
+* Comment out the clearnet communication channels (place a `#` on the front of the line - means it wont be used by the script):
+
+    ```
+    [MESSAGING:server1]
+    #host = irc.cyberguerrilla.org
+
+    ...
+
+    [MESSAGING:server2]
+    #host = irc.darkscience.net
+    ```
+* Uncomment (remove the `#` from front of) the entries related for Tor:
+    ```
+    #for tor
+    host = epynixtbonxn4odv34z4eqnlamnpuwfz6uwmsamcqd62si7cbix5hqad.onion
+    socks5 = true
+    
+    ...
+
+    #for tor
+    host = darksci3bfoka7tw.onion
+    socks5 = true
+
+    ```
 
 ### Resources:
-* Latest codebase: <https://github.com/JoinMarket-Org/joinmarket-clientserver>
-* Installation instructions: <https://github.com/JoinMarket-Org/joinmarket-clientserver#quickstart---recommended-installation-method-linux-only>
+* Latest codebase:  
+<https://github.com/JoinMarket-Org/joinmarket-clientserver>
 
-* Tmux  will be included in the next release of the RaspiBlitz: <https://github.com/rootzoll/raspiblitz/issues/793>
+* Installation instructions:  
+<https://github.com/JoinMarket-Org/joinmarket-clientserver#quickstart---recommended-installation-method-linux-only>
 
-* Discuss JoinMarket usage on the RaspiBlitz in <https://github.com/rootzoll/raspiblitz/issues/842>
+* Tmux  will be included in the next release of the RaspiBlitz:  
+<https://github.com/rootzoll/raspiblitz/issues/793>
 
-* More links and info in 6102bitcoin/CoinJoin-Research: https://github.com/6102bitcoin/CoinJoin-Research/blob/master/CoinJoin_Implementations/11_JoinMarket-JoinMarket-Org/summary.md
+* Discuss JoinMarket usage on the RaspiBlitz in  
+<https://github.com/rootzoll/raspiblitz/issues/842>
+
+* More links and info in 6102bitcoin/CoinJoin-Research:  
+https://github.com/6102bitcoin/CoinJoin-Research/blob/master/CoinJoin_Implementations/11_JoinMarket-JoinMarket-Org/summary.md
+
+* Check the guide for the RaspiBolt by @kristapsk:  
+https://github.com/kristapsk/raspibolt-extras/blob/master/joinmarket.md
