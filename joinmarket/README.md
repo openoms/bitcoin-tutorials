@@ -129,6 +129,7 @@ This needs to be done at every new login.
 
 * View the log of the transactions of the Yield Generator:  
     `$ cat ~/joinmarket-clientserver/scripts/logs/yigen-statement.csv`
+    press `q` to exit
 
 * Display as a table in the terminal:  
     `$ column -s, -t < ~/joinmarket-clientserver/scripts/logs/yigen-statement.csv | less -#2 -N -S`
