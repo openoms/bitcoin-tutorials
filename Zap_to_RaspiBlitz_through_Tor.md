@@ -3,7 +3,10 @@
 <p align="left">
   <img width="440" src="images/zap_on_tor_logo.jpg">
 </p>
-Confirmed to work with the mainnet Zap version >0.4.075.3 on iOS TestFlight
+
+Tested with:
+* RaspiBlitz 1.3 with Tor already activated
+* mainnet Zap version >0.4.075.3 on iOS TestFlight
 
 ### Create the Hidden Service:
 * In the RaspiBlitz terminal:  

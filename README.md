@@ -44,16 +44,14 @@ Start at <https://github.com/rootzoll/raspiblitz>
 
 * #### [OpenBazaar installation and store migration](https://gist.github.com/openoms/ba843f7c44ff9c7ca0b5a80e12a0aeb4)
     Truly decentralized, peer-to-peer ecommerce - https://openbazaar.org/
-* #### [RaspiBlitz v1.3 the SDcard image for the Odroid HC1/HC2/XU4/XU4Q](https://github.com/openoms/raspiblitz/releases/tag/v1.3)
+
+---
+
+* #### [RaspiBlitz v1.3 SDcard image for the Odroid HC1/HC2/XU4/XU4Q](https://github.com/openoms/raspiblitz/releases/tag/v1.3)
     Based on the RaspiBlitz v1.3 and contains:
     * armbian 5.95
     * LND v0.7.1-beta 
     * Bitcoin Core v0.18.1
-***
-* The scripts are compatible with the [RaspiBolt](https://stadicus.github.io/RaspiBolt/), [Thundroid](https://magazine.odroid.com/article/thundroid-perfect-bitcoin-lightning-node/) and similar setups, but not fully tested. 
-
-* See my Lightning node on 1ML and connect: <https://1ml.com/node/028a2cb8d51e44d7d7e108c2e80a98cc069145e05a6d2025cf554bd8866fe32993>  
-If your node is not behind Tor send me a DM on <https://twitter.com/openoms> and will add you as a peer first.
 
 ![Odroid HC1](images/HC1.jpeg)
 ![Odroid XU4](images/XU4.jpeg)
