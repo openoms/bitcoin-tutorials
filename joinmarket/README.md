@@ -129,8 +129,13 @@ This needs to be done at every new login.
 
 * View the log of the transactions of the Yield Generator:  
     `$ cat ~/joinmarket-clientserver/scripts/logs/yigen-statement.csv`
+
+* Display as a table in the terminal:  
+    `$ column -s, -t < ~/joinmarket-clientserver/scripts/logs/yigen-statement.csv | less -#2 -N -S`
+
 * Monitor continously with:  
     `$ tail -f -n 100 ~/joinmarket-clientserver/scripts/logs/yigen-statement.csv`
+
 
 ### Keep the offers running in the background with [Tmux](https://github.com/tmux/tmux#welcome-to-tmux)
 
@@ -146,7 +151,7 @@ Find a basic introduction at https://www.ocf.berkeley.edu/~ckuehl/tmux/
 `$ tmux a`  
     to pick up where left off
 
-### Make JoinMarket communicate behind Tor
+### Make JoinMarket communicate on Tor
 
 * Activate Tor in the SERVICE menu of the RaspiBlitz if not running already
 * Edit the `joinmarket.cfg`  
