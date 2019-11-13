@@ -274,8 +274,20 @@ HiddenServicePort 50002 127.0.0.1:50002
         " | sudo tee -a /etc/tor/torrc
 
         sudo systemctl restart tor
+        sleep 2
+    else
+      echo "The Hidden Service is already installed"
     fi
     TOR_ADDRESS=$(sudo cat /mnt/hdd/tor/electrs/hostname)
+    if [ -z "$TOR_ADDRESS" ]; then
+      echo "Waiting for the Hidden Service"
+      sleep 10
+      TOR_ADDRESS=$(sudo cat /mnt/hdd/tor/electrs/hostname)
+        if [ -z "$TOR_ADDRESS" ]; then
+        echo " FAIL - The Hidden Service address could not be found - Tor error?"
+        exit 1
+        fi
+    fi    
     echo ""
     echo "***"
     echo "The Tor Hidden Service address for electrs is:"
