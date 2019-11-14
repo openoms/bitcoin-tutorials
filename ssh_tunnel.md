@@ -18,7 +18,7 @@
 * if there is none generate one (keep pressing ENTER):  
 `$ ssh-keygen -t rsa -b 4096`
 
-* copy the ssh publick key over to the VPS (fill in the VPS_IP_ADDRESS).  
+* copy the ssh public key over to the VPS (fill in the VPS_IP_ADDRESS).  
 Will be prompted for the root password of the VPS.  
 `$ cat ~/.ssh/id_rsa.pub | ssh root@VPS_IP_ADDRESS 'cat >> ~/.ssh/authorized_keys && chmod -R 700 ~/.ssh/'`
 
@@ -52,7 +52,7 @@ Can just paste these on the end of the file:
 `sudo nano /etc/systemd/system/autossh-tunnel.service`
 
 * Paste the following and fill in the VPS_IP_ADDRESS.  
-Add more ports as required.
+Add or remove ports as required.
 
     ```
     [Unit]
@@ -74,14 +74,14 @@ Add more ports as required.
 `$ sudo systemctl start autossh-tunnel`
 
 * The port forwarding with a reverse ssh-tunnel is now complete. 
-You should be able access the of the host computer ports/services through the IP of the VPS.
+You should be able access the ports/services of the host computer through the IP of the VPS.
 
 ## Monitoring
 
 * Check if there are any errors on the host computer:  
 `$ sudo journalctl -f -n 20  -u autossh-tunnel`
 
-* To check if a tunnel is running on the VPS:  
+* To check if tunnel is active on the VPS:  
 `$ netstat -tulpn`
 
 
