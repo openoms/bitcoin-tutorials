@@ -3,6 +3,8 @@
 
 Start at <https://github.com/rootzoll/raspiblitz>
 
+* #### [Forward ports with a reverse SSH tunnel](ssh_tunnel.md)
+
 * #### [JoinMarket on the RaspiBlitz](joinmarket/README.md)
 
 * #### [BTCPayServer on the RaspiBlitz](BTCPayServer/README.md)
