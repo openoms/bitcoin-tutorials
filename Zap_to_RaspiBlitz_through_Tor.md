@@ -31,9 +31,14 @@ Tested with:
 
     `$ sudo systemctl restart tor`
     
-* Take note of the .onion address:
+* Take note of the `HIDDEN_SERVICE_ADDRESS.onion`:
 
     `$ sudo cat /mnt/hdd/tor/lnd_REST/hostname`
+    
+    example output:
+    ```
+    32zzibxmqi2ybxpqyggwwuwz7a3lbvtzoloti7cxoevyvijexvgsfeid.onion
+    ```
 
 ### Install lndconnect
 
@@ -60,8 +65,11 @@ Tested with:
     ```
 
 ### Generate the lndconnect string
-* Run lndconnect with the .onion address filled in:  
+* Run lndconnect with the `HIDDEN_SERVICE_ADDRESS.onion` filled in:  
 `lndconnect --host=HIDDEN_SERVICE_ADDRESS.onion --port=8080 --nocert`
+  
+  Example:  
+  `lndconnect --host=32zzibxmqi2ybxpqyggwwuwz7a3lbvtzoloti7cxoevyvijexvgsfeid.onion --port=8080 --nocert`
 
     
     Maximise the window and reduce the text size to fit the screen.   
@@ -73,7 +81,7 @@ Tested with:
 
     The correct string format is:
     ```
-    lndconnect://YOUR_HIDDEN_SERVICE_ADDRESS.onion:8080?macaroon=<base64adminmacaroon>
+    lndconnect://HIDDEN_SERVICE_ADDRESS.onion:8080?macaroon=<base64adminmacaroon>
     ```
 
 ### Connect Zap through Tor
