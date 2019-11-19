@@ -57,6 +57,8 @@ Tested with:
     export PATH=$PATH:$GOROOT/bin
     export GOPATH=/usr/local/gocode
     export PATH=$PATH:$GOPATH/bin
+    # make the path persist
+    sudo bash -c "echo 'PATH=\$PATH:/usr/local/gocode/bin/' >> /etc/profile"
 
     # Install lndconnect from source:
     go get -d github.com/LN-Zap/lndconnect
