@@ -24,18 +24,18 @@ echo "***"
 echo "Creating the btcpay user"
 echo "***"
 echo ""
-sudo adduser --disabled-password --gecos "" btcpay
+sudo adduser --disabled-password --gecos "" btcpay 2>/dev/null
 cd /home/btcpay
 
 # store BTCpay data on HDD
-sudo mkdir /mnt/hdd/.btcpayserver
+sudo mkdir /mnt/hdd/.btcpayserver 2>/dev/null
 
-sudo mv -f /home/admin/.btcpayserver /mnt/hdd/
+sudo mv -f /home/admin/.btcpayserver /mnt/hdd/ 2>/dev/null
 sudo rm -rf /home/admin/.btcpayserver
-sudo mv -f /home/btcpay/.btcpayserver /mnt/hdd/
+sudo mv -f /home/btcpay/.btcpayserver /mnt/hdd/ 2>/dev/null
 
 sudo chown -R btcpay:btcpay /mnt/hdd/.btcpayserver
-sudo ln -s /mnt/hdd/.btcpayserver /home/btcpay/
+sudo ln -s /mnt/hdd/.btcpayserver /home/btcpay/ 2>/dev/null
 
 # clean when installed as admin
 sudo rm -f /home/admin/dotnet-sdk*
@@ -48,13 +48,13 @@ sudo rm -f /home/btcpay/aspnetcore*
 sudo rm -rf /home/btcpay/dotnet
 sudo rm -f /usr/local/bin/dotnet
 
-sudo systemctl stop nbxplorer
-sudo systemctl disable nbxplorer
+sudo systemctl stop nbxplorer 2>/dev/null
+sudo systemctl disable nbxplorer 2>/dev/null
 sudo rm -f /home/btcpay/.nbxplorer/Main/settings.config
 sudo rm -f /etc/systemd/system/nbxplorer.service
 
-sudo systemctl stop btcpayserver
-sudo systemctl disable btcpayserver
+sudo systemctl stop btcpayserver 2>/dev/null
+sudo systemctl disable btcpayserver 2>/dev/null
 sudo rm -f /home/btcpay/.btcpayserver/Main/settings.config
 sudo rm -f /etc/systemd/system/btcpayserver.service
 sudo rm -f /etc/nginx/sites-available/btcpayserver
@@ -65,12 +65,32 @@ echo "Installing .NET"
 echo "***"
 echo ""
 
+# download dotnet-sdk
 sudo apt-get -y install libunwind8 gettext libssl1.0
-sudo -u btcpay wget https://download.visualstudio.microsoft.com/download/pr/9650e3a6-0399-4330-a363-1add761127f9/14d80726c16d0e3d36db2ee5c11928e4/dotnet-sdk-2.2.102-linux-arm.tar.gz
-sudo -u btcpay wget https://download.visualstudio.microsoft.com/download/pr/9d049226-1f28-4d3d-a4ff-314e56b223c5/f67ab05a3d70b2bff46ff25e2b3acd2a/aspnetcore-runtime-2.2.1-linux-arm.tar.gz
+sudo -u btcpay wget https://download.visualstudio.microsoft.com/download/pr/94409a9a-41e3-4df9-83bc-9e23ed96abaf/2b75460d9a8eef8361c01bafc1783fab/dotnet-sdk-2.1.607-linux-arm.tar.gz
+# check binary is was not manipulated (checksum test)
+dotnetName="dotnet-sdk-2.1.607-linux-arm.tar.gz"
+binaryChecksum="2cd8fa250e6a0e81faf409e7dc4f6d581117f565d58cff48b31f457e7cafc7f3cfe0de0df2b1c5d035733879750eb2af22fcc950720a7a7192e4221318052838"
+actualChecksum=$(sha512sum /home/btcpay/${dotnetName} | cut -d " " -f1)
+if [ "${actualChecksum}" != "${binaryChecksum}" ]; then
+  echo "!!! FAIL !!! Downloaded ${dotnetName} not matching SHA512 checksum: ${binaryChecksum}"
+  exit 1
+fi
+
+# download aspnetcore-runtime
+sudo -u btcpay wget https://download.visualstudio.microsoft.com/download/pr/9c563df7-736b-49ce-bd17-e739f3765541/e93dd1eff909e59a7ba72784a64dc031/aspnetcore-runtime-2.1.14-linux-arm.tar.gz
+# check binary is was not manipulated (checksum test)
+aspnetcoreName="aspnetcore-runtime-2.1.14-linux-arm.tar.gz"
+binaryChecksum="f4500187bf135254a03b5eb4105b8ce20f71d71e0f08c2c2ec914920f80435b7b36351c3f9c15504d0b1c2187b904c8283db67a2b60ebff374b058641153aaac"
+actualChecksum=$(sha512sum /home/btcpay/${aspnetcoreName} | cut -d " " -f1)
+if [ "${actualChecksum}" != "${binaryChecksum}" ]; then
+  echo "!!! FAIL !!! Downloaded ${aspnetcoreName} not matching SHA512 checksum: ${binaryChecksum}"
+  exit 1
+fi
+
 sudo -u btcpay mkdir /home/btcpay/dotnet
-sudo -u btcpay tar -xvf dotnet-sdk-2.2.102-linux-arm.tar.gz -C /home/btcpay/dotnet
-sudo -u btcpay tar -xvf aspnetcore-runtime-2.2.1-linux-arm.tar.gz -C /home/btcpay/dotnet
+sudo -u btcpay tar -xvf ${dotnetName} -C /home/btcpay/dotnet
+sudo -u btcpay tar -xvf ${aspnetcoreName} -C /home/btcpay/dotnet
 
 # opt out of telemetry
 echo "DOTNET_CLI_TELEMETRY_OPTOUT=1" | sudo tee -a /etc/environment
@@ -156,10 +176,8 @@ echo ""
 cd /home/btcpay
 sudo -u btcpay git clone https://github.com/btcpayserver/btcpayserver.git
 cd btcpayserver
-# checkout from last known to work commit: 
-# https://github.com/btcpayserver/btcpayserver/commit/1cb02b2913a5d8c9d2113e3603cc0de0c4d1084e
-# check https://github.com/btcpayserver/btcpayserver/commits/master
-sudo -u btcpay git checkout 1cb02b2913a5d8c9d2113e3603cc0de0c4d1084e
+# https://github.com/btcpayserver/btcpayserver/releases 
+sudo -u btcpay git reset --hard v1.0.3.144 
 sudo -u btcpay ./build.sh
 
 echo "
@@ -218,6 +236,7 @@ sudo ufw allow 80
 sudo ufw allow 443
 
 # get SSL cert
+sudo systemctl stop certbot 2>/dev/null
 sudo certbot certonly -a standalone -m $YOUR_EMAIL --agree-tos -d $YOUR_DOMAIN --pre-hook "service nginx stop" --post-hook "service nginx start"
 
 # set nginx
@@ -306,7 +325,7 @@ server {
 }
 " | sudo tee -a /etc/nginx/sites-available/btcpayserver
 
-sudo ln -s /etc/nginx/sites-available/btcpayserver /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/btcpayserver /etc/nginx/sites-enabled/ 2>/dev/null
 
 sudo systemctl restart nginx
 
