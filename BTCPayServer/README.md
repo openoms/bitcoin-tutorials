@@ -8,15 +8,14 @@ Requirements:
 * a domain name or dynamic DNS
 * the ports 80, 443 and 9735 forwarded on the router to the RaspiBlitz LAN IP
 
-Tested successfully on:
+Tested on:
 * RaspiBlitz v1.3 
 * RPi4 4GB (2GB RAM is sufficient)
 
 ### [Automated Script](https://github.com/openoms/bitcoin-tutorials/blob/master/BTCPayServer/btcpay_to_blitz.sh)
 
 To download and run:  
-`wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/BTCPayServer/btcpay_to_blitz.sh && bash btcpay_to_blitz.sh`
-
+`wget https://raw.githubusercontent.com/openoms/raspiblitz-extras/master/config.scripts/bonus.btcpayserver.sh && bash bonus.btcpayserver.sh on`
 
 * BTCpayServer, NBXplorer and the .NET Core is confined to the user `btcpay`.
 * The BTCPay data and store settings are stored on the HDD `/mnt/hdd/.btcpayserver` and recoverable on a reinstall / SDcard update.
