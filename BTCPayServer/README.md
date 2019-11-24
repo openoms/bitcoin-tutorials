@@ -20,6 +20,7 @@ To download and run:
 * BTCpayServer, NBXplorer and the .NET Core is confined to the user `btcpay`.
 * The BTCPay data and store settings are stored on the HDD `/mnt/hdd/.btcpayserver` and recoverable on a reinstall / SDcard update.
 * Sets up a Tor Hidden Service if Tor is active
+* to change the BTCpay domain or update run the most recent script again
 
 ### Setting up BTCPayServer
 
