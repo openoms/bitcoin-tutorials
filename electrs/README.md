@@ -109,6 +109,20 @@ Any communication outside a secure LAN must be encrypted.
         BitBox App
 
     For the Eclair Mobile Bitcoin and Lightning wallet the server needs to have a CA validated certificate for which the usage of certbot/letsencypt is required.
+    
+    
+* ### Electrum Windows Shortcut
+    To always connect to your node when clicking the Electrum-shortcut go to `C:\Program Files (x86)\Electrum` and look for `electrum-3.3.8.exe`. Right click and choose `create shortcut` - when asked for creation on the Desktop click `Yes`. 
+    
+    Go to your Desktop and right click the Electrum shortcut and choose `Properties`. Look for `Target` and replace the string with the following: 
+    
+    **Tor** `"C:\Program Files (x86)\Electrum\electrum-3.3.8.exe" --oneserver --server torid.onion:50002:s --proxy socks5:127.0.0.1:9150`
+    
+    **Local** `"C:\Program Files (x86)\Electrum\electrum-3.3.8.exe" --oneserver --server 192.168.X.X:50002:s`
+    
+    Save the settings. 
+    
+    You can use a TOR ID (remember to also start Tor Browser), but you can also setup your local IP (192.168.X.XXX). Everytime you open Electrum with that shortcut you will have your own custom node settings.
 
 * ### Tor Hidden Service
 
