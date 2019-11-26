@@ -71,29 +71,41 @@ Follow the instructions on https://electrum.org/#download and verify the GPG sig
     To download and run on the Linux desktop:  
     `$ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/electrs/electrum_wallet.sh && bash electrum_wallet.sh`  
 
-
+---
 ## Connect the Electrum wallet to Electrs
-On Windows or Mac set the server in the Electrum GUI or adapt the config file.  
-Command syntax for Linux systems:
+    
+### Windows Shortcut for Electrum
+* To always connect to your node when clicking the Electrum-shortcut go to `C:\Program Files (x86)\Electrum` and look for `electrum-3.3.8.exe`. Right click and choose `create shortcut` - when asked for creation on the Desktop click `Yes`. 
+    
+* Go to your Desktop and right click the Electrum shortcut and choose `Properties`. Look for `Target` and replace the string with the following: 
 
-* #### For an unencrypted TCP connection (only to be used inside a secure LAN)
-    `$ electrum --oneserver --server RASPIBLITZ_IP:50001:t`
+* **Local encrypted connection:**  
+     `"C:\Program Files (x86)\Electrum\electrum-3.3.8.exe" --oneserver --server 192.168.X.X:50002:s`
+    
 
-* #### To connect through SSL  
+* **Tor connection:**
+    * Take note of the `TOR_ADRESS.onion` on the RaspiBlitz:  
+    `$ sudo cat /mnt/hdd/tor/electrs/hostname`  
+
+    * paste in the `Target`:  
+    `"C:\Program Files (x86)\Electrum\electrum-3.3.8.exe" --oneserver --server TOR_ADRESS.onion:50002:s --proxy socks5:127.0.0.1:9150`
+    
+
+* Save the settings. 
+    
+* Every time you open Electrum with that shortcut you will have your own custom node settings.
+
+
+### Linux syntax to start Electrum:
+
+* To connect through SSL:  
     `$ electrum --oneserver --server YOUR_DOMAIN:50002:s`
 
-    After a reinstall will need to delete the SSL certificate from the Electrum     data directory to be able to connect again to the same domain:
-    * on Linux delete the relevant file from  the `~/.electrs/certs` directory
-
-* #### To connect through Tor (see [how to set up a Hidden Service](Tor_Hidden_Service_for_Electrs.md))
-    Take note of the Hidden Service address on the RaspiBlitz:  
+* To connect through Tor (see [how to set up a Hidden Service](Tor_Hidden_Service_for_Electrs.md))
+    * Take note of the Hidden Service address on the RaspiBlitz:  
     `$ sudo cat /mnt/hdd/tor/electrs/hostname`
-    * Start electrum with the Tor Browser open (proxy on port 9150):  
+    * Start Electrum with the Tor Browser open (proxy on port 9150):  
     `$ electrum --oneserver --server Tor_address.onion:50002:s --proxy socks5:127.0.0.1:9150`
-
-    * With Tor installed and running (proxy on port 9050):   
-    `$ electrum --oneserver --server Tor_address.onion:50002:s --proxy socks5:127.0.0.1:9050`  
-
 ---
 
 ## Remote connection options
@@ -110,20 +122,6 @@ Any communication outside a secure LAN must be encrypted.
 
     For the Eclair Mobile Bitcoin and Lightning wallet the server needs to have a CA validated certificate for which the usage of certbot/letsencypt is required.
     
-    
-* ### Electrum Windows Shortcut
-    To always connect to your node when clicking the Electrum-shortcut go to `C:\Program Files (x86)\Electrum` and look for `electrum-3.3.8.exe`. Right click and choose `create shortcut` - when asked for creation on the Desktop click `Yes`. 
-    
-    Go to your Desktop and right click the Electrum shortcut and choose `Properties`. Look for `Target` and replace the string with the following: 
-    
-    **Tor** `"C:\Program Files (x86)\Electrum\electrum-3.3.8.exe" --oneserver --server torid.onion:50002:s --proxy socks5:127.0.0.1:9150`
-    
-    **Local** `"C:\Program Files (x86)\Electrum\electrum-3.3.8.exe" --oneserver --server 192.168.X.X:50002:s`
-    
-    Save the settings. 
-    
-    You can use a TOR ID (remember to also start Tor Browser), but you can also setup your local IP (192.168.X.XXX). Everytime you open Electrum with that shortcut you will have your own custom node settings.
-
 * ### Tor Hidden Service
 
     Need to activate Tor on the RaspiBlitz + on the computer used for Electrum and [configure a Tor Hidden Service for Electrs](Tor_Hidden_Service_for_Electrs.md).  
@@ -137,8 +135,6 @@ Any communication outside a secure LAN must be encrypted.
 
 ## Further help: 
 
-The setup has multiple components and dependencies which can change when updated or modified by the maintainers.  
-
 Based on:
 * <https://github.com/romanz/electrs/blob/master/doc/usage.md>  
 
@@ -149,9 +145,12 @@ Shared experiences:
 [Notes on using Electrum with Tails](https://electrum.readthedocs.io/en/latest/tails.html#using-the-most-current-electrum-on-tails)
 
 If you run into problems:
-
+* test the connection through the unencrypted local TCP port:  
+    * On Windows use the shortcut target:  
+    `"C:\Program Files (x86)\Electrum\electrum-3.3.8.exe" --oneserver --server 192.168.X.X:50002:s`
+    * On Linux use the command:  
+    `$ electrum --oneserver --server RASPIBLITZ_IP:50001:t`
 * if after a reinstall Electrum would not connect try deleting the relevant certificate from the .electrum/certs directory on your desktop.
+* reinstall the mobile Electrum app
 * try to run the commands manually one-by-one, spot which is causing the problem and copy the output
 * open an issue [here](https://github.com/openoms/bitcoin-tutorials/issues) with the details and I will be happy to help to solve it  
-
-Bear in mind that this guide and the parts used are free-opensource projects, use them at your own responsibility and there are no guarantees of any kind.
