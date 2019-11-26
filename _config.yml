@@ -1,0 +1,9 @@
+
+#theme: jekyll-theme-minimal
+remote_theme: pmarsceill/just-the-docs
+search_enabled: true
+aux_links:
+    "Issues":
+      - "https://github.com/openoms/bitcoin-tutorials/issues"
+    "Source on GitHub":
+      - "https://github.com/openoms/bitcoin-tutorials/"
