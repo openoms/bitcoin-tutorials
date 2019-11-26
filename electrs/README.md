@@ -4,7 +4,7 @@
 
 ![electrum](/electrs/images/electrum.png)
 
-Requires 47 Gb diskpace (March 2019).
+Requires 50 Gb diskpace after compactiing and ~100 GB during indexing (Nov 2019).
 
 Tested on:
 * Raspberry Pi 4
@@ -65,7 +65,7 @@ Electrs will only start serving on the port 50001 when it has finished indexing.
 ## Install the Electrum wallet on your desktop
 Follow the instructions on https://electrum.org/#download and verify the GPG signature.
 
-* #### Linux desktop: download, verify and run the Electrum wallet
+* #### Linux: download, verify and run the Electrum wallet
     The instruction are in the script: [electrum_wallet.sh](electrum_wallet.sh)  
     Tested on Ubuntu 18.04.  
     To download and run on the Linux desktop:  
@@ -74,12 +74,13 @@ Follow the instructions on https://electrum.org/#download and verify the GPG sig
 ---
 ## Connect the Electrum wallet to Electrs
     
-### Windows Shortcut for Electrum
+### Windows - Shortcut for Electrum
 * To always connect to your node when clicking the Electrum-shortcut go to `C:\Program Files (x86)\Electrum` and look for `electrum-3.3.8.exe`. Right click and choose `create shortcut` - when asked for creation on the Desktop click `Yes`. 
     
 * Go to your Desktop and right click the Electrum shortcut and choose `Properties`. Look for `Target` and replace the string with the following: 
 
 * **Local encrypted connection:**  
+    * Fill in the IP address of the RaspiBlitz (192.168.X.X):  
      `"C:\Program Files (x86)\Electrum\electrum-3.3.8.exe" --oneserver --server 192.168.X.X:50002:s`
     
 
@@ -90,22 +91,35 @@ Follow the instructions on https://electrum.org/#download and verify the GPG sig
     * paste in the `Target`:  
     `"C:\Program Files (x86)\Electrum\electrum-3.3.8.exe" --oneserver --server TOR_ADRESS.onion:50002:s --proxy socks5:127.0.0.1:9150`
     
-
 * Save the settings. 
     
 * Every time you open Electrum with that shortcut you will have your own custom node settings.
 
 
-### Linux syntax to start Electrum:
+### Linux - command line syntax to start Electrum:
 
-* To connect through SSL:  
+* **Local encrypted connection:**  
+    * Fill in the IP address of the RaspiBlitz (192.168.X.X):  
     `$ electrum --oneserver --server YOUR_DOMAIN:50002:s`
 
-* To connect through Tor (see [how to set up a Hidden Service](Tor_Hidden_Service_for_Electrs.md))
+* **Tor connection:**
     * Take note of the Hidden Service address on the RaspiBlitz:  
     `$ sudo cat /mnt/hdd/tor/electrs/hostname`
     * Start Electrum with the Tor Browser open (proxy on port 9150):  
-    `$ electrum --oneserver --server Tor_address.onion:50002:s --proxy socks5:127.0.0.1:9150`
+    `$ electrum --oneserver --server Tor_address.onion:50002:s --proxy csocks5:127.0.0.1:9150`
+
+### Mac - command line syntax to start Electrum:
+
+* **Local encrypted connection:**    
+    * Fill in the IP address of the RaspiBlitz (192.168.X.X):  
+    `/Applications/Electrum.app/Contents/MacOS/Electrum --oneserver --server 192.168.X.X:50002:s`
+
+* **Tor connection:**
+    * Take note of the Hidden Service address on the RaspiBlitz:  
+    `$ sudo cat /mnt/hdd/tor/electrs/hostname`
+    * Start Electrum with the Tor Browser open (proxy on port 9150):  
+    `/Applications/Electrum.app/Contents/MacOS/Electrum --oneserver --server nodeID:50002:s --proxy socks5:127.0.0.1:9150`
+
 ---
 
 ## Remote connection options
