@@ -1,4 +1,4 @@
-## Automated guides for the RaspiBlitz and Linux desktop
+## Guides for the RaspiBlitz and Linux desktop
 **Get the most use out of your Bitcoin Full Node**
 
 Start at <https://github.com/rootzoll/raspiblitz>
