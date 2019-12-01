@@ -34,7 +34,7 @@ See this review thread about the GUI option: https://twitter.com/zndtoshi/status
     git clone https://github.com/JoinMarket-Org/joinmarket-clientserver.git
     cd joinmarket-clientserver
     # latest release: https://github.com/JoinMarket-Org/joinmarket-clientserver/releases
-    git reset --hard v0.5.5
+    git reset --hard v0.6.0
     sudo apt install -y libltdl-dev libssl-dev # needed for Armbian
     ./install.sh
     # (follow instructions on screen; provide sudo password when prompted)
