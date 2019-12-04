@@ -23,9 +23,9 @@ This will install:
 * Tor Hidden Service if Tor is active
 ---
 
-## Check if Electrs is working:
+## Monitor Electrs:
 
-Electrs will only start serving on the port 50001 when it has finished indexing.
+Electrs will only start serving on the port 50001 (and 50002 via Nginx) when it has finished indexing.
 
 * #### Service status  
     `$ sudo systemctl status electrs`  
@@ -33,17 +33,19 @@ Electrs will only start serving on the port 50001 when it has finished indexing.
     Example output when running after indexing has finished:
     ![electrs status](/electrs/images/electrs_status.png)
 
-* #### Filter the last 10000 lines of system logs  
-    `$ sudo journalctl -n 10000 | grep electrs`  
-    
-    To monitor continuously add `-f`
-* #### Check if it is serving on the port 50001 (only after indexing is complete)  
+* #### Check if it is serving on the port 50001 (will appear only after indexing is complete)  
     `$ sudo -u electrs lsof -i`
 
     Look for the output:
     ```
     electrs 2532 admin   17u  IPv4  32885      0t0  TCP *:50001 (LISTEN)
     ```
+
+* #### Filter the last 10000 lines of system logs  
+    `$ sudo journalctl -n 10000 | grep electrs`  
+    
+    To monitor continuously add `-f`
+
 * #### Find electrs between the running processes with  
     `htop`
 
