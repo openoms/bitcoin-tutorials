@@ -76,7 +76,7 @@ Available on:
     
     Example:  
     
-    `lndconnect --host=32zzibxmqi2ybxpqyggwwuwz7a3lbvtzoloti7cxoevyvijexvgsfeid.onion --port=8080 --nocert`
+    `lndconnect --host=32zzibxmqi2ybxpqyggwwuwz7a3lbvtzoloti7cxoevyvijexvgsfeid.onion --port=8080`
 
     Maximise the window and reduce the text size to fit the screen.   
     Use CTRL + - or the middle mouse wheel on Windows.
