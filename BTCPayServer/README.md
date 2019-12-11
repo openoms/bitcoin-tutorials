@@ -14,12 +14,14 @@ Tested on:
 
 ### [Automated Script](https://github.com/openoms/bitcoin-tutorials/blob/master/BTCPayServer/btcpay_to_blitz.sh)
 
-To download and run:  
-`wget https://raw.githubusercontent.com/openoms/raspiblitz-extras/master/config.scripts/bonus.btcpayserver.sh && bash bonus.btcpayserver.sh on`
+The BTCPay Server installation will be part of the next RaspiBlitz release.
+To try it on your node follow the instructions: 
+https://github.com/openoms/raspiblitz-extras#test-the-functions-coming-to-the-next-release
 
 * BTCpayServer, NBXplorer and the .NET Core is confined to the user `btcpay`.
 * The BTCPay data and store settings are stored on the HDD `/mnt/hdd/.btcpayserver` and recoverable on a reinstall / SDcard update.
 * Sets up a Tor Hidden Service if Tor is active
+* Gives an option to use only the Tor Hidden Service and a self-signed certificate to be used without a clearnet domain
 * to change the BTCpay domain or update run the most recent script again
 
 ### Setting up BTCPayServer
