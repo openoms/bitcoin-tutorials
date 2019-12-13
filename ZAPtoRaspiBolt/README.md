@@ -71,7 +71,7 @@ Install instructions: https://github.com/LN-Zap/zap-desktop#install
   `$ scp admin@your.RaspiBolt.LAN.IP:/home/admin/.lnd/tls.cert ~/`
 
 * Copy the admin.macaroon to your home directory:  
-`$ scp root@your.RaspiBolt.LAN.IP:/home/bitcoin/.lnd/data/chain/bitcoin/mainnet/admin.macaroon ~/`
+`$ scp bitcoin@your.RaspiBolt.LAN.IP:/home/bitcoin/.lnd/data/chain/bitcoin/mainnet/admin.macaroon ~/`
 
 ### Configure ZAP:
 
