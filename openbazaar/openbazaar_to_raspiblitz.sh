@@ -30,4 +30,35 @@ sudo ufw allow 4002
 
 go run openbazaard.go start &
 
+-----------------
+
+
+# https://github.com/OpenBazaar/openbazaar-go/blob/master/docs/install-pi3.md
+# https://github.com/OpenBazaar/openbazaar-go
+# https://github.com/OpenBazaar/openbazaar-go#usage
+
+
+sudo mkdir /mnt/hdd/openbazaar
+sudo chown -R bitcoin:bitcoin /mnt/hdd/openbazaar
+sudo su bitcoin
+/home/admin/config.scripts/go.install.sh
+go get github.com/OpenBazaar/openbazaar-go
+cd $GOPATH/src/github.com/OpenBazaar/openbazaar-go
+git checkout v0.13.6
+
+#echo "export GOPATH=/home/admin/go" >> .profile
+#echo "export PATH=$PATH:/usr/local/go/bin" >> .profile
+source ~/.profile
+
+
+go run $GOPATH/src/github.com/OpenBazaar/openbazaar-go/openbazaard.go init -d /mnt/hdd/openbazaar -v
+
+go run $GOPATH/src/github.com/OpenBazaar/openbazaar-go/openbazaard.go setapicreds -d /mnt/hdd/openbazaar -v
+
+go run $GOPATH/src/github.com/OpenBazaar/openbazaar-go/openbazaard.go start --tor -d /mnt/hdd/openbazaar -v
+
 # https://api.docs.openbazaar.org/
+
+sed -i -- 's/127.0.0.1/0.0.0.0/g' /mnt/hdd/openbazaar/config
+
+sudo ufw allow 4002 comment 'openbazaar'
