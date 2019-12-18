@@ -25,14 +25,14 @@ Activate the wallet of bitcoind
     ```
     disablewallet=0
     ```
-* Restart the bitcoind:  
+* Restart bitcoind:  
 `$ sudo systemctl restart bitcoind`
 
 ### Installation
 
 * Run in the RaspiBlitz terminal:
 
-    ```bash
+    ```
     git clone https://github.com/JoinMarket-Org/joinmarket-clientserver.git
     cd joinmarket-clientserver
     # latest release: https://github.com/JoinMarket-Org/joinmarket-clientserver/releases
@@ -45,7 +45,7 @@ Activate the wallet of bitcoind
 * Activate the virtual environment to see the prompt: `(jmvenv) $`  
 This needs to be done at every new login.
 
-    ```bash
+    ```
     $ cd joinmarket-clientserver
     $ source jmvenv/bin/activate
     $ cd scripts
@@ -53,7 +53,7 @@ This needs to be done at every new login.
     **Hint:** the commands can be run as one line if joined by `&&`
     (meaning continue to run if successful):
 
-    ```bash
+    ```
     $ cd joinmarket-clientserver && source jmvenv/bin/activate && cd scripts
     ```
     The previously run commands can be easly searched from the prompt by pressing
@@ -134,7 +134,7 @@ This needs to be done at every new login.
     
 
 * Display as a table in the terminal:  
-    `$ column -s, -t < ~/joinmarket-clientserver/scripts/logs/yigen-statement.csv | less -#2 -N -S`
+    `$ column -s, -t < ~/joinmarket-clientserver/scripts/logs/yigen-statement.csv | less -#2 -N -S`  
     press `q` to exit
 
 * Monitor continously with:  
