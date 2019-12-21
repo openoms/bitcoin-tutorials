@@ -4,13 +4,6 @@ ZeroTier is a VPN service which is an easy option to connect remotely when neith
 
 The drawback is that it requires installing a trusted package which gives access to your private network.  
 
-Other, less trusted  methods to connect remotely:
-* RTL access through HTTPS/SSL (needs port forwarding and a dynamicDNS)  
-https://github.com/openoms/bitcoin-tutorials/blob/master/nginx/README.md
-* Zeus access with a Tor auth cookie (needs an Android phone and Tor activated)  
-https://github.com/openoms/bitcoin-tutorials/blob/master/Zeus_to_RaspiBlitz_through_Tor.md
-* Setup port-forwarding with a SSH tunnel  https://github.com/rootzoll/raspiblitz/blob/master/FAQ.md#how-to-setup-port-forwarding-with-a-ssh-tunnel
-
 Steps to install:
 
 * Create a my.zerotier.com account and a network
@@ -21,7 +14,7 @@ Use a STRONG PASSWORD as anyone with your credentials will have access to your p
 * Click `Create a network` then record your `Network ID`.
 * Install ZeroTier on the RaspiBlitz (more details on https://www.zerotier.com/download.shtml):
 ```
-$ curl -s 'https://raw.githubusercontent.com/zerotier/download.zerotier.com/master/htdocs/contact%40zerotier.com.gpg' | gpg --import && \
+$ curl -s 'https://raw.githubusercontent.com/zerotier/ZeroTierOne/master/doc/contact%40zerotier.com.gpg' | gpg --import && \
 if z=$(curl -s 'https://install.zerotier.com/' | gpg); then echo "$z" | sudo bash; fi
 ```
 
