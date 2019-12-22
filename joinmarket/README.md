@@ -37,9 +37,7 @@ Activate the wallet of bitcoind
     cd joinmarket-clientserver
     # latest release: https://github.com/JoinMarket-Org/joinmarket-clientserver/releases
     git reset --hard v0.6.1
-    sudo apt install -y libltdl-dev libssl-dev # needed for Armbian
-    ./install.sh
-    # do not install QT-dependencies - running headless on the RPi
+    ./install.sh --without-qt
     ```
 
 * Activate the virtual environment to see the prompt: `(jmvenv) $`  
