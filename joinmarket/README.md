@@ -78,12 +78,25 @@ This needs to be done at every new login.
     rpc_password = PasswordB-as-in-bitcoin.conf
     ```
     Press `CTRL+O` and `ENTER` to save and `CRTL+X` to exit.
+* Run again to genarate  the wallet after setting up the `joinmarket.cfg`
+
+    `(jmvenv) $ python wallet-tool.py generate`  
 
 * Display the addresses to fund (look in mixdepth 0):  
 
     `(jmvenv) $ python wallet-tool.py wallet.jmdat`  
-
-    and run again after the first time
+    
+    Will display after the first run:
+    
+    ```
+    [INFO]  Detected new wallet, performing initial import
+    restart Bitcoin Core with -rescan or use `bitcoin-cli rescanblockchain` if you're recovering an existing wallet from backup seed
+    Otherwise just restart this joinmarket application.
+    ```
+    
+    Run again after the first time to see the addresses:
+    
+    `(jmvenv) $ python wallet-tool.py wallet.jmdat`  
 
 ### Send payments with a coinjoin with the `sendpayment.py`
 
