@@ -110,28 +110,34 @@ This needs to be done at every new login.
 * Read the basics: https://github.com/JoinMarket-Org/joinmarket/wiki/Running-a-Yield-Generator  
 
 * Edit the settings:  
-    `$ nano yield-generator-basic.py`
+    `$ nano yg-privacyenhanced.py`
 
     ```
     """THESE SETTINGS CAN SIMPLY BE EDITED BY HAND IN THIS FILE:
     """
-    txfee = 100
-    cjfee_a = 500
-    cjfee_r = '0.00002'
-    ordertype = 'swreloffer' #'swreloffer' or 'swabsoffer'
-    nickserv_password = ''
-    max_minsize = 1000
+    
+    ordertype = 'swreloffer'  # [string, 'swreloffer' or 'swabsoffer'] / which fee type to actually use
+    cjfee_a = 500             # [satoshis, any integer] / absolute offer fee you wish to receive for coinjoins (cj)
+    cjfee_r = '0.00003'       # [percent, any str between 0-1] / relative offer fee you wish to receive based on a cj's amount
+    cjfee_factor = 0.1        # [percent, 0-1] / variance around the average fee. Ex: 200 fee, 0.2 var = fee is btw 160-240
+    txfee = 000               # [satoshis, any integer] / the average transaction fee you're adding to coinjoin transactions
+    txfee_factor = 0.3        # [percent, 0-1] / variance around the average fee. Ex: 1000 fee, 0.2 var = fee is btw 800-1200
+    minsize = 500000         # [satoshis, any integer] / minimum size of your cj offer. Lower cj amounts will be disregarded
+    size_factor = 0.1         # [percent, 0-1] / variance around all offer sizes. Ex: 500k minsize, 0.1 var = 450k-550k
     gaplimit = 6
+
+    # end of settings customization
     ```
-    * `txfee` is the maker's contribution to the miner fees (still paid by the taker). To reduce the minimum offer amount for `swreloffer` set it to 0.
+    * `ordertype` sets either a relative (`swreloffer`) or an absolute (`swabsoffer`) coinjoin fee model
     * `cjfee_a` is the fixed coinjoin fee to be earned when using `swabsoffer`
     * `cjfee_r` is the relative fee when using `swreloffer`. Specified as the fraction of the used amount.
-    * `max_minsize` specifies the minimum offer size in satoshis (this is the minimum size the UTXO will end up to be after participating in coinjoin)
-    * `ordertype` sets either a relative (`swreloffer`) or an absolute (`swabsoffer`) coinjoin fee model
+    * `txfee` is the maker's contribution to the miner fees (still paid by the taker). To reduce the minimum offer amount for `swreloffer` set it to 0.    
+    * `minsize` specifies the minimum offer size in satoshis (this is the minimum size the UTXO will end up to be after participating in coinjoin)
+
 
 * Once set up run:
 
-    `(jmvenv) $ python yield-generator-basic.py wallet.jmdat`
+    `(jmvenv) $ python yg-privacyenhanced.py wallet.jmdat`
 
 ### Check the transaction history
 
