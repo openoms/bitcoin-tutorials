@@ -200,6 +200,57 @@ Find a basic introduction at https://www.ocf.berkeley.edu/~ckuehl/tmux/
     host = darksci3bfoka7tw.onion
     socks5 = true
     ```
+### JoinMarket-Qt on Ubuntu
+
+If you are using Ubuntu desktop and wish to use JoinMarket's graphical interface, the following instructions will create an icon in your Applications for easy access.
+
+Step 1: Create environment script
+
+```$ sudo nano ~/joinmarket.sh```
+
+In the blank file, copy the following:
+
+```
+#!/bin/bash
+
+cd ~/joinmarket-clientserver && source jmvenv/bin/activate && cd scripts
+python joinmarket-qt.py
+```
+
+Save the file and make it executable by running the following command:
+
+```$ sudo chmod a+x ~/joinmarket.sh```
+
+Step 2: Download the icon and place it into the pixmaps folder:
+
+```$ sudo wget -P /usr/share/pixmaps https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/joinmarket/joinmarket_logo.png```
+
+Step 3: Create desktop file
+
+```$ sudo nano ~/JoinMarket.desktop```
+
+In the blank file, copy the following:
+
+```
+!/usr/bin/env xdg-open
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=false
+Name[en_AU]=JoinMarket
+Exec=/home/$USER/joinmarket.sh
+Name=JoinMarket
+Icon=joinmarket_logo
+```
+
+Update the ```Exec=``` line with your username
+
+Step 3: Install the desktop file
+
+```$ sudo desktop-file-install ~/JoinMarket.desktop```
+
+Open up Applications and search for JoinMarket - test to see if it works.
+
 
 ### Resources:
 * Latest codebase:  
