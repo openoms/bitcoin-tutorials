@@ -107,7 +107,7 @@ This needs to be done at every new login.
 
 * See the walkthrough for the JoinMarket-Qt GUI to send payments with coinjoin or run multiple coinjoins (**tumbler**): <https://github.com/JoinMarket-Org/joinmarket-clientserver/blob/master/docs/JOINMARKET-QT-GUIDE.md>
 
-* Video demonstration of using the JoinMarket-Qt GUI: <https://youtu.be/hwmvZVQ4C4M>
+* Video demonstration of using the JoinMarket-Qt GUI by @AdamISZ: <https://youtu.be/hwmvZVQ4C4M>
 
 ### Run a Yield Generator
 * Read the basics: https://github.com/JoinMarket-Org/joinmarket/wiki/Running-a-Yield-Generator  
@@ -182,8 +182,7 @@ Find a basic introduction at https://www.ocf.berkeley.edu/~ckuehl/tmux/
     `$ nano joinmarket.cfg` 
 * Comment out the clearnet communication channels (place a `#` on the front of the line - means it won`t be used by the script):
 
-    ```
-    [MESSAGING:server1]
+    ```@AdamISZ
     #host = irc.cyberguerrilla.org
 
     ...
@@ -220,5 +219,5 @@ https://github.com/6102bitcoin/CoinJoin-Research/blob/master/CoinJoin_Implementa
 * Check the guide for the RaspiBolt by @kristapsk:  
 https://github.com/kristapsk/raspibolt-extras/blob/master/joinmarket.md
 
-* Tmux  will be included in the next release of the RaspiBlitz:  
+* Tmux will be included in the next release of the RaspiBlitz:  
 <https://github.com/rootzoll/raspiblitz/issues/793>

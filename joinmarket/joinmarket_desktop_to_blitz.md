@@ -141,7 +141,7 @@ This can be skipped if you connect through Tor (see [below](#tor-connection))
 
 ## JoinMarket-QT icon/shortcut on the Linux desktop
 
-The following instructions by @k3tan will create an icon for easy access.
+The following instructions by @k3tan172 will create an icon for easy access.
 Tested on Ubuntu.
 
 1) #### Create an environment script
@@ -202,8 +202,8 @@ Tested on Ubuntu.
 
 * [JoinMarket on the RaspiBlitz guide](README.md)
 
-* Video demonstration of using the JoinMarket-Qt GUI by @waxwing:  
+* Video demonstration of using the JoinMarket-Qt GUI by @AdamISZ:  
 <https://youtu.be/hwmvZVQ4C4M>
 
-* Video about how to setup and use JoinMarket on the Ubuntu Node Box by @k3tan:  
+* Video about how to setup and use JoinMarket on the Ubuntu Node Box by @k3tan172:  
 <https://www.youtube.com/watch?v=zTCC86IUzWo>

@@ -3,9 +3,16 @@
 
 Start at <https://github.com/rootzoll/raspiblitz>
 
+* #### [Connect JoinMarket running on a Linux desktop to a remote node](joinmarket/joinmarket_desktop_to_blitz.md)
+    In order to use the JoinMarketQT GUI (and other scripts) it needs to connect to a Bitcoin Core node. A pruned node with the wallet enabled will do and txindex is not required.
+
 * #### [Forward ports with a reverse SSH tunnel](ssh_tunnel.md)
+    No port forwarding needed on the local router.
+    Hides the IP of the host and provides an encrypted connection. 
+
 
 * #### [JoinMarket on the RaspiBlitz](joinmarket/README.md)
+    A long standing coinjoin implementation with decentralised coordination and incentive structure.
 
 * #### [BTCPayServer on the RaspiBlitz](BTCPayServer/README.md)
 
