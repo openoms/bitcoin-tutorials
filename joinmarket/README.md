@@ -81,7 +81,7 @@ This needs to be done at every new login.
     rpc_password = PasswordB-as-in-bitcoin.conf
     ```
     Press `CTRL+O` and `ENTER` to save and `CRTL+X` to exit.
-* Run again to genarate  the wallet after setting up the `joinmarket.cfg`
+* Run again to generate the wallet after setting up the `joinmarket.cfg`
 
     `(jmvenv) $ python wallet-tool.py generate`  
 
