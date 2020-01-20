@@ -182,7 +182,7 @@ Find a basic introduction at https://www.ocf.berkeley.edu/~ckuehl/tmux/
     `$ nano joinmarket.cfg` 
 * Comment out the clearnet communication channels (place a `#` on the front of the line - means it won`t be used by the script):
 
-    ```@AdamISZ
+    ```
     #host = irc.cyberguerrilla.org
 
     ...

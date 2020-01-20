@@ -131,6 +131,28 @@ This can be skipped if you connect through Tor (see [below](#tor-connection))
     rpc_user = RPC_USERNAME_OF_THE_REMOTE_NODE (AS IN BITCOIN.CONF)
     rpc_password = RPC_PASSWORD_OF_THE_REMOTE_NODE (AS IN BITCOIN.CONF)
     ```
+* To make JoinMarket communicate through Tor to the peers comment out the clearnet communication channels (place a `#` on the front of the line - means it won`t be used by the script):
+
+    ```
+    #host = irc.cyberguerrilla.org
+
+    ...
+
+    [MESSAGING:server2]
+    #host = irc.darkscience.net
+    ```
+* Uncomment (remove the `#` from front of) the entries related to Tor:
+    ```
+    #for tor
+    host = epynixtbonxn4odv34z4eqnlamnpuwfz6uwmsamcqd62si7cbix5hqad.onion
+    socks5 = true
+    
+    ...
+
+    #for tor
+    host = darksci3bfoka7tw.onion
+    socks5 = true
+    ```
 
 4) ####  activate the python virtual environment:  
     `$ source jmvenv/bin/activate`
