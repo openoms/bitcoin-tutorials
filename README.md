@@ -63,6 +63,6 @@ Start at <https://github.com/rootzoll/raspiblitz>
     * Bitcoin Core v0.18.1
 
 <p align="left">
-  <img src="/images/HC1.jpeg">
-  <img src="/images/XU4.jpeg">
+  <img width="400" src="/images/HC1.jpeg">
+  <img width="400" src="/images/XU4.jpeg">
 </p>
