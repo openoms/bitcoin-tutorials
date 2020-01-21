@@ -62,5 +62,7 @@ Start at <https://github.com/rootzoll/raspiblitz>
     * LND v0.7.1-beta 
     * Bitcoin Core v0.18.1
 
-![Odroid HC1](images/HC1.jpeg)
-![Odroid XU4](images/XU4.jpeg)
+<p align="left">
+  <img src="/images/HC1.jpeg">
+  <img src="/images/XU4.jpeg">
+</p>
