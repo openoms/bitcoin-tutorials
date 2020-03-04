@@ -3,6 +3,12 @@
 
 Start at <https://github.com/rootzoll/raspiblitz>
 
+* #### [CoinKite Bunker on the RaspiBlitz](ckbunker_on_blitz.md)
+
+<p align="left">
+  <img width="400" src="/images/ckbunker.starthsm.jpg">
+</p>
+
 * #### [Connect JoinMarket running on a Linux desktop to a remote node](joinmarket/joinmarket_desktop_to_blitz.md)
     In order to use the JoinMarketQT GUI (and other scripts) it needs to connect to a Bitcoin Core node. A pruned node with the wallet enabled will do and txindex is not required.
 
