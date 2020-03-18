@@ -46,8 +46,11 @@ Start at <https://github.com/rootzoll/raspiblitz>
     ZeroTier is a VPN service which is an easy option to connect remotely when neither port forwarding nor using Tor is possible (e.g. iOS on a remote network)
     The drawback is that it requires installing a trusted package which gives access to your private network.
 
+* ####  [RaspiBlitz updates](raspiblitz.updates/README.md)
+    Update scripts for the RaspiBlitz and compatible systems.
+
 * #### [LND updates](https://github.com/openoms/lightning-node-management/blob/master/lnd.updates/README.md)
-    Automated scripts to download, verify and update LND to the latest release or build from source up to a chosen commit.
+    Scripts to download, verify and update LND to the latest release or build from source up to a chosen commit.
 
 * #### [Zap Desktop Lightning wallet connection](ZAPtoRaspiBolt/README.md)  
     The desktop app [ZAP](https://github.com/LN-Zap/zap-desktop) is a cross platform Lightning Network wallet focused on user experience and ease of use.
