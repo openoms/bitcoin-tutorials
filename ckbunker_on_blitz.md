@@ -31,6 +31,8 @@ More info: https://ckbunker.com/install.html
     # install ckbunker
     git clone --recursive https://github.com/Coldcard/ckbunker.git
     cd ckbunker
+    # reset to the tested release: https://github.com/Coldcard/ckbunker/releases
+    git reset --hard v0.9
     virtualenv -p python3 ENV
     source ENV/bin/activate
     pip install -r requirements.txt
