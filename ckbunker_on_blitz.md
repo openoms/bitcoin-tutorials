@@ -15,8 +15,7 @@ More info: https://ckbunker.com/install.html
 
     ```
     # dependencies
-    sudo apt install -y virtualenv 
-    sudo apt -y python-dev libusb-1.0-0-dev libudev-dev
+    sudo apt install -y virtualenv python-dev libusb-1.0-0-dev libudev-dev
 
     # open firewall to LAN (edit to the correct subnet)
     sudo ufw allow from 192.168.3.0/24 to any port 9823 comment "ckbunker"
