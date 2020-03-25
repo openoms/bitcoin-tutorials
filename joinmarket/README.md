@@ -47,7 +47,7 @@ sudo bash bonus.joinmarket.sh on
     * Backup your seed and store safely. Best to not keep the seed and the passphrase together.
     * The wallet encryption password will be needed every time when there is interaction with the wallet. Store it somewhere accessible, best if encrypted.
 
-* Display the addresses of the first mixdepth (-m 0) to fund:  
+* Display the addresses of the mixdepth zero to fund:  
 
     `(jmvenv) $ python wallet-tool.py -m 0 wallet.jmdat`  
     
@@ -59,7 +59,7 @@ sudo bash bonus.joinmarket.sh on
     Otherwise just restart this joinmarket application.
     ```
     
-    Run again after the first time to see the addresses (fund the first one):
+    Run again to see the addresses of the mixdepth zero (fund the first one):
     
     `(jmvenv) $ python wallet-tool.py -m 0 wallet.jmdat`  
 
