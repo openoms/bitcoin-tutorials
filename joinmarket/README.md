@@ -135,7 +135,7 @@ Find a basic introduction at https://www.ocf.berkeley.edu/~ckuehl/tmux/
 `$ tmux a`  
     to pick up where left off
 
-### Resources:
+### Resources
 * Latest codebase:  
 <https://github.com/JoinMarket-Org/joinmarket-clientserver>
 
@@ -150,3 +150,10 @@ https://github.com/6102bitcoin/CoinJoin-Research/blob/master/CoinJoin_Implementa
 
 * Check the guide for the RaspiBolt by @kristapsk:  
 https://github.com/kristapsk/raspibolt-extras/blob/master/joinmarket.md
+
+### Forums
+
+* Keybase: https://keybase.io/team/raspiblitz#joinmarket  
+* Telegram: https://t.me/joinmarketorg  
+* IRC: #joinmarket on Freenode  
+* Reddit: https://www.reddit.com/r/joinmarket/  
