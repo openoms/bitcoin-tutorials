@@ -9,7 +9,7 @@
 A long standing coinjoin implementation with decentralised coordination and incentive structure.
 
 Tested on:
-* RPi4 4GB with RaspiBlitz v1.3
+* RPi4 4GB with RaspiBlitz v1.4
 * Odroid HC1 with RaspiBlitz v1.3
 
 Check the current offers in the order book: https://joinmarket.me/ob/  
@@ -18,76 +18,38 @@ One can coinjoin any amount within the offer limits by default with 5-7 random p
 
 See this review thread about the GUI option: https://twitter.com/zndtoshi/status/1191799199119134720
 
-### Prerequisite
-
-Activate the wallet of bitcoind
-* Edit the bitcoin.conf:  
-`$ sudo nano /mnt/hdd/bitcoin/bitcoin.conf`
-    
-* Change the disablewallet option to 0:
-    ```
-    disablewallet=0
-    ```
-* Restart bitcoind:  
-`$ sudo systemctl restart bitcoind`
-
 ### Installation
 
-* Run in the RaspiBlitz terminal:
+Now you can use the automated install [script](https://github.com/rootzoll/raspiblitz/blob/v1.5/home.admin/config.scripts/bonus.joinmarket.sh) which will be the part of the RaspiBlitz v1.5 release and can be installed form SERVICES menu.
 
-    ```
-    git clone https://github.com/JoinMarket-Org/joinmarket-clientserver.git
-    cd joinmarket-clientserver
-    # latest release: https://github.com/JoinMarket-Org/joinmarket-clientserver/releases
-    git reset --hard v0.6.1
-    ./install.sh --without-qt
-    ```
+What the script does:
 
-* Activate the virtual environment to see the prompt: `(jmvenv) $`  
-This needs to be done at every new login.
+* sets up a separate user: `joinmarket` with sudo access. Uses the PASSWORD_B as the user password
+* the data directory is on the disk at `/mnt/hdd/app-data/.joinmarket`, symlinked to `/home/joinmarket/.joinmarket` and will be kept during the SD-card updates
+* if joinmarket was set up already using a previous version of this tutorial the the wallet(s) will be copied to the new data directory automatically
+* will be compatible with GUI being worked on here: https://github.com/openoms/joininbox
 
-    ```
-    $ cd joinmarket-clientserver
-    $ source jmvenv/bin/activate
-    $ cd scripts
-    ```
-    **Hint:** the commands can be run as one line if joined by `&&`
-    (meaning continue to run if successful):
 
-    ```
-    $ cd joinmarket-clientserver && source jmvenv/bin/activate && cd scripts
-    ```
-    The previously run commands can be easly searched from the prompt by pressing
-    `CTRL+R` thanks to the [command line fuzzy finder](https://github.com/junegunn/fzf)
+To install JoinMarket on RaspiBlitz v1.4 (earlier versions are not supported):
+
+```
+#download:
+wget https://raw.githubusercontent.com/openoms/raspiblitz/joinmarket-cli/home.admin/config.scripts/bonus.joinmarket.sh
+#run:
+sudo bash bonus.joinmarket.sh on
+```
+
 ### Generate a wallet
 * Using the JoinMarket wallet: https://github.com/JoinMarket-Org/joinmarket/wiki/Using-the-JoinMarket-internal-wallet
 
     `(jmvenv) $ python wallet-tool.py generate`  
-    ```
-    Created a new `joinmarket.cfg`. Please review and adopt the settings and restart joinmarket.
-    ```
     * JoinMarket uses a hot wallet sitting on your Raspberry Pi. Keep it safe.
     * Backup your seed and store safely. Best to not keep the seed and the passphrase together.
     * The wallet encryption password will be needed every time when there is interaction with the wallet. Store it somewhere accessible, best if encrypted.
 
-* Fill in the PasswordB to the `joinmarket.cfg`  
- (as in `/mnt/hdd/bitcoin/bitcoin.conf`)  
+* Display the addresses of the first mixdepth (-m 0) to fund:  
 
-    `$ nano joinmarket.cfg`  
-
-    ```
-    [BLOCKCHAIN]
-    rpc_user = raspibolt
-    rpc_password = PasswordB-as-in-bitcoin.conf
-    ```
-    Press `CTRL+O` and `ENTER` to save and `CRTL+X` to exit.
-* Run again to generate the wallet after setting up the `joinmarket.cfg`
-
-    `(jmvenv) $ python wallet-tool.py generate`  
-
-* Display the addresses to fund (look in mixdepth 0):  
-
-    `(jmvenv) $ python wallet-tool.py wallet.jmdat`  
+    `(jmvenv) $ python wallet-tool.py -m 0 wallet.jmdat`  
     
     Will display after the first run:
     
@@ -97,9 +59,9 @@ This needs to be done at every new login.
     Otherwise just restart this joinmarket application.
     ```
     
-    Run again after the first time to see the addresses:
+    Run again after the first time to see the addresses (fund the first one):
     
-    `(jmvenv) $ python wallet-tool.py wallet.jmdat`  
+    `(jmvenv) $ python wallet-tool.py -m 0 wallet.jmdat`  
 
 ### Send payments with a coinjoin with the `sendpayment.py`
 
@@ -163,8 +125,6 @@ This needs to be done at every new login.
 
 ### Keep the offers running in the background with [Tmux](https://github.com/tmux/tmux#welcome-to-tmux)
 
-* Install on the RaspiBlitz:  
-`$ sudo apt install tmux`
 * Start:  
 `$ tmux`
 
@@ -175,34 +135,6 @@ Find a basic introduction at https://www.ocf.berkeley.edu/~ckuehl/tmux/
 `$ tmux a`  
     to pick up where left off
 
-### Make JoinMarket communicate on Tor
-
-* Activate Tor in the SERVICE menu of the RaspiBlitz if not running already
-* Edit the joinmarket.cfg:  
-    `$ nano joinmarket.cfg` 
-* Comment out the clearnet communication channels (place a `#` on the front of the line - means it won`t be used by the script):
-
-    ```
-    #host = irc.cyberguerrilla.org
-
-    ...
-
-    [MESSAGING:server2]
-    #host = irc.darkscience.net
-    ```
-* Uncomment (remove the `#` from front of) the entries related to Tor:
-    ```
-    #for tor
-    host = epynixtbonxn4odv34z4eqnlamnpuwfz6uwmsamcqd62si7cbix5hqad.onion
-    socks5 = true
-    
-    ...
-
-    #for tor
-    host = darksci3bfoka7tw.onion
-    socks5 = true
-    ```
-
 ### Resources:
 * Latest codebase:  
 <https://github.com/JoinMarket-Org/joinmarket-clientserver>
@@ -210,7 +142,7 @@ Find a basic introduction at https://www.ocf.berkeley.edu/~ckuehl/tmux/
 * Installation instructions:  
 <https://github.com/JoinMarket-Org/joinmarket-clientserver#quickstart---recommended-installation-method-linux-only>
 
-* Discuss JoinMarket usage on the RaspiBlitz in  
+* Discuss JoinMarket usage on the RaspiBlitz in:
 <https://github.com/rootzoll/raspiblitz/issues/842>
 
 * More links and info in 6102bitcoin/CoinJoin-Research:  
@@ -218,6 +150,3 @@ https://github.com/6102bitcoin/CoinJoin-Research/blob/master/CoinJoin_Implementa
 
 * Check the guide for the RaspiBolt by @kristapsk:  
 https://github.com/kristapsk/raspibolt-extras/blob/master/joinmarket.md
-
-* Tmux will be included in the next release of the RaspiBlitz:  
-<https://github.com/rootzoll/raspiblitz/issues/793>
