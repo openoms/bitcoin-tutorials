@@ -16,8 +16,6 @@ Check the current offers in the order book: https://joinmarket.me/ob/
 
 One can coinjoin any amount within the offer limits by default with 5-7 random participants at a time. The taker fees are maximised, then the offers within the limits are randomly chosen to participate. Most parameters can be easily customized.
 
-See this review thread about the GUI option: https://twitter.com/zndtoshi/status/1191799199119134720
-
 ### Installation
 
 Now you can use the automated install [script](https://github.com/rootzoll/raspiblitz/blob/v1.5/home.admin/config.scripts/bonus.joinmarket.sh) which will be the part of the RaspiBlitz v1.5 release and can be installed form SERVICES menu.
@@ -34,7 +32,7 @@ To install JoinMarket on RaspiBlitz v1.4 (earlier versions are not supported):
 
 ```
 #download:
-wget https://raw.githubusercontent.com/openoms/raspiblitz/joinmarket-cli/home.admin/config.scripts/bonus.joinmarket.sh
+https://raw.githubusercontent.com/rootzoll/raspiblitz/v1.5/home.admin/config.scripts/bonus.joinmarket.sh
 #run:
 sudo bash bonus.joinmarket.sh on
 ```
@@ -65,13 +63,20 @@ sudo bash bonus.joinmarket.sh on
 
 ### Send payments with a coinjoin with the `sendpayment.py`
 
+You can pay or withdraw to an external address with (or without) a CoinJoin using the `sendpayment.py`.
+
 * Described in: https://github.com/JoinMarket-Org/joinmarket-clientserver/blob/master/docs/USAGE.md#try-out-a-coinjoin-using-sendpaymentpy
 
-* See the walkthrough for the JoinMarket-Qt GUI to send payments with coinjoin or run multiple coinjoins (**tumbler**): <https://github.com/JoinMarket-Org/joinmarket-clientserver/blob/master/docs/JOINMARKET-QT-GUIDE.md>
+### Tumbler script
 
-* Video demonstration of using the JoinMarket-Qt GUI by @AdamISZ: <https://youtu.be/hwmvZVQ4C4M>
+The Tumbler does series of CoinJoins with various amounts and timing between them to break the link between different addresses.
+The Yield Generator only mixes the coins slowly but close to free (it is even possible to earn some fees).
+With the Tumbler the CoinJoin process is faster but the miner and maker fees are all paid by the taker running the Tumbler.
+
+* See: https://github.com/JoinMarket-Org/joinmarket-clientserver/blob/master/docs/tumblerguide.md
 
 ### Run a Yield Generator
+
 * Read the basics: https://github.com/JoinMarket-Org/joinmarket/wiki/Running-a-Yield-Generator  
 
 * Edit the settings:  
@@ -122,7 +127,6 @@ sudo bash bonus.joinmarket.sh on
 * Monitor continously with:  
     `$ tail -f -n 100 ~/joinmarket-clientserver/scripts/logs/yigen-statement.csv`
 
-
 ### Keep the offers running in the background with [Tmux](https://github.com/tmux/tmux#welcome-to-tmux)
 
 * Start:  
@@ -135,12 +139,44 @@ Find a basic introduction at https://www.ocf.berkeley.edu/~ckuehl/tmux/
 `$ tmux a`  
     to pick up where left off
 
+### Remote connection with ssh -X
+
+h/t @coconutanna on the #joinmarket Freenode IRC channel
+
+Use the JoinMarket QT GUI on a desktop, connecting remotely to the node.
+It needs Xserver running locally so making it work on Mac and Windows requires some more input.
+
+Try the remote QT GUI connection on Linux:
+
+```
+ssh -X joinmarket@RASPIBLITZ_IP joinmarket-clientserver/jmvenv/bin/python joinmarket-clientserver/scripts/joinmarket-qt.py
+```
+
+The password is the PASSWORD_B
+
+Successfully tested to open the JoinMarket QT GUI remotely on a desktop running:
+
+* Debian Buster
+* Manjaro
+
+Requires more testing:
+* Mac needs either X11.app or starting ssh from an xterm.
+
+* Windows requires Xming or similar.
+
+* See the walkthrough for the JoinMarket-Qt GUI to send payments with coinjoin or run multiple coinjoins (**tumbler**): <https://github.com/JoinMarket-Org/joinmarket-clientserver/blob/master/docs/JOINMARKET-QT-GUIDE.md>
+
+* Video demonstration of using the JoinMarket-Qt GUI by @AdamISZ: <https://youtu.be/hwmvZVQ4C4M>
+
+See this review thread about the GUI option: https://twitter.com/zndtoshi/status/1191799199119134720
+
 ### Resources
+
+* Notes on usage:
+<https://github.com/JoinMarket-Org/joinmarket-clientserver/blob/master/docs/USAGE.md>
+
 * Latest codebase:  
 <https://github.com/JoinMarket-Org/joinmarket-clientserver>
-
-* Installation instructions:  
-<https://github.com/JoinMarket-Org/joinmarket-clientserver#quickstart---recommended-installation-method-linux-only>
 
 * Discuss JoinMarket usage on the RaspiBlitz in:
 <https://github.com/rootzoll/raspiblitz/issues/842>
