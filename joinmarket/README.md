@@ -172,24 +172,28 @@ See this review thread about the GUI option: https://twitter.com/zndtoshi/status
 
 ### Resources
 
-* Notes on usage:
+* Notes on usage:  
 <https://github.com/JoinMarket-Org/joinmarket-clientserver/blob/master/docs/USAGE.md>
 
 * Latest codebase:  
 <https://github.com/JoinMarket-Org/joinmarket-clientserver>
 
-* Discuss JoinMarket usage on the RaspiBlitz in:
+* Discuss JoinMarket usage on the RaspiBlitz in:  
 <https://github.com/rootzoll/raspiblitz/issues/842>
 
+* Bitcoin privacy wiki:  
+<https://en.bitcoin.it/Privacy>
+
 * More links and info in 6102bitcoin/CoinJoin-Research:  
-https://github.com/6102bitcoin/CoinJoin-Research/blob/master/CoinJoin_Implementations/11_JoinMarket-JoinMarket-Org/summary.md
+<https://github.com/6102bitcoin/CoinJoin-Research/blob/master/CoinJoin_Implementations/11_JoinMarket-JoinMarket-Org/summary.md>
 
 * Check the guide for the RaspiBolt by @kristapsk:  
-https://github.com/kristapsk/raspibolt-extras/blob/master/joinmarket.md
+<https://github.com/kristapsk/raspibolt-extras/blob/master/joinmarket.md>
 
 ### Forums
 
-* Keybase: https://keybase.io/team/raspiblitz#joinmarket  
-* Telegram: https://t.me/joinmarketorg  
 * IRC: #joinmarket on Freenode  
-* Reddit: https://www.reddit.com/r/joinmarket/  
+* Reddit: <https://www.reddit.com/r/joinmarket/>
+* Telegram: <https://t.me/joinmarketorg>
+* Keybase: <https://keybase.io/team/raspiblitz#joinmarket>
+* GitHub: <https://github.com/rootzoll/raspiblitz/issues/842>
