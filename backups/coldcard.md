@@ -1,5 +1,5 @@
 ## ColdCard single seed multi-location backup scheme
-Original idea by @21isenough.  
+Original idea by [@KollerTobias](https://twitter.com/KollerTobias) and [@21isenough](https://github.com/21isenough/).  
 Documentation of Coldcard backups: <https://coldcardwallet.com/docs/backups>  
 The scheme only works if the seed is not locked down to a passphase:
 <https://coldcardwallet.com/docs/passphrase>  
