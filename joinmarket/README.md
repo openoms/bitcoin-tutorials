@@ -159,14 +159,13 @@ Successfully tested to open the JoinMarket QT GUI remotely on a desktop running:
 * Debian Buster
 * Manjaro
 
-Requires more testing:
-* Mac needs either X11.app or starting ssh from an xterm.
+* Mac needs [XQuartz](https://www.xquartz.org/) installed. See the comment from [@k3tan172](https://github.com/rootzoll/raspiblitz/issues/842#issuecomment-605904574)
 
-* Windows requires Xming or similar.
+* Windows requires Xming or similar. [Xming](https://sourceforge.net/projects/xming/) is likely to be used with Putty - waiting for confimation on this to work.
 
-* See the walkthrough for the JoinMarket-Qt GUI to send payments with coinjoin or run multiple coinjoins (**tumbler**): <https://github.com/JoinMarket-Org/joinmarket-clientserver/blob/master/docs/JOINMARKET-QT-GUIDE.md>
+See the walkthrough for the JoinMarket-Qt GUI to send payments with coinjoin or run multiple coinjoins (**tumbler**): <https://github.com/JoinMarket-Org/joinmarket-clientserver/blob/master/docs/JOINMARKET-QT-GUIDE.md>
 
-* Video demonstration of using the JoinMarket-Qt GUI by @AdamISZ: <https://youtu.be/hwmvZVQ4C4M>
+Video demonstration of using the JoinMarket-Qt GUI by @AdamISZ: <https://youtu.be/hwmvZVQ4C4M>
 
 See this review thread about the GUI option: https://twitter.com/zndtoshi/status/1191799199119134720
 
