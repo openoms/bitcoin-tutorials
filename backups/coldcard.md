@@ -15,7 +15,8 @@ The ColdCards should be stored uninitialized, best to be freshly acquired in the
 * Passphrase
 #### Full backup 2
 * Backupfile (.7z archive on the SD)
-- Backup password (12 words)
+* Backup password (12 words)
+* Passphrase
 
 ### Packages for a 2-of-3 setup
 
