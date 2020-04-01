@@ -6,7 +6,7 @@ When the wallet is restored connected to a bitcoin node with which it was not pr
 
 #### Full backup 1
 * Seed (12 words)
-- Passphrase (BIP39)
+* Passphrase (BIP39)
 #### Full backup 2 
 * Wallet file (.jmdat)
 * Encryption passphrase
@@ -20,10 +20,10 @@ When the wallet is restored connected to a bitcoin node with which it was not pr
 
 #### Location 2 
 - Passphrase (BIP39)
-- Encryption password 
+- Encryption passphrase 
 - First tx blockheight (optional)
 
 #### Location 3
 - Seed (12 words)
-- Encryption password
+- Encryption passphrase
 - First tx blockheight (optional)
