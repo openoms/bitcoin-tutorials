@@ -2,8 +2,8 @@
 Notes on LND wallet recovery: <https://github.com/lightningnetwork/lnd/blob/master/docs/recovery.md>  
 Notes on LND seed format (different from Bip39 or Electrum): <https://github.com/lightningnetwork/lnd/tree/master/aezeed>
 
+---
 ### Components grouped together by the requirement for a full restore
-
 #### Full backup 1
 * Seed (24 words)
 * Cypher Phrase (passphrase)
@@ -16,8 +16,8 @@ Notes on LND seed format (different from Bip39 or Electrum): <https://github.com
 * Wallet Unlock Password 
   * include logins and/or the SSH password to allow access to the node
 
+---
 ### Packages for a 2-of-3 setup
-
 #### Location 1
 * Seed (24 word)
 * Static Channel Backup (channel.backup)
