@@ -12,9 +12,9 @@ Notes on LND seed format (different from Bip39 or Electrum): <https://github.com
 
 #### Full backup 2 
 * LND folder with the !!**latest**!! state (wallet.db + channel.db) 
-  * requires to have physical or remote SSH access to the node (can be Hidden Service address for the port 22)
+  * requires to have physical (screen and keyboard) or remote SSH access to the node (can be a Tor Hidden Service address for the port 22)
 * Wallet Unlock Password 
-  * need to include SSH and sudo passwords to allow access to the folder on the node
+  * include logins and/or the SSH password to allow access to the node
 
 ### Packages for a 2-of-3 setup
 
