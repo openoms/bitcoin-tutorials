@@ -1,6 +1,6 @@
 # Single seed multi-location backup schemes
 
-The aim here is to create 3 packages of cryptographycally secure
+The aim is to create 3 packages of cryptographycally secure
 backups where the funds cannot be recovered from any single package,
 but can be recovered with the combination of any two.  
 Can be thought of as a physical 2-of-3 multisig solution.
@@ -11,7 +11,7 @@ Can be thought of as a physical 2-of-3 multisig solution.
 
 ### Electrum Wallet seed as a passphrase
 
-A well proven way to generate a random 12 word is to create a new wallet seed in the [Electrum Wallet](https://electrum.org/#download).  
+A well proven way to generate a random 12 word is to create a new wallet seed in [Electrum Wallet](https://electrum.org/#download).  
 To use Electrum boot [Tails](https://tails.boum.org/) (ideally offline) or [download and verify the wallet](https://electrum.org/#download) on an existing system.  
 
 Follow steps 1-5 in this [guide](https://bitcoinelectrum.com/creating-an-electrum-wallet/) to get the seed. The wallet file is not needed, only write down the words and store accordingly as the 12 words are to be used as a passphrase, encryption passphrase, cypher phrase or wallet unlock password. Do not reuse passphrases for more than one purpose and label the backups clearly. 
