@@ -3,6 +3,9 @@
 
 Start at <https://github.com/rootzoll/raspiblitz>
 
+* #### [Single seed multi-location backup schemes](backups/README.md)
+     Create 3 packages of cryptographycally secure backups where the funds cannot be recovered from any single package, but can be recovered with the combination of any two. Can be thought of as a physical 2-of-3 multisig solution for ColdCard, JoinMarket and LND wallets.
+
 * #### [CoinKite Bunker on the RaspiBlitz](ckbunker_on_blitz.md)
 
 <p align="left">
