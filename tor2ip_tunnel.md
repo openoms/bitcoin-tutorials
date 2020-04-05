@@ -6,17 +6,14 @@
 * encrypted connection over Tor
 
 ## Requirements:
-
-* ssh access to the host computer (where the ports will be forwarded from)
-* a Virtual Private Server (VPS) - eg. a minimal package on Lunanode for ~3.5$/month
+* SSH access to a Virtual Private Server (VPS) - eg. a minimal package on Lunanode for ~3.5$/month
     * Example Lightning Payable VPS services:
         * <https://host4coins.net>
         * <https://bitclouds.sh/> or <https://t.me/lntxbot> `/bitclouds` 
-* Tor and socat running on the VPS
 
 ## On the VPS
 
-* Login with ssh  
+* Login with ssh to root
     `ssh root@VPS_IP_ADDRESS`
 * Install tor (leave on default settings) and socat  
 `# apt install tor socat`
@@ -24,18 +21,17 @@
 ### Set up a systemd service
 
 * make a separate process for every connected Hidden Service to avoid restarting every connection when a service added or removed.  
-Suggestion for naming the service is to put the PORT used on the VPS into the name: `tor2ip<PORT>`
+Suggestion for naming the service is to put the VPS_PORT used on the VPS into the name: `tor2ip<VPS_PORT>`
 
 * create the service file:   
 `# nano /etc/systemd/system/tor2ip9236.service`
     * Paste the following and fill in:
-        * the PORT you want to use on the VPS (facing the public) - in this example it is 9326.
-    
-        * the Tor Hidden Service Address (----YOUR-ONION-ADDRESS---.onion) 
+        * the VPS_PORT you want to use (facing the public) - in this example: 9326.
+        * the TOR_HIDDEN_SERVICE_ADDRESS.onion
             * get the address with:
                 * `lncli getinfo` for LND port 9735
-                * sudo cat /mnt/hdd/tor/SERVICE_NAME/hostname
-        * The PORT the Hidden Service is using - in this example it is 9735
+                * `sudo cat /mnt/hdd/tor/SERVICE_NAME/hostname`
+        * The TOR_PORT the Hidden Service is using - in this example: 9735
 
     ```
     [Unit]
@@ -45,7 +41,7 @@ Suggestion for naming the service is to put the PORT used on the VPS into the na
     [Service]
     User=root
     Group=root
-    ExecStart=/usr/bin/socat TCP4-LISTEN:9236,bind=0.0.0.0,fork SOCKS4A:localhost:----YOUR-ONION-ADDRESS---.onion:9735,socksport=9050
+    ExecStart=/usr/bin/socat TCP4-LISTEN:9236,bind=0.0.0.0,fork SOCKS4A:localhost:TOR_HIDDEN_SERVICE_ADDRESS.onion:9735,socksport=9050
     StandardOutput=journal
 
     [Install]
@@ -56,8 +52,8 @@ Suggestion for naming the service is to put the PORT used on the VPS into the na
 `# systemctl start tor2ip9236`
 
 Setting up this Tor-to-IP tunnel service is now complete. You can carry on adding other services using different ports on the VPS.  
-You should be able access the ports/services of the host computer through the IP:PORT of the VPS.  
-For example for LND in the example:  
+You should be able access the ports/services of the host computer through: VPS_IP_ADDRESS:VPS_PORT.
+To connect to LND in the example:  
  `lncli connect NODE_PUBLIC_KEY@VPS_IP_ADDRESS:9236`
 
 ## Monitoring on the VPS
@@ -83,7 +79,7 @@ For example for LND in the example:
     Tasks: 1 (limit: 1078)
    Memory: 540.0K
    CGroup: /system.slice/tor2ip9236.service
-           └─13684 /usr/bin/socat TCP4-LISTEN:9236,bind=0.0.0.0,fork SOCKS4A:localhost:----YOUR-ONION-ADDRESS---onion:9735,socksport=9050
+           └─13684 /usr/bin/socat TCP4-LISTEN:9236,bind=0.0.0.0,fork SOCKS4A:localhost:TOR_HIDDEN_SERVICE_ADDRESS.onion:9735,socksport=9050
 
 Apr 05 14:58:43 VPS_hostname systemd[1]: Started Tor2IP Tunnel Service.
 ```
