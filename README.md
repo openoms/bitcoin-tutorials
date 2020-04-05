@@ -3,6 +3,9 @@
 
 Start at <https://github.com/rootzoll/raspiblitz>
 
+* #### [Tor-to-IP tunnel service](tor2ip_tunnel.md)
+     Use the public IP address of a Virtual Private Server (VPS) to make Tor Hidden Services reachable on the clearnet.
+
 * #### [Single seed multi-location backup schemes](backups/README.md)
      Create 3 packages of cryptographically secure backups where the funds cannot be recovered from any single package, but can be recovered with the combination of any two. Can be thought of as a physical 2-of-3 multisig solution for ColdCard, JoinMarket and LND wallets.
 
