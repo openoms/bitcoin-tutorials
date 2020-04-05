@@ -3,7 +3,7 @@
 ## Advantages: 
 * no port forwarding needed on the LAN of the host
 * encrypted connection
-* hides the IP of the host
+* hides the IP of the host from the public
 
 ## Requirements:
 * a Virtual Private Server (VPS) - eg. a minimal package on Lunanode for ~3.5$/month
@@ -45,7 +45,7 @@
 
 * copy the ssh public key over to the VPS (fill in the VPS_IP_ADDRESS).  
 Will be prompted for the root password of the VPS.  
-`# cat ~/.ssh/id_rsa.pub | ssh root@VPS_IP_ADDRESS 'cat >> ~/.ssh/authorized_keys && chmod -R 700 ~/.ssh/'`
+`# ssh-copy-id root@VPS_IP_ADDRESS` 
 
 ## Working on the VPS
 
