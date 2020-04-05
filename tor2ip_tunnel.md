@@ -14,52 +14,17 @@
         * <https://bitclouds.sh/> or <https://t.me/lntxbot> `/bitclouds` 
 * Tor and socat running on the VPS
 
-## On the host computer 
-* login as root or run:  
-`$ sudo su -`
-
-* Check for an ssh public key:  
-`# cat ./.ssh/*.pub`
-
-* if there is none generate one (keep pressing ENTER):  
-`# ssh-keygen -t rsa -b 4096`
-    * keep pressing [ENTER] to use the default values:
-    ```
-    Generating public/private rsa key pair.
-    Enter file in which to save the key (/root/.ssh/id_rsa): 
-    Enter passphrase (empty for no passphrase): 
-    Enter same passphrase again: 
-    Your identification has been saved in /root/.ssh/id_rsa.
-    Your public key has been saved in /root/.ssh/id_rsa.pub.
-    The key fingerprint is:
-    SHA256:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx root@hostname
-    The key's randomart image is:
-    +---[RSA 4096]----+
-    |            xxxx |
-    |           xxxxx |
-    |           xxxxx |
-    |          xxxxxx |
-    |       xxxxxxxxx |
-    |      xxxxxxxx   |
-    |     xxxxxxxxxx  |
-    |     xxxxxxxxxxx |
-    |      xxxxxxxxxx |
-    +----[SHA256]-----+
-    ```
-
-* copy the ssh public key over to the VPS (fill in the VPS_IP_ADDRESS).  
-Will be prompted for the root password of the VPS.  
-`# ssh-copy-id root@VPS_IP_ADDRESS` 
-
 ## On the VPS
 
+* Login with ssh  
+    `ssh root@VPS_IP_ADDRESS`
 * Install tor (leave on default settings) and socat  
 `# apt install tor socat`
 
 ### Set up a systemd service
 
-Recommended to make a separate process for every connected Hidden Service to avoid restarting every connection when a service added or removed.
-Suggestion for naming the service to use the port used in the name: `tor2ip<PORT>`
+* make a separate process for every connected Hidden Service to avoid restarting every connection when a service added or removed.  
+Suggestion for naming the service is to put the PORT used on the VPS into the name: `tor2ip<PORT>`
 
 * create the service file:   
 `# nano /etc/systemd/system/tor2ip9236.service`
