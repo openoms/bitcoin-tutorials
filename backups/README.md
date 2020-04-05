@@ -9,6 +9,7 @@ Can be thought of as a physical 2-of-3 multisig solution.
 ## [JoinMarket](joinmarket.md)
 ## [LND](lnd.md)
 ## [Samourai Wallet](samouraiwallet.md)
+## [Wasabi Wallet]wasabi.md)
 ---
 ### Electrum Wallet seed as a passphrase
 A well proven way to generate a random 12 word is to create a new wallet seed in [Electrum Wallet](https://electrum.org/#download).  
