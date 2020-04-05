@@ -1,5 +1,7 @@
 # Tor-to-IP tunnel service
 
+Use the public IP address of a Virtual Private Server (VPS) to make Tor Hidden Services reachable on the clearnet.
+
 ## Advantages: 
 * hides the IP of the host from the public and from the VPS
 * no port forwarding needed on the LAN of the host
