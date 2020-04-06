@@ -117,15 +117,14 @@ With the Tumbler the CoinJoin process is faster but the miner and maker fees are
     add `-v 4` to the end of the command for a more detailed list.
 
 * View the log of the transactions of the Yield Generator:  
-    `$ cat ~/joinmarket-clientserver/scripts/logs/yigen-statement.csv`
-    
+    `$ cat ~/.joinmarket/logs/yigen-statement.csv`
 
 * Display as a table in the terminal:  
-    `$ column -s, -t < ~/joinmarket-clientserver/scripts/logs/yigen-statement.csv | less -#2 -N -S`  
+    `$ column -s, -t < ~/.joinmarket/logs/yigen-statement.csv | less -#2 -N -S`  
     press `q` to exit
 
 * Monitor continously with:  
-    `$ tail -f -n 100 ~/joinmarket-clientserver/scripts/logs/yigen-statement.csv`
+    `$ tail -f -n 100 ~/.joinmarket/logs/yigen-statement.csv`
 
 ### Keep the offers running in the background with [Tmux](https://github.com/tmux/tmux#welcome-to-tmux)
 
