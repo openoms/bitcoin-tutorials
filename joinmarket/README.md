@@ -1,8 +1,7 @@
 <p align="left">
-  <img width="150"  src="../images/RaspiBlitz_Logo_Berry.png">
+  <img width="100" src="../images/joinmarket_logo.png">  <img width="100" >
   <img width="100" >
-  <img width="100" src="../images/joinmarket_logo.png">
-
+  <img width="150"  src="../images/RaspiBlitz_Logo_Berry.png">
 </p>
 
 ## JoinMarket on the RaspiBlitz
