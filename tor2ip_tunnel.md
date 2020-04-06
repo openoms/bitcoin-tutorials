@@ -10,12 +10,14 @@ Use the public IP address of a Virtual Private Server (VPS) to make Tor Hidden S
 ## Requirements:
 * SSH access to a Virtual Private Server (VPS) - eg. a minimal package on Lunanode for ~3.5$/month
     * Example Lightning Payable VPS services:
-        * <https://host4coins.net>
-        * <https://bitclouds.sh/> or <https://t.me/lntxbot> `/bitclouds` 
+        * [host4coins.net](https://host4coins.net)
+        * [bitclouds.sh](https://bitclouds.sh/) or [lntxbot](https://t.me/lntxbot) `/bitclouds` 
+     * Note that only the root user can forward to ports below 1000.  
+     * Always check the terms and rules of the VPS provider to avoid bans and don't do anything causing them trouble to keep these services going.
 
 ## On the VPS
 
-* Login with ssh to root
+* Login with ssh to root  
     `ssh root@VPS_IP_ADDRESS`
 * Install tor (leave on default settings) and socat  
 `# apt install tor socat`
@@ -57,7 +59,7 @@ Setting up this Tor-to-IP tunnel service is now complete. You can carry on addin
 You should be able access the ports/services of the host computer through: VPS_IP_ADDRESS:VPS_PORT.
 To connect to LND in the example:  
  `lncli connect NODE_PUBLIC_KEY@VPS_IP_ADDRESS:9236`
-
+  
 ## Monitoring on the VPS
 
 * To check if tunnel is active on the VPS:  
@@ -71,8 +73,8 @@ To connect to LND in the example:
     tcp        0      0 0.0.0.0:9236            0.0.0.0:*               LISTEN      13684/socat  
     ```
 
-* Monitor the service with: 
-`# systemctl status tor2ip9236
+* Monitor the service with:  
+`# systemctl status tor2ip9236`
 ```
 ● tor2ip9236.service - Tor2IP Tunnel Service
    Loaded: loaded (/etc/systemd/system/tor2ip9236.service; enabled; vendor preset: enabled)
@@ -88,5 +90,5 @@ Apr 05 14:58:43 VPS_hostname systemd[1]: Started Tor2IP Tunnel Service.
 
 ## Resources
 
-A produced at https://wiki.fulmo.org/index.php?title=Lightning_HackSprint.  
-Thanks to [@emzy](https://twitter.com/emzy) for the original socat syntax.
+Thanks to [@emzy](https://twitter.com/emzy) for the original `socat` syntax.  
+Produced at the [#LightningHackSprint](https://wiki.fulmo.org/index.php?title=Lightning_HackSprint).  
