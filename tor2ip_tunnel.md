@@ -5,21 +5,22 @@ Use the public IP address of a Virtual Private Server (VPS) to make Tor Hidden S
 ## Advantages: 
 * hides the IP of the host from the public and from the VPS
 * no port forwarding needed on the LAN of the host
-* encrypted connection over Tor
+* additional encryption by Tor between the host and the VPS 
 
 ## Requirements:
 * SSH access to a Virtual Private Server (VPS) - eg. a minimal package on Lunanode for ~3.5$/month
     * Example Lightning Payable VPS services:
         * [host4coins.net](https://host4coins.net)
         * [bitclouds.sh](https://bitclouds.sh/) or [lntxbot](https://t.me/lntxbot) `/bitclouds` 
-     * Note that only the root user can forward to ports below 1000.  
-     * Always check the terms and rules of the VPS provider to avoid bans and don't do anything causing them trouble to keep these services going.
+* Note that only the root user can forward to ports below 1000.  
+* Tor should not be the only encryption layer of the service as the traffic exposed on the VPS is meant to be for the `localhost`
+* Always check the terms and rules of the VPS provider to avoid bans and don't do anything causing them trouble to keep these services going.
 
 ## On the VPS
 
-* Login with ssh to root  
+* Login with ssh to the `root` user
     `ssh root@VPS_IP_ADDRESS`
-* Install tor (leave on default settings) and socat  
+* Install `tor` (leave on default settings) and `socat`
 `# apt install tor socat`
 
 ### Set up a systemd service
@@ -90,5 +91,6 @@ Apr 05 14:58:43 VPS_hostname systemd[1]: Started Tor2IP Tunnel Service.
 
 ## Resources
 
-Thanks to [@emzy](https://twitter.com/emzy) for the original `socat` syntax.  
-Produced at the [#LightningHackSprint](https://wiki.fulmo.org/index.php?title=Lightning_HackSprint).  
+* `socat` manpage:  <https://linux.die.net/man/1/socat>
+* Thanks to [@emzy](https://twitter.com/emzy) for the original `socat` syntax.  
+* Produced at the [#LightningHackSprint](https://wiki.fulmo.org/index.php?title=Lightning_HackSprint).  
