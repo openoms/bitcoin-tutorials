@@ -18,9 +18,9 @@ Use the public IP address of a Virtual Private Server (VPS) to make Tor Hidden S
 
 ## On the VPS
 
-* Login with ssh to the `root` user
+* Login with ssh to the `root` user  
     `ssh root@VPS_IP_ADDRESS`
-* Install `tor` (leave on default settings) and `socat`
+* Install `tor` (leave on default settings) and `socat`  
 `# apt install tor socat`
 
 ### Set up a systemd service
