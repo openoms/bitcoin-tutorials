@@ -31,10 +31,12 @@ To install JoinMarket on RaspiBlitz v1.4 (earlier versions are not supported):
 
 ```
 #download:
-https://raw.githubusercontent.com/rootzoll/raspiblitz/v1.5/home.admin/config.scripts/bonus.joinmarket.sh
+wget https://raw.githubusercontent.com/rootzoll/raspiblitz/v1.5/home.admin/config.scripts/bonus.joinmarket.sh
 #run:
 sudo bash bonus.joinmarket.sh on
 ```
+Start by logging in with the `joinmarket` user:  
+`sudo su joinmarket`
 
 ### Generate a wallet
 * Using the JoinMarket wallet: https://github.com/JoinMarket-Org/joinmarket/wiki/Using-the-JoinMarket-internal-wallet
@@ -109,7 +111,6 @@ With the Tumbler the CoinJoin process is faster but the miner and maker fees are
     `(jmvenv) $ python yg-privacyenhanced.py wallet.jmdat`
 
 ### Check the transaction history
-
 * use the wallet tool:  
     `(jmvenv) $ python wallet-tool.py wallet.jmdat history`
 
@@ -126,13 +127,13 @@ With the Tumbler the CoinJoin process is faster but the miner and maker fees are
     `$ tail -f -n 100 ~/.joinmarket/logs/yigen-statement.csv`
 
 ### Keep the offers running in the background with [Tmux](https://github.com/tmux/tmux#welcome-to-tmux)
-
 * Start:  
+`$ sudo su joinmarket`  
 `$ tmux`
 
 * Work in the terminal as described above.  
-Find a basic introduction at https://www.ocf.berkeley.edu/~ckuehl/tmux/
-* If the terminal is disconnected the processes in tmux keep running (as it is running on the Blitz) and can be returned to
+Find a basic introduction to Tmux at https://www.ocf.berkeley.edu/~ckuehl/tmux/
+* If the terminal is disconnected the processes in Tmux keep running (as it is running on the Blitz) and can be returned to
 * when logged in after a disconnection run:  
 `$ tmux a`  
     to pick up where left off
