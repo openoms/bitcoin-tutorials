@@ -11,10 +11,10 @@ Can be thought of as a physical 2-of-3 multisig solution.
 ## [Samourai Wallet](samouraiwallet.md)
 ---
 ### Electrum Wallet seed as a passphrase
-A well proven way to generate a random 12 word is to create a new wallet seed in [Electrum Wallet](https://electrum.org/#download).  
+A well proven way to generate random 12 word list is to create a new wallet seed in [Electrum Wallet](https://electrum.org/#download).  
 To use Electrum boot [Tails](https://tails.boum.org/) (ideally offline) or [download and verify the wallet](https://electrum.org/#download) on an existing system.  
 
-Follow steps 1-5 in this [guide](https://bitcoinelectrum.com/creating-an-electrum-wallet/) to get the seed. The wallet file is not needed, only write down the words and store accordingly as the 12 words are to be used as a passphrase, encryption passphrase, cypher phrase or wallet unlock password. Do not reuse passphrases for more than one purpose and label the backups clearly. 
+Follow steps 1-5 in this [guide](https://bitcoinelectrum.com/creating-an-electrum-wallet/) to get the seed. The wallet file is not needed, only write down the words and store accordingly. The 12 words are to be used as a passphrase, encryption passphrase, cypher phrase or wallet unlock password. Do not reuse passphrases for more than one purpose and label the backups clearly.
 
 The [Electrum word list](https://github.com/spesmilo/electrum/blob/master/electrum/wordlist/english.txt) is based on the same 2048 words as the the [BIP39 word list](https://github.com/bitcoin/bips/blob/master/bip-0039/english.txt) which the ColdCard firmware contains so the keyboard entry is facilitated by the menu.
 
