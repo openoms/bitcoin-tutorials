@@ -6,14 +6,16 @@ Documentation on Samourai Wallet recovery:
 In case of restoring the wallet in different software (eg. Electrum) check  
 <https://walletsrecovery.org> for the derivation paths used.
 
+Note that Samourai Wallet does not allow spaces in the passphrase.
+
 ---
 ### Components grouped together by the requirement for a full restore
 #### Full backup 1
 * Seed (12 words)
-* Passphrase (BIP39)
+* Passphrase (without spaces)
 #### Full backup 2 
 * Backup file (encrypted text)
-* Passphrase (BIP39)
+* Passphrase (without spaces)
 #### Full backup 3
 * Android device with the wallet loaded (locked with PIN codes)
     * use a secondary, dedicated device for backup 
@@ -30,7 +32,7 @@ In case of restoring the wallet in different software (eg. Electrum) check
 - PIN codes to the Android Device AND Samourai Wallet
 
 #### Location 2 
-- Passphrase (BIP39)
+- Passphrase (without spaces)
 - PIN codes to the Android Device AND Samourai Wallet 
 
 #### Location 3
