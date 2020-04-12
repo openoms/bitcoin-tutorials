@@ -1,6 +1,6 @@
 <p align="left">
-  <img width="100" src="../images/joinmarket_logo.png">  <img width="100" >
-  <img width="100" >
+  <img width="100" src="../images/joinmarket_logo.png">
+  <img width="100">
   <img width="150"  src="../images/RaspiBlitz_Logo_Berry.png">
 </p>
 
@@ -36,7 +36,7 @@ wget https://raw.githubusercontent.com/rootzoll/raspiblitz/v1.5/home.admin/confi
 sudo bash bonus.joinmarket.sh on
 ```
 Start by logging in with the `joinmarket` user:  
-`sudo su joinmarket`
+`sudo su - joinmarket`
 
 ### Generate a wallet
 * Using the JoinMarket wallet: https://github.com/JoinMarket-Org/joinmarket/wiki/Using-the-JoinMarket-internal-wallet
@@ -67,6 +67,15 @@ Start by logging in with the `joinmarket` user:
 You can pay or withdraw to an external address with (or without) a CoinJoin using the `sendpayment.py`.
 
 * Described in: https://github.com/JoinMarket-Org/joinmarket-clientserver/blob/master/docs/USAGE.md#try-out-a-coinjoin-using-sendpaymentpy
+
+* How to keep fees to minimum:
+    * Edit the joinmarket.cfg:  
+    `$ sudo nano /home/joinmarket/.joinmarket/joinmarket.cfg`
+    * Look for: `tx_fees = 3` and change to `txfees = 1200` to pay 1.2 sats/byte (+/-20%) mining fee for transactions. Note that in times of high mempool usage it can take a long time to have transactions confirmed with this low fee.
+    * Set `#max_cj_fee_abs = x` to `max_cj_fee_abs = 100` to pay mac 100 sats per maker when coinjoining.
+    * Set  `#max_cj_fee_rel = x` to `max_cj_fee_rel = 0.0001` to pay max 0.01% per maker for relative offers when coinjoining.
+    These settings might make it difficult to find counterparties to coinjoin with, see the [offerbook](https://joinmarket.me/ob) for the market and increase limit if offers are scarce or running into errors.
+    * press CTRL + o, ENTER to save and CTRL + X to exit. 
 
 ### Tumbler script
 
