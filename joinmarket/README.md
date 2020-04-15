@@ -72,8 +72,8 @@ You can pay or withdraw to an external address with (or without) a CoinJoin usin
     * Edit the joinmarket.cfg:  
     `$ sudo nano /home/joinmarket/.joinmarket/joinmarket.cfg`
     * Look for: `tx_fees = 3` and change to `txfees = 1200` to pay 1.2 sats/byte (+/-20%) mining fee for transactions. Note that in times of high mempool usage it can take a long time to have transactions confirmed with this low fee.
-    * Set `#max_cj_fee_abs = x` to `max_cj_fee_abs = 100` to pay mac 100 sats per maker when coinjoining.
-    * Set  `#max_cj_fee_rel = x` to `max_cj_fee_rel = 0.0001` to pay max 0.01% per maker for relative offers when coinjoining.
+    * Set `#max_cj_fee_abs = x` to `max_cj_fee_abs = 100` to pay max 100 sats per maker when coinjoining.
+    * Set  `#max_cj_fee_rel = x` to `max_cj_fee_rel = 0.0001` to pay max 0.01% per relative offer when coinjoining.
     These settings might make it difficult to find counterparties to coinjoin with, see the [offerbook](https://joinmarket.me/ob) for the market and increase limit if offers are scarce or running into errors.
     * press CTRL + o, ENTER to save and CTRL + X to exit. 
 
