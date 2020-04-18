@@ -142,6 +142,7 @@ With the Tumbler the CoinJoin process is faster but the miner and maker fees are
 
 * Work in the terminal as described above.  
 Find a basic introduction to Tmux at https://www.ocf.berkeley.edu/~ckuehl/tmux/
+* To detach the Tmux session (and keep the processes running in the background) press `CTRL` + `b`, then `d`.
 * If the terminal is disconnected the processes in Tmux keep running (as it is running on the Blitz) and can be returned to
 * when logged in after a disconnection run:  
 `$ tmux a`  
@@ -176,6 +177,42 @@ See the walkthrough for the JoinMarket-Qt GUI to send payments with coinjoin or 
 Video demonstration of using the JoinMarket-Qt GUI by @AdamISZ: <https://youtu.be/hwmvZVQ4C4M>
 
 See this review thread about the GUI option: https://twitter.com/zndtoshi/status/1191799199119134720
+
+### Run the Offer Book locally
+The offer book is usually available at <https://joinmarket.me/ob>. The page being down does not affect the functionality of JoinMarket. Communication between the nodes is encrypted and passing through IRC servers.
+
+* Any JoinMarket instance can build the offer book itself:  
+Run in Tmux (as described above) to keep running when the terminal is closed.
+    ```
+    cd ~/joinmarket-clientserver/scripts/obwatch
+    # install the matplotlib dependency first
+    sudo apt install matplotlib
+    python ob-watcher.py
+    ```
+* Create a Hidden service:  
+Use the RaspiBlitz script `internet.hiddenservice.sh`
+    ```
+    /home/admin/config.scripts/internet.hiddenservice.sh ob-watcher 80 62601
+    ```
+* visit the displayed `.onion` hidden service address in the Tor Browser for the local offer book.
+### Export a private key of an individual UTXO-s to Electrum Wallet (advanced)
+
+<https://github.com/JoinMarket-Org/joinmarket-clientserver/blob/master/docs/USAGE.md#recovering-private-keys>
+
+* Example syntax to obtain the private keys (WIF format):  
+using the derivation path (m/...) as specified in the `wallet-tool.py` output; note the need to use double quotes around it.
+
+    ```
+    (jmvenv)$python wallet-tool.py -H "m/49'/0'/4'/0/0" wallet.jmdat dumpprivkey
+    Enter wallet decryption passphrase: 
+    L1YPrEGNMwwfnvzBfAiPiPC4zb5s6Urpqnk88zNHgsYLHrq2Umss
+    ```
+
+
+* Open Electrum Wallet and start to create a new wallet.
+* Select `Import Bitcoin Addresses or private keys`
+* paste the private key you want to use as:  
+`p2wpkh-p2sh:WIF_FORMAT_PRIV_KEY`
 
 ### Resources
 
