@@ -218,12 +218,10 @@ using the derivation path (m/...) as specified in the `wallet-tool.py` output; n
 
 * Notes on usage:  
 <https://github.com/JoinMarket-Org/joinmarket-clientserver/blob/master/docs/USAGE.md>
+<https://github.com/JoinMarket-Org/joinmarket/wiki>
 
 * Latest codebase:  
 <https://github.com/JoinMarket-Org/joinmarket-clientserver>
-
-* Discuss JoinMarket usage on the RaspiBlitz in:  
-<https://github.com/rootzoll/raspiblitz/issues/842>
 
 * Bitcoin privacy wiki:  
 <https://en.bitcoin.it/Privacy>
@@ -236,8 +234,10 @@ using the derivation path (m/...) as specified in the `wallet-tool.py` output; n
 
 ### Forums
 
-* IRC: #joinmarket on Freenode  
+* IRC: #joinmarket on Freenode <https://webchat.freenode.net/?channels=%23joinmarket>
+* IRC on tor: `#joinmarket` on the networks [AgoraIRC](https://anarplex.net/agorairc/) and [Darkscience](https://www.darkscience.net/). These channels are bridged to the above freenode channel.
 * Reddit: <https://www.reddit.com/r/joinmarket/>
 * Telegram: <https://t.me/joinmarketorg>
 * Keybase: <https://keybase.io/team/raspiblitz#joinmarket>
-* GitHub: <https://github.com/rootzoll/raspiblitz/issues/842>
+* Bitcointalk thread: https://bitcointalk.org/index.php?topic=919116.msg10096563
+* Twitter: https://twitter.com/joinmarket
