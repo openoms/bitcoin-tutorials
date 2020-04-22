@@ -48,7 +48,7 @@ This can be skipped if you connect through Tor (see [below](#tor-connection))
     git clone https://github.com/JoinMarket-Org/joinmarket-clientserver.git
     cd joinmarket-clientserver
     # latest release: https://github.com/JoinMarket-Org/joinmarket-clientserver/releases
-    git reset --hard v0.6.1
+    git reset --hard v0.6.2
 
     ./install.sh --with-qt
     ```
@@ -61,9 +61,9 @@ This can be skipped if you connect through Tor (see [below](#tor-connection))
     `(jmvenv) $ python joinmarket-qt.py`
 
 4) #### Edit the joinmarket.cfg:  
-    `$ nano ./scripts/joinmarket.cfg` 
+    `$ nano ~/.joinmarket/joinmarket.cfg` 
 
-    Fill in the values in CAPITALs:
+    Fill in the values which are in CAPITALs:
 
     ```
     [BLOCKCHAIN]
@@ -80,9 +80,9 @@ This can be skipped if you connect through Tor (see [below](#tor-connection))
     
     If you want use the wallet used on your node already copy it over with scp (fill in the parts written in CAPITALs):  
     ```
-    $ scp admin@REMOTE_NODE_IP:~/joinmarket-clientserver/scripts/wallets/WALLET.jmdat ./wallets/
+    $ scp admin@REMOTE_NODE_IP:~/.joimarket/wallets/WALLET.jmdat ~/.joimarket/wallets/
     ```  
-    You can use the `Wallet` menu of JoinMarketQT to generate or restore a wallet
+    You can use the `Wallet` menu of JoinMarketQT to generate or restore a wallet.
 
 5) #### Start the JoinMarket-QT GUI (or an other script) with:  
     `(jmvenv) $ python joinmarket-qt.py`
@@ -143,14 +143,19 @@ This can be skipped if you connect through Tor (see [below](#tor-connection))
     ```
 * Uncomment (remove the `#` from front of) the entries related to Tor:
     ```
-    #for tor
-    host = epynixtbonxn4odv34z4eqnlamnpuwfz6uwmsamcqd62si7cbix5hqad.onion
-    socks5 = true
-    
     ...
-
+    [MESSAGING:server1]
+    ...
     #for tor
     host = darksci3bfoka7tw.onion
+    socks5 = true
+    ...
+    [MESSAGING:server2]
+    ...
+    #for tor
+    host = ncwkrwxpq2ikcngxq3dy2xctuheniggtqeibvgofixpzvrwpa77tozqd.onion
+    port = 6667
+    usessl = false
     socks5 = true
     ```
 
