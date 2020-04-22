@@ -20,7 +20,7 @@ Tested with:
 
 ### In the node terminal
 
-* Activate the Bitcoin Core wallet of the RaspiBlitz:
+* Activate the Bitcoin Core wallet of the RaspiBlitz:  
     `$ /home/admin/config.scripts/network.wallet.sh on`
 
 #### Allow remote RPC connections on the LAN
@@ -96,7 +96,7 @@ This can be skipped if you connect through Tor (see [below](#tor-connection))
 ### On the node - activate Tor and create a Hidden Service
 #### Create a Hidden Service to forward the bitcoin RPC port
 
-* On a RaspiBlitz you can use the built-in script:
+* On a RaspiBlitz you can use the built-in script:  
     `$ /home/admin/config.scripts/internet.hiddenservice.sh bitcoinrpc 8332 8332`
 
 1) #### Open the Tor configuration file:  
