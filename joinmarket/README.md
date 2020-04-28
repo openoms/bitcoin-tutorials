@@ -66,6 +66,19 @@ Start by logging in with the `joinmarket` user:
 
 You can pay or withdraw to an external address with (or without) a CoinJoin using the `sendpayment.py`.
 
+* Example:  
+    `(jmvenv)$ python sendpayment.py -N5 -m1 WALLET.jmdat 100000000 mprGzBA9rQk82Ly41TsmpQGa8UPpZb2w8c`
+
+    Sends 1BTC (100 million satoshis) from mixing depth 1 (the second!), mixing with five other parties.  
+* The most importan options (see all with --help):    
+    ```
+    -N MAKERCOUNT, --makercount=MAKERCOUNT
+                        how many makers to coinjoin with, default random from 5 to 7
+
+    -m MIXDEPTH, --mixdepth=MIXDEPTH
+                        mixing depth to spend from, default=0 (choose one from 0 to 4)
+    ```
+
 * Described in: https://github.com/JoinMarket-Org/joinmarket-clientserver/blob/master/docs/USAGE.md#try-out-a-coinjoin-using-sendpaymentpy
 
 * How to keep fees to minimum:
@@ -76,6 +89,18 @@ You can pay or withdraw to an external address with (or without) a CoinJoin usin
     * Set  `#max_cj_fee_rel = x` to `max_cj_fee_rel = 0.0001` to pay max 0.01% per relative offer when coinjoining.
     These settings might make it difficult to find counterparties to coinjoin with, see the [offerbook](https://joinmarket.me/ob) for the market and increase limit if offers are scarce or running into errors.
     * press CTRL + o, ENTER to save and CTRL + X to exit. 
+
+### Coin control with the `freeze` method
+
+* List all UTXO-s in the WALLET with:  
+    `(jmvenv)$ python wallet-tool.py WALLET.jmdat`
+* Pick a mixdepth (-m[0-4]) to transfer from:
+* Run the `wallet-tool.py` with the `freeze` method:  
+    `(jmvenv)$ python wallet-tool.py -m0 WALLET.jmdat freeze`
+* The script will ask which UTXO to freeze or unfreeze - you can keep pressing the numbers to choose.
+* Once done use `-1` to exit.
+* Sweep the mixdepth with `-N 0` to send the NOT FROZEN UTXO-s without a coinjoin:  
+    `(jmvenv)$ python sendpayment.py -N 0 WALLET.jmdat 0 DESTINATION_BITCOIN_ADDRESS`
 
 ### Tumbler script
 
