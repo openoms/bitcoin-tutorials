@@ -173,29 +173,48 @@ Find a basic introduction to Tmux at https://www.ocf.berkeley.edu/~ckuehl/tmux/
 `$ tmux a`  
     to pick up where left off
 
-### Remote connection with ssh -X
-
+### Use the Joinmarket QT GUI on the desktop
+The graphical interface can run on the desktop relayed from the node via an encrypted ssh tunnel.  
 h/t @coconutanna on the #joinmarket Freenode IRC channel
 
-Use the JoinMarket QT GUI on a desktop, connecting remotely to the node.
-It needs Xserver running locally so making it work on Mac and Windows requires some more input.
+#### Linux desktop:
+* Tested to open the QT GUI remotely on a desktop running:
+  * Debian Buster
+  * Manjaro
 
-Try the remote QT GUI connection on Linux:
+  ```
+  ssh -X joinmarket@RASPIBLITZ_IP joinmarket-clientserver/jmvenv/bin/python joinmarket-clientserver/scripts/joinmarket-qt.py
+  ```
 
-```
-ssh -X joinmarket@RASPIBLITZ_IP joinmarket-clientserver/jmvenv/bin/python joinmarket-clientserver/scripts/joinmarket-qt.py
-```
+* Use the PASSWORD_B to log in.
 
-The password is the PASSWORD_B
+#### Mac
+* install [XQuartz](https://www.xquartz.org/)
+* Enter the command as above in a Mac terminal, XQuartz will load and show QT GUI.  
+    Thanks to [@k3tan172](https://github.com/rootzoll/raspiblitz/issues/842#issuecomment-605904574)
 
-Successfully tested to open the JoinMarket QT GUI remotely on a desktop running:
+#### Windows
+* Download, install and run XMing with the default settings - <https://xming.en.softonic.com/>
 
-* Debian Buster
-* Manjaro
+* Open Putty and fill in:
+  * `Host Name`: `RASPIBLITZ_LAN_IP`
+  * `Port`: `22`
+* Under `Connection`: 
+  * `Data` -> `Auto-login username`: `joinmarket`
+* Under `SSH`
+  * `X11` -> `[x] Enable X11 forwarding`
 
-* Mac needs [XQuartz](https://www.xquartz.org/) installed. See the comment from [@k3tan172](https://github.com/rootzoll/raspiblitz/issues/842#issuecomment-605904574)
+* These settings can be saved in `Session` -> `Load. save or delete stored session` -> `Save`
 
-* Windows requires Xming or similar. [Xming](https://sourceforge.net/projects/xming/) is likely to be used with Putty - waiting for confimation on this to work.
+* `Open` the connection
+
+* Use the `PASSWORD_B` to log in
+
+* In the terminal type:  
+  `python joinmarket-qt.py`
+
+* The QT GUI will appear on the windows desktop running from your RaspiBlitz.  
+    Thanks for the initial demo by: [Hamish MacEwan](https://twitter.com/HamishMacEwan)
 
 See the walkthrough for the JoinMarket-Qt GUI to send payments with coinjoin or run multiple coinjoins (**tumbler**): <https://github.com/JoinMarket-Org/joinmarket-clientserver/blob/master/docs/JOINMARKET-QT-GUIDE.md>
 
@@ -232,7 +251,6 @@ using the derivation path (m/...) as specified in the `wallet-tool.py` output; n
     Enter wallet decryption passphrase: 
     L1YPrEGNMwwfnvzBfAiPiPC4zb5s6Urpqnk88zNHgsYLHrq2Umss
     ```
-
 
 * Open Electrum Wallet and start to create a new wallet.
 * Select `Import Bitcoin Addresses or private keys`
