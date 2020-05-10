@@ -173,19 +173,17 @@ Find a basic introduction to Tmux at https://www.ocf.berkeley.edu/~ckuehl/tmux/
 `$ tmux a`  
     to pick up where left off
 
-### Use the Joinmarket QT GUI on the desktop
+### Use the JoinMarket QT GUI on the desktop
 The graphical interface can run on the desktop relayed from the node via an encrypted ssh tunnel.  
 h/t @coconutanna on the #joinmarket Freenode IRC channel
 
-#### Linux desktop:
+#### Linux desktop
 * Tested to open the QT GUI remotely on a desktop running:
   * Debian Buster
   * Manjaro
-
   ```
   ssh -X joinmarket@RASPIBLITZ_IP joinmarket-clientserver/jmvenv/bin/python joinmarket-clientserver/scripts/joinmarket-qt.py
   ```
-
 * Use the PASSWORD_B to log in.
 
 #### Mac
@@ -195,7 +193,6 @@ h/t @coconutanna on the #joinmarket Freenode IRC channel
 
 #### Windows
 * Download, install and run XMing with the default settings - <https://xming.en.softonic.com/>
-
 * Open Putty and fill in:
   * `Host Name`: `RASPIBLITZ_LAN_IP`
   * `Port`: `22`
@@ -203,16 +200,11 @@ h/t @coconutanna on the #joinmarket Freenode IRC channel
   * `Data` -> `Auto-login username`: `joinmarket`
 * Under `SSH`
   * `X11` -> `[x] Enable X11 forwarding`
-
 * These settings can be saved in `Session` -> `Load. save or delete stored session` -> `Save`
-
 * `Open` the connection
-
 * Use the `PASSWORD_B` to log in
-
 * In the terminal type:  
   `python joinmarket-qt.py`
-
 * The QT GUI will appear on the windows desktop running from your RaspiBlitz.  
     Thanks for the initial demo by: [Hamish MacEwan](https://twitter.com/HamishMacEwan)
 
