@@ -178,12 +178,12 @@ The graphical interface can run on the desktop relayed from the node via an encr
 h/t @coconutanna on the #joinmarket Freenode IRC channel
 
 #### Linux desktop
-* Tested to open the QT GUI remotely on a desktop running:
+* Tested on:
   * Debian Buster
-  * Manjaro
-  ```
-  ssh -X joinmarket@RASPIBLITZ_IP joinmarket-clientserver/jmvenv/bin/python joinmarket-clientserver/scripts/joinmarket-qt.py
-  ```
+  * Manjaro  
+* Use the line in the desktop terminal to connect:  
+ `$ ssh -X joinmarket@RASPIBLITZ_IP joinmarket-clientserver/jmvenv/bin/python joinmarket-clientserver/scripts/joinmarket-qt.py`
+  
 * Use the PASSWORD_B to log in.
 
 #### Mac
@@ -206,7 +206,7 @@ h/t @coconutanna on the #joinmarket Freenode IRC channel
 * In the terminal type:  
   `python joinmarket-qt.py`
 * The QT GUI will appear on the windows desktop running from your RaspiBlitz.  
-    Thanks for the initial demo by: [Hamish MacEwan](https://twitter.com/HamishMacEwan)
+    Thanks for the initial demo by [Hamish MacEwan](https://twitter.com/HamishMacEwan)
 
 See the walkthrough for the JoinMarket-Qt GUI to send payments with coinjoin or run multiple coinjoins (**tumbler**): <https://github.com/JoinMarket-Org/joinmarket-clientserver/blob/master/docs/JOINMARKET-QT-GUIDE.md>
 
