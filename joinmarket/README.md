@@ -239,7 +239,7 @@ Use the RaspiBlitz script `internet.hiddenservice.sh`
 using the derivation path (m/...) as specified in the `wallet-tool.py` output; note the need to use double quotes around it.
 
     ```
-    (jmvenv)$python wallet-tool.py -H "m/49'/0'/4'/0/0" wallet.jmdat dumpprivkey
+    (jmvenv)$ python wallet-tool.py -H "m/49'/0'/4'/0/0" wallet.jmdat dumpprivkey
     Enter wallet decryption passphrase: 
     L1YPrEGNMwwfnvzBfAiPiPC4zb5s6Urpqnk88zNHgsYLHrq2Umss
     ```
