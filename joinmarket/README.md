@@ -280,6 +280,8 @@ using the derivation path (m/...) as specified in the `wallet-tool.py` output; n
 * Check the guide for the RaspiBolt by @kristapsk:  
 <https://github.com/kristapsk/raspibolt-extras/blob/master/joinmarket.md>
 
+* Default joinmarket.cfg settings: https://github.com/JoinMarket-Org/joinmarket-clientserver/blob/master/jmclient/jmclient/configure.py#L94
+
 ### Forums
 
 * IRC: #joinmarket on Freenode <https://webchat.freenode.net/?channels=%23joinmarket>
