@@ -8,6 +8,9 @@ Tested with:
 * RaspiBlitz 1.3 with Tor already activated
 * mainnet Zap version >0.4.075.3 on iOS TestFlight
 
+DOES NOT WORK since LND v0.9.0.  
+see: https://github.com/LN-Zap/zap-iOS/issues/333
+
 ### Create the Hidden Service:
 * In the RaspiBlitz terminal:  
 
