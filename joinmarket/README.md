@@ -15,9 +15,12 @@ Check the current offers in the order book: https://joinmarket.me/ob/
 
 One can coinjoin any amount within the offer limits by default with 5-7 random participants at a time. The taker fees are maximised, then the offers within the limits are randomly chosen to participate. Most parameters can be easily customized.
 
-### Installation
+### JoininBox
+Check out the [JoininBox project](https://github.com/openoms/joininbox) for a terminal based menu and helper UI for JoinMarket. 
+Running on the RaspiBlitz or remotely connected to a full node.
 
-Now you can use the automated install [script](https://github.com/rootzoll/raspiblitz/blob/v1.5/home.admin/config.scripts/bonus.joinmarket.sh) which will be the part of the RaspiBlitz v1.5 release and can be installed form SERVICES menu.
+### Installation
+Now you can use the automated install [script](https://github.com/rootzoll/raspiblitz/blob/v1.5/home.admin/config.scripts/bonus.joinmarket.sh) which will be the part of the RaspiBlitz v1.5 release and can be installed from the SERVICES menu.
 
 What the script does:
 
@@ -25,7 +28,6 @@ What the script does:
 * the data directory is on the disk at `/mnt/hdd/app-data/.joinmarket`, symlinked to `/home/joinmarket/.joinmarket` and will be kept during the SD-card updates
 * if joinmarket was set up already using a previous version of this tutorial the the wallet(s) will be copied to the new data directory automatically
 * will be compatible with GUI being worked on here: https://github.com/openoms/joininbox
-
 
 To install JoinMarket on RaspiBlitz v1.4 (earlier versions are not supported):
 
@@ -37,6 +39,8 @@ sudo bash bonus.joinmarket.sh on
 ```
 Start by logging in with the `joinmarket` user:  
 `sudo su - joinmarket`
+
+* Can also [use the JoinMarket-QT GUI](https://github.com/openoms/bitcoin-tutorials/tree/master/joinmarket#joinmarketqt-gui-on-the-desktop) to generate a wallet.
 
 ### Generate a wallet
 * Using the JoinMarket wallet: https://github.com/JoinMarket-Org/joinmarket/wiki/Using-the-JoinMarket-internal-wallet
@@ -62,8 +66,7 @@ Start by logging in with the `joinmarket` user:
     
     `(jmvenv) $ python wallet-tool.py -m 0 wallet.jmdat`  
 
-### Send payments with a coinjoin with the `sendpayment.py`
-
+### Send payments with or without a coinjoin
 You can pay or withdraw to an external address with (or without) a CoinJoin using the `sendpayment.py`.
 
 * Example:  
@@ -90,8 +93,9 @@ You can pay or withdraw to an external address with (or without) a CoinJoin usin
     These settings might make it difficult to find counterparties to coinjoin with, see the [offerbook](https://joinmarket.me/ob) for the market and increase limit if offers are scarce or running into errors.
     * press CTRL + o, ENTER to save and CTRL + X to exit. 
 
-### Coin control with the `freeze` method
+* Can also [use the JoinMarket-QT GUI](https://github.com/openoms/bitcoin-tutorials/tree/master/joinmarket#joinmarketqt-gui-on-the-desktop) to send payments.
 
+### Coin control
 * List all UTXO-s in the WALLET with:  
     `(jmvenv)$ python wallet-tool.py WALLET.jmdat`
 * Pick a mixdepth (-m[0-4]) to transfer from:
@@ -102,16 +106,18 @@ You can pay or withdraw to an external address with (or without) a CoinJoin usin
 * Sweep the mixdepth with `-N 0` to send the NOT FROZEN UTXO-s without a coinjoin:  
     `(jmvenv)$ python sendpayment.py -N 0 WALLET.jmdat 0 DESTINATION_BITCOIN_ADDRESS`
 
-### Tumbler script
+* Can also [use the JoinMarket-QT GUI](https://github.com/openoms/bitcoin-tutorials/tree/master/joinmarket#joinmarketqt-gui-on-the-desktop) for coin control.
 
+### Tumbler script
 The Tumbler does series of CoinJoins with various amounts and timing between them to break the link between different addresses.
 The Yield Generator only mixes the coins slowly but close to free (it is even possible to earn some fees).
 With the Tumbler the CoinJoin process is faster but the miner and maker fees are all paid by the taker running the Tumbler.
 
 * See: https://github.com/JoinMarket-Org/joinmarket-clientserver/blob/master/docs/tumblerguide.md
 
-### Run a Yield Generator
+* Can also [use the JoinMarket-QT GUI](https://github.com/openoms/bitcoin-tutorials/tree/master/joinmarket#joinmarketqt-gui-on-the-desktop) to run the Tumbler.
 
+### Yield Generator
 * Read the basics: https://github.com/JoinMarket-Org/joinmarket/wiki/Running-a-Yield-Generator  
 
 * Edit the settings:  
@@ -144,7 +150,14 @@ With the Tumbler the CoinJoin process is faster but the miner and maker fees are
 
     `(jmvenv) $ python yg-privacyenhanced.py wallet.jmdat`
 
-### Check the transaction history
+### PayJoin
+Send or receive a payment using PayJoin between two JoinMarket wallets.
+
+* see the how-to: https://github.com/JoinMarket-Org/joinmarket-clientserver/blob/master/docs/PAYJOIN.md#doing-a-payjoin-payment
+
+* Video demonstration:  https://asciinema.org/a/221153?speed=2
+
+### Transaction history
 * use the wallet tool:  
     `(jmvenv) $ python wallet-tool.py wallet.jmdat history`
 
@@ -160,7 +173,7 @@ With the Tumbler the CoinJoin process is faster but the miner and maker fees are
 * Monitor continously with:  
     `$ tail -f -n 100 ~/.joinmarket/logs/yigen-statement.csv`
 
-### Keep the offers running in the background with [Tmux](https://github.com/tmux/tmux#welcome-to-tmux)
+### Running in the background with [Tmux](https://github.com/tmux/tmux#welcome-to-tmux)
 * Start:  
 `$ sudo su joinmarket`  
 `$ tmux`
@@ -173,7 +186,7 @@ Find a basic introduction to Tmux at https://www.ocf.berkeley.edu/~ckuehl/tmux/
 `$ tmux a`  
     to pick up where left off
 
-### Use the JoinMarket QT GUI on the desktop
+### JoinMarketQT GUI on the desktop
 The graphical interface can run on the desktop relayed from the node via an encrypted ssh tunnel.  
 h/t @coconutanna on the #joinmarket Freenode IRC channel
 
