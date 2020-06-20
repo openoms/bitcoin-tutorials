@@ -5,7 +5,6 @@
   <img width="380" src="images/zeus_on_tor_logo.jpg">
 </p>
 
-
 Tested on the RaspiBlitz v1.3 with Tor activated.
 
 Download the [Zeus](https://zeusln.app/) app.  
