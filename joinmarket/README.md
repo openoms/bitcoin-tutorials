@@ -84,16 +84,22 @@ You can pay or withdraw to an external address with (or without) a CoinJoin usin
 
 * Described in: https://github.com/JoinMarket-Org/joinmarket-clientserver/blob/master/docs/USAGE.md#try-out-a-coinjoin-using-sendpaymentpy
 
-* How to keep fees to minimum:
-    * Edit the joinmarket.cfg:  
-    `$ sudo nano /home/joinmarket/.joinmarket/joinmarket.cfg`
-    * Look for: `tx_fees = 3` and change to `txfees = 1200` to pay 1.2 sats/byte (+/-20%) mining fee for transactions. Note that in times of high mempool usage it can take a long time to have transactions confirmed with this low fee.
-    * Set `#max_cj_fee_abs = x` to `max_cj_fee_abs = 100` to pay max 100 sats per maker when coinjoining.
-    * Set  `#max_cj_fee_rel = x` to `max_cj_fee_rel = 0.0001` to pay max 0.01% per relative offer when coinjoining.
-    These settings might make it difficult to find counterparties to coinjoin with, see the [offerbook](https://joinmarket.me/ob) for the market and increase limit if offers are scarce or running into errors.
-    * press CTRL + o, ENTER to save and CTRL + X to exit. 
-
 * Can also [use the JoinMarket-QT GUI](https://github.com/openoms/bitcoin-tutorials/tree/master/joinmarket#joinmarketqt-gui-on-the-desktop) to send payments.
+
+### Fee settings
+* Edit the joinmarket.cfg:  
+`$ sudo nano /home/joinmarket/.joinmarket/joinmarket.cfg`
+    
+* Miner fee:  
+Look for: `tx_fees = 3` and change to `txfees = 3000` to pay 3 sats/byte (+/-20%) mining fee for transactions.  
+Note that in times of high mempool usage it can take a long time to have transactions confirmed with this low fee.   
+Alternatively use `tx_fee = 10` to aim confirmation within 10 blocks.  
+    
+* Maker (coinjoin) fees: 
+  * Set `#max_cj_fee_abs = x` to `max_cj_fee_abs = 2000` to pay max 2000 sats per maker when coinjoining (more restrictive for higher amounts)
+  * Set  `#max_cj_fee_rel = x` to `max_cj_fee_rel = 0.001` to pay max 0.1% per relative offer when coinjoining.  
+  These settings might make it difficult to find counterparties to coinjoin with, see the [offerbook](https://joinmarket.me/ob) for the market and increase the limits if the offers are scarce or running into errors.
+* press CTRL + o, ENTER to save and CTRL + x to exit. 
 
 ### Coin control
 * List all UTXO-s in the WALLET with:  
