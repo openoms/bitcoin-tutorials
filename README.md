@@ -3,7 +3,7 @@
 
 Start at <https://github.com/rootzoll/raspiblitz>
 
-* ### [Electrum wallet](electrs/electrum_wallet.sh)
+* #### [Electrum wallet](electrs/electrum_wallet.sh)
     Download, verify and install the chosen version on a Linux desktop.
     ```
     # Download
