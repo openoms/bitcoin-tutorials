@@ -3,6 +3,15 @@
 
 Start at <https://github.com/rootzoll/raspiblitz>
 
+* ### [Electrum wallet](electrs/electrum_wallet.sh)
+    Download, verify and install the chosen version on a Linux desktop.
+    ```
+    # Download
+    wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/electrs/electrum_wallet.sh 
+    # Run
+    bash electrum_wallet.sh
+    ```
+
 * #### [Tor-to-IP tunnel service](tor2ip_tunnel.md)
      Use the public IP address of a Virtual Private Server (VPS) to make Tor Hidden Services reachable on the clearnet.
 
