@@ -148,7 +148,7 @@ With the Tumbler the CoinJoin process is faster but the miner and maker fees are
     * `ordertype` sets either a relative (`swreloffer`) or an absolute (`swabsoffer`) coinjoin fee model
     * `cjfee_a` is the fixed coinjoin fee to be earned when using `swabsoffer`
     * `cjfee_r` is the relative fee when using `swreloffer`. Specified as the fraction of the used amount.
-    * `txfee` is the maker's contribution to the miner fees (still paid by the taker). To reduce the minimum offer amount for `swreloffer` set it to 0.    
+    * `txfee` is the maker's contribution to the miner fee. To reduce the minimum offer amount for `swreloffer` set it to 0.    
     * `minsize` specifies the minimum offer size in satoshis (this is the minimum size the UTXO will end up to be after participating in coinjoin)
 
 
