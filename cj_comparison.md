@@ -68,7 +68,9 @@ Number of contributors:
 ### CJ implementation:  
 #### Pool size:   
 fixed ~ 10M sats  
-#### Fees:  
+#### Fees:
+Coordinator fee:
+0.003% / anonymity set (calculated as the number of participants in the CJ txn)
 Miner fees:  
 variable sat/byte according to blockspace market - shared between participants  
 #### Remix:   
@@ -90,9 +92,9 @@ Payjoin - able to send cross implementation to BTCPay and JM
   
 ### Good practice:  
 make multiple rounds (at least two - can change green checkmark to 101)  
-do not consolidate unmixed change with CJ outputs  
+do not consolidate unmixed change with CJ outputs   
 avoid consolidating high number of mixed UTXO-s  
-  
+[developer recommendations](https://docs.wasabiwallet.io/using-wasabi/10Commandments.html#_6-never-merge-mixed-and-unmixed-coins-and-avoid-large-merges-of-mixed-coins)
 ---  
   
 ## Samourai Wallet Whirlpool 
@@ -111,7 +113,7 @@ Number of external dependencies:
 fixed 1M / 5M / 50M sats  
 #### Fees:  
 Coordinator Fees:  
-Preset per entry to pool (2.5% of pool size)  
+Preset per entry to pool (5% of pool size)  
 Miner fees:  
 Tx0 - variable sat/byte according to mempool  
 Whirpool entry - set for every UTXO according to mempool - can set priority  
