@@ -12,8 +12,7 @@ bitcoind RPC - JoinMarket CLI / JoinMarketQT GUI on desktop / JoininBox menu on 
 ### Code  
 Size :  
 Number of contributors:  
-Programming language:  
-Python3  
+Programming language: Python3  
   
 ### CJ implementation:  
 #### Pool size:   
@@ -37,7 +36,7 @@ Coordinator fees are variable and randomised around the Taker's setting
 variable and randomised contribution to onchain fees by the makers  
 Wallets are separated to 5 accounts (mixdepths)  
 The UTXOS only progress between mixdepths as part of a CJ (the unmixed change is left behind in the   same mixdepth)  
-Can only spend from one mixdepth at a time  
+Can only spend from one mixdepth at a time (no consolidation between accounts) 
 #### Autolabeling to:  
 New address (deposit) ,  
 change-out (unmixed i. last CJ),   
@@ -50,9 +49,9 @@ coin control with auto-labeling (freeze method)
 Send with a CJ - can be an arbitrary amount  
 Payjoin - cross implementation with BTCPayServer and WasabiWallet  
 ### Good practice:  
-occasional sweep txns  
+Sweep mixdepths occasionally  
 use the Tumbler script (first and last txns are sweeping - no unmixed change)  
-Alternate taker being a Taker (tumbler, sendpayment) and Maker (Yield Gen)  
+Alternate being a Taker (tumbler, sendpayment) and Maker (yield gen)  
 Break down large amounts between multiple wallets (watch the offerbook)
   
 ---  
@@ -136,9 +135,9 @@ Pay with a simulated or real 2 partcipant CJ - Stonewall/Stonewall2
 P2EP between SW-s  
   
 ### Good practice suggestions:  
-Keep mixing  
+Keep remixing (for free)
 avoid consolidating large number of UTXOs   
-never consolidate between amounts (warnings are issued)  
+never consolidate between accounts (warnings are issued)  
   
 ---  
   
