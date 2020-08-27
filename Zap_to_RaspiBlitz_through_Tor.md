@@ -1,15 +1,12 @@
-## Connect Zap over Tor to the RaspiBlitz
+# Connect Zap over Tor to the RaspiBlitz
 
 <p align="left">
   <img width="440" src="images/zap_on_tor_logo.jpg">
 </p>
 
-Tested with:
-* RaspiBlitz 1.3 with Tor already activated
-* mainnet Zap version >0.4.075.3 on iOS TestFlight
+## Use the MOBILE menu on the RaspiBlitz for QR codes on the display and/or in the terminal.
 
-DOES NOT WORK since LND v0.9.0.  
-see: https://github.com/LN-Zap/zap-iOS/issues/333
+## Manual process
 
 ### Create the Hidden Service:
 * In the RaspiBlitz terminal:  
