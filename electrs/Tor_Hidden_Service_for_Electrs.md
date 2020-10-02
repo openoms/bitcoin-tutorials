@@ -35,7 +35,7 @@ https://electrum.readthedocs.io/en/latest/tor.html#windows
 
 Check for the blue dot when finished:
 
-![electrum behind Tor](/electrs/images/electrum_tor.png)
+![electrum behind Tor](./images/electrum_tor.png)
 
 ### [Electrum wallet on Android](https://play.google.com/store/apps/details?id=org.electrum.electrum&hl=en)
 * Open [Orbot](https://play.google.com/store/apps/details?id=org.torproject.android&hl=en)
