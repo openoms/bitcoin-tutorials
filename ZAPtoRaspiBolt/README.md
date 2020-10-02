@@ -78,7 +78,7 @@ Install instructions: https://github.com/LN-Zap/zap-desktop#install
 * Start the app and select:  
 ```Connect your own node```
 
-![](zap1.png)
+<img src="./zap1.png">
 
 
 * Fill in the next screen:  
@@ -86,7 +86,7 @@ Install instructions: https://github.com/LN-Zap/zap-desktop#install
 `~/tls.cert`  
 `~/admin.macaroon`  
 
-![](zap2.png)
+<img src="./zap1.png">
 
 * Confirm the settings on the following screen and you are done!
 
