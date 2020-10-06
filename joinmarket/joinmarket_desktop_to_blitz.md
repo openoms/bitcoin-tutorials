@@ -52,7 +52,7 @@ This can be skipped if you connect through Tor (see [below](#tor-connection))
     git clone https://github.com/JoinMarket-Org/joinmarket-clientserver.git
     cd joinmarket-clientserver
     # latest release: https://github.com/JoinMarket-Org/joinmarket-clientserver/releases
-    git reset --hard v0.6.2
+    git reset --hard v0.7.0
 
     ./install.sh --with-qt
     ```
