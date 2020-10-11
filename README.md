@@ -3,6 +3,9 @@
 
 Start at <https://github.com/rootzoll/raspiblitz>
 
+* #### [Create a Tor Hidden Service](tor_hidden_service_example.md)
+    A simple example of creating and using a Tor Hidden Service.
+
 * #### [Electrum wallet](electrs/electrum_wallet.sh)
     Download, verify and install the chosen version on a Linux desktop.
     ```
