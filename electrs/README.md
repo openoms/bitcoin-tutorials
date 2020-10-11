@@ -2,7 +2,7 @@
 
 \`The server indexes the entire Bitcoin blockchain, and the resulting index enables fast queries for any given user wallet, allowing the user to keep real-time track of his balances and his transaction history using the Electrum wallet. Since it runs on the user's own machine, there is no need for the wallet to communicate with external Electrum servers, thus preserving the privacy of the user's addresses and balances.\` - [https:/github.com/romanz/electrs](https:/github.com/romanz/electrs)
 
-![electrum](/electrs/images/electrum.png)
+![electrum](./images/electrum.png)
 
 Requires 50 Gb diskpace after compactiing and ~100 GB during indexing (Nov 2019).
 
@@ -31,7 +31,7 @@ Electrs will only start serving on the port 50001 (and 50002 via Nginx) when it 
     `$ sudo systemctl status electrs`  
 
     Example output when running after indexing has finished:
-    ![electrs status](/electrs/images/electrs_status.png)
+    ![electrs status](./images/electrs_status.png)
 
 * #### Check if it is serving on the port 50001 (will appear only after indexing is complete)  
     `$ sudo -u electrs lsof -i`

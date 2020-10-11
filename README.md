@@ -24,7 +24,7 @@ Start at <https://github.com/rootzoll/raspiblitz>
 * #### [CoinKite Bunker on the RaspiBlitz](ckbunker_on_blitz.md)
 
 <p align="left">
-  <img width="400" src="/images/ckbunker.starthsm.jpg">
+  <img width="400" src="./images/ckbunker.starthsm.jpg">
 </p>
 
 * #### [Connect JoinMarket running on a Linux desktop to a remote node](joinmarket/joinmarket_desktop_to_blitz.md)
@@ -90,6 +90,6 @@ Start at <https://github.com/rootzoll/raspiblitz>
     * Bitcoin Core v0.18.1
 
 <p align="left">
-  <img width="400" src="/images/HC1.jpeg">
-  <img width="400" src="/images/XU4.jpeg">
+  <img width="400" src="./images/HC1.jpeg">
+  <img width="400" src="./images/XU4.jpeg">
 </p>
