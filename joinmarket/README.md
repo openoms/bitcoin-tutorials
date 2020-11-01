@@ -236,22 +236,25 @@ See this review thread about the GUI option: https://twitter.com/zndtoshi/status
 ### Run the Order Book locally
 The order book is usually available at <https://joinmarket.me/ob>. The page being down does not affect the functionality of JoinMarket. Communication between the nodes is encrypted and passing through IRC servers.
 
-* Any JoinMarket instance can build the order book itself:  
-Run in Tmux (as described above) to keep running when the terminal is closed.
+* Any JoinMarket instance can build and serve the order book itself:  
+run in Tmux (as described above) to keep running when the terminal is closed.
     ```
-    cd ~/joinmarket-clientserver/scripts/obwatch
-    # install the matplotlib dependency first
-    sudo apt install matplotlib
-    python ob-watcher.py
+    (jmvenv)$ cd ~/joinmarket-clientserver/scripts/obwatch
+    (jmvenv)$ python ob-watcher.py
     ```
 * Create a .onion service:  
-Use the RaspiBlitz script `internet.hiddenservice.sh`
+use the RaspiBlitz script `internet.hiddenservice.sh`
     ```
-    /home/admin/config.scripts/internet.hiddenservice.sh ob-watcher 80 62601
+    $ /home/admin/config.scripts/internet.hiddenservice.sh ob-watcher 80 62601
     ```
 * visit the displayed `.onion` hidden service address in the Tor Browser for the local order book.
 
-General docs on the order book: <https://github.com/JoinMarket-Org/joinmarket-clientserver/blob/master/docs/orderbook.md>
+* (optional) to have the graphs show install matplotlib in the virtual environment:
+    ```
+    (jmvenv)$ pip install matplotlib
+    ```
+
+General docs on the order book (including how to run without Bitcoin Core): <https://github.com/JoinMarket-Org/joinmarket-clientserver/blob/master/docs/orderbook.md>
 ### Export a private key of an individual UTXO-s to Electrum Wallet (advanced)
 
 <https://github.com/JoinMarket-Org/joinmarket-clientserver/blob/master/docs/USAGE.md#recovering-private-keys>
