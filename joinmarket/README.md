@@ -91,7 +91,7 @@ You can pay or withdraw to an external address with (or without) a CoinJoin usin
 `$ sudo nano /home/joinmarket/.joinmarket/joinmarket.cfg`
     
 * Miner fee:  
-Look for: `tx_fees = 3` and change to `txfees = 3000` to pay 3 sats/byte (+/-20%) mining fee for transactions.  
+Look for: `tx_fees = 3` and change to `tx_fees = 3000` to pay 3 sats/byte (+/-20%) mining fee for transactions.  
 Note that in times of high mempool usage it can take a long time to have transactions confirmed with this low fee.   
 Alternatively use `tx_fee = 10` to aim confirmation within 10 blocks.  
     
