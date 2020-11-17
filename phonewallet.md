@@ -14,6 +14,7 @@ A recommendation to people who are looking into how to take custody of their fir
 * available on multiple platforms: Android, iOS and desktops
 * easy, self explanatory interface and [detailed documentation](https://help.blockstream.com/hc/en-us/categories/900000056183-Blockstream-Green/)
 * unique [Two-Factor Authentication (2FA)](https://help.blockstream.com/hc/en-us/articles/900001388366-What-does-Blockstream-Green-s-multisig-protect-from-) capability
+* note that this is not a private way to use bitcoin since the wallet is connecting to the server of Blockstream
 
 ## Phone specs
 * use a dedicated device to minimise the attack surface (can be a used phone sitting in the drawer, but the most recent model it is the better)
@@ -32,8 +33,8 @@ with email and Google Authenticator
 
 ## Further advice
 * Set up a password manager. [Bitwarden](https://bitwarden.com/) is a good open-source option with free, encrypted cloud storage and self hosting ability.
+* the Time-Based One Time Password (TOTP) authentication (Google Authenticator / Authy) is the best 2FA option for most. Don't run it on the same device and store the backup secret in a password manager
 * if using email don't login to the email account on the same device - use a dedicated, unique, pseudonymous email with end-to-end encrypted providers like [Protonmail](https://protonmail.com/) or [TutaNota](https://tutanota.com/) - store the login in a password manager
-* if using Time-Based One Time Password (TOTP) authentication (Google Authenticator / Authy) don't run it on the same device and store the backup secret in a password manager
 * carefully note the 24 words seed down to paper ([pencil lasts more then ink](https://en.bitcoin.it/wiki/Seed_phrase#Paper_and_Pencil_Backup)) / etch into metal and store in a safe place
 * it is the safest to store the phone switched off (the encryption key leaves the memory and not only protected by the lockscreen)
 * the 2FA creates a 2-of-2 multisig with Blockstream which [can only be accessed after 365 days with only the seed](https://help.blockstream.com/hc/en-us/articles/900001536126-I-ve-lost-access-to-my-2FA-how-do-I-access-my-funds-) (in case of losing access to the 2FA or Blockstream disappearing)
@@ -43,7 +44,7 @@ with email and Google Authenticator
 * on an other device (can be a day-to-day used phone or desktop) set up Blockstream Green in [watch only mode](https://help.blockstream.com/hc/en-us/articles/900003101806-What-is-watch-only-mode-)
 * the watch only wallet can be used to generate addresses and monitor the funds on the blockchain
 * there is no risk of losing the funds if the watch-only device is lost, stolen or compromised (it only contains the public keys, not touching the private ones)
-
+* note the privacy implications of the labels, addresses and xpub being stored on Blockstream's server
 ## Using a custom firmware
 * a locked bootloader is a must - check on Android with:   
 `fastboot oem device-info`  
