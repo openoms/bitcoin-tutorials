@@ -17,9 +17,10 @@ A recommendation to people who are looking into how to take custody of their fir
 * note that this is not a private way to use bitcoin since the wallet is connecting to the server of Blockstream
 
 ## Phone specs
-* use a dedicated device to minimise the attack surface (can be a used phone sitting in the drawer, but the most recent model it is the better)
+* use a dedicated device to minimise the attack surface 
+* can be a used phone sitting in the drawer, but the more recent model it is the better
 * locked bootloader (true to all factory firmwares - see the [notes on custom firmwares below](#using-a-custom-firmware))
-* encrypted storage - default on iPhones and newer Androids when a PIN screen lock is set
+* encrypted storage - default on iPhones and newer Androids when a screen lock with a PIN is set
 
 ## Steps done on the phone
 * set up in a safe environment and network
@@ -45,6 +46,7 @@ with email and Google Authenticator
 * the watch only wallet can be used to generate addresses and monitor the funds on the blockchain
 * there is no risk of losing the funds if the watch-only device is lost, stolen or compromised (it only contains the public keys, not touching the private ones)
 * note the privacy implications of the labels, addresses and xpub being stored on Blockstream's server
+
 ## Using a custom firmware
 * a locked bootloader is a must - check on Android with:   
 `fastboot oem device-info`  
@@ -62,7 +64,6 @@ with email and Google Authenticator
 * [How secure is full-disk encryption technology on LineageOS, or Android phones in general?](https://security.stackexchange.com/questions/210994/how-secure-is-full-disk-encryption-technology-on-lineageos-or-android-phones-in)
 
 ## Level up
-
 * [Single seed multi-location backup schemes](https://github.com/openoms/bitcoin-tutorials/blob/master/backups/README.md)  
     The aim is to create 3 packages of cryptographically secure backups where the funds cannot be recovered from any single package, but can be recovered with the combination of any two.
     Can be thought of as a physical 2-of-3 multisig solution.
