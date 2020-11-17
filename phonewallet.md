@@ -1,7 +1,6 @@
 # Phone as a wallet
 
-A guide to store bitcoin on a clean Android or iPhone secured with multisignature in the Blockstream Green Wallet.
-
+A guide to store bitcoin on a clean Android or iPhone secured with multisignature in the Blockstream Green Wallet.  
 A recommendation to people who are looking into how to take custody of their first satoshis and not running their own node yet.
 
 ## Why a phone?
@@ -26,22 +25,23 @@ A recommendation to people who are looking into how to take custody of their fir
 * apply the latest security update
 * perform a factory reset
 * apply the most strict privacy settings and log in to only the bare minimum services
-* apply the strongest possible PIN or passphrase to the lock screen (store in a password manager), avoid biometrics
+* apply the strongest possible PIN or passphrase to the lock screen, store it in a password manager, avoid biometrics
 * download the Blockstream Green wallet from the [App Store](https://apps.apple.com/us/app/green-bitcoin-wallet/id1402243590) / [Play Store](https://play.google.com/store/apps/details?id=com.greenaddress.greenbits_android_wallet) / [F-droid](https://f-droid.org/en/packages/com.greenaddress.greenbits_android_wallet/) / [GitHub](https://github.com/Blockstream/green_android/releases)
 * [set up Green Wallet](https://help.blockstream.com/hc/en-us/articles/900002327003-How-do-I-create-a-new-wallet-) with the 6 character PIN and [Two-Factor Authentication (2FA)](https://help.blockstream.com/hc/en-us/articles/900001388366-What-does-Blockstream-Green-s-multisig-protect-from-)
+with email and Google Authenticator
 
 ## Further advice
-* Set up a password manager. [Bitwarden](https://bitwarden.com/) is a good open-source option with default free encrypted cloud storage and self hosting ability.
-* if using email do not login to the email account on the same device - use a dedicated, unique, pseudonymous email with end-to-end encrypted providers like [Protonmail](https://protonmail.com/) or [TutaNota](https://tutanota.com/) - store the login in a password manager
-* if using TOTP authentication (Google Authenticator / Authy) don't run it on the same device and store the secret in a password manager
-* always connect through Tor, it is built in to Green (helps avoiding connecting the IP address with the bitcoin stored while querying Blockstream's server)
+* Set up a password manager. [Bitwarden](https://bitwarden.com/) is a good open-source option with free, encrypted cloud storage and self hosting ability.
+* if using email don't login to the email account on the same device - use a dedicated, unique, pseudonymous email with end-to-end encrypted providers like [Protonmail](https://protonmail.com/) or [TutaNota](https://tutanota.com/) - store the login in a password manager
+* if using Time-Based One Time Password (TOTP) authentication (Google Authenticator / Authy) don't run it on the same device and store the backup secret in a password manager
 * carefully note the 24 words seed down to paper ([pencil lasts more then ink](https://en.bitcoin.it/wiki/Seed_phrase#Paper_and_Pencil_Backup)) / etch into metal and store in a safe place
 * it is the safest to store the phone switched off (the encryption key leaves the memory and not only protected by the lockscreen)
 * the 2FA creates a 2-of-2 multisig with Blockstream which [can only be accessed after 365 days with only the seed](https://help.blockstream.com/hc/en-us/articles/900001536126-I-ve-lost-access-to-my-2FA-how-do-I-access-my-funds-) (in case of losing access to the 2FA or Blockstream disappearing)
+* connect always through Tor, it is built in to Green and helps avoiding connecting the IP address with the bitcoin stored while querying Blockstream's server
 
 ## Watch-only wallet
 * on an other device (can be a day-to-day used phone or desktop) set up Blockstream Green in [watch only mode](https://help.blockstream.com/hc/en-us/articles/900003101806-What-is-watch-only-mode-)
-* the watch only wallet can be used to generate addresses and monitor the funds on the blockchain.
+* the watch only wallet can be used to generate addresses and monitor the funds on the blockchain
 * there is no risk of losing the funds if the watch-only device is lost, stolen or compromised (it only contains the public keys, not touching the private ones)
 
 ## Using a custom firmware
