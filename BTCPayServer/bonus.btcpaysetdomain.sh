@@ -39,13 +39,9 @@ echo " # Setting up Nginx and Certbot"
   echo "name@email.com"
   read YOUR_EMAIL
   
-  echo ""
-  echo "***"
-  echo "Creating the btcpay user"
-  echo "***"
-  echo ""
 
   # install nginx and certbot
+  sudo pip install cffi
   sudo apt-get install nginx-full certbot -y
   
   sudo ufw allow 80 comment 'HTTP web server'
@@ -53,7 +49,9 @@ echo " # Setting up Nginx and Certbot"
   
   # get SSL cert
   sudo systemctl stop certbot 2>/dev/null
-  sudo certbot certonly -a standalone -m $YOUR_EMAIL --agree-tos -d $YOUR_DOMAIN -n --pre-hook "service nginx stop" --post-hook "service nginx start"
+  sudo certbot certonly -a standalone -m $YOUR_EMAIL --agree-tos \
+  -d $YOUR_DOMAIN -n --pre-hook "service nginx stop" \
+  --post-hook "service nginx start" || exit 1
 
   # set nginx
   sudo rm -f /etc/nginx/sites-enabled/default
@@ -142,20 +140,20 @@ server {
   }
 }
 " | sudo tee -a /etc/nginx/sites-available/btcpayserver
-  # remove nginx symlinks
+  echo "# remove nginx symlinks"
   sudo rm -f /etc/nginx/sites-enabled/btcpay_ssl.conf
-  
   sudo ln -s /etc/nginx/sites-available/btcpayserver /etc/nginx/sites-enabled/ 2>/dev/null
+
+  echo "# remove blitzweb and public.conf"
+  sudo rm  /etc/nginx/sites-enabled/blitzweb.conf
+  sudo rm -f /etc/nginx/sites-enabled/public.conf
   
   sudo nginx -t
   
   sudo systemctl reload nginx
-  
-  echo ""
-  echo "***"
-  echo "Setting up certbot-auto renewal service"
-  echo "***"
-  echo ""
+ 
+  echo "# Setting up certbot-auto renewal service"
+
   
   sudo rm -f /etc/systemd/system/certbot.timer
   echo "
@@ -191,7 +189,7 @@ RestartSec=60
 
   sudo systemctl enable certbot.timer
     
-# setting value in raspi blitz config
+eco "# setting value in raspiblitz config"
 sudo sed -i "s/^BTCPayDomain=.*/BTCPayDomain=$YOUR_DOMAIN/g" /mnt/hdd/raspiblitz.conf
 
-echo "OK done - check the new option 'BTCPAY' on main menu for more info." 
+echo "OK done" 
