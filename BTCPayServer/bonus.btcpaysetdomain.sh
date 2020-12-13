@@ -1,9 +1,21 @@
 #!/bin/bash
 
+## download
+# wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/BTCPayServer/bonus.btcpaysetdomain.sh
+## inspect
+# cat bonus.btcpaysetdomain.sh
+## run and follow the instructions on screen
+# bash bonus.btcpaysetdomain.sh
+
+echo "# Custom script to set up nginx and the SSL certificate for BTCPay Server"
+
+echo "# Will remove blitzweb.conf and public.conf"
+echo "Press [ENTER] to continue or use [CTRL + C] to exit"
+read key
+sudo rm  /etc/nginx/sites-enabled/blitzweb.conf
+sudo rm -f /etc/nginx/sites-enabled/public.conf
+
 source /mnt/hdd/raspiblitz.conf
-
-# script to set up nginx and the SSL certificate for BTCPay Server
-
 # add default value to raspi config if needed
 if ! grep -Eq "^BTCPayDomain=" /mnt/hdd/raspiblitz.conf; then
   echo "BTCPayDomain=off" >> /mnt/hdd/raspiblitz.conf
@@ -143,10 +155,6 @@ server {
   echo "# remove nginx symlinks"
   sudo rm -f /etc/nginx/sites-enabled/btcpay_ssl.conf
   sudo ln -s /etc/nginx/sites-available/btcpayserver /etc/nginx/sites-enabled/ 2>/dev/null
-
-  echo "# remove blitzweb and public.conf"
-  sudo rm  /etc/nginx/sites-enabled/blitzweb.conf
-  sudo rm -f /etc/nginx/sites-enabled/public.conf
   
   sudo nginx -t
   
@@ -154,7 +162,6 @@ server {
  
   echo "# Setting up certbot-auto renewal service"
 
-  
   sudo rm -f /etc/systemd/system/certbot.timer
   echo "
 [Unit]
@@ -189,7 +196,7 @@ RestartSec=60
 
   sudo systemctl enable certbot.timer
     
-eco "# setting value in raspiblitz config"
+echo "# setting value in raspiblitz config"
 sudo sed -i "s/^BTCPayDomain=.*/BTCPayDomain=$YOUR_DOMAIN/g" /mnt/hdd/raspiblitz.conf
 
 echo "OK done" 
