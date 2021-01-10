@@ -11,7 +11,7 @@ Tested on:
 * RPi4 4GB with RaspiBlitz v1.4
 * Odroid HC1 with RaspiBlitz v1.3
 
-Check the current offers in the order book: https://joinmarket.me/ob/  
+Check the current offers in a public book: https://nixbitcoin.org/obwatcher/ or [run your own](#run-the-order-book-locally).
 
 One can coinjoin any amount within the offer limits by default with 5-7 random participants at a time. The taker fees are maximised, then the offers within the limits are randomly chosen to participate. Most parameters can be easily customized.
 
