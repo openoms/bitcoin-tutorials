@@ -29,12 +29,18 @@ This can be skipped if you connect through Tor (see [below](#tor-connection))
 1) #### Edit the bitcoin.conf:  
     `$ sudo nano /mnt/hdd/bitcoin/bitcoin.conf`
 
-    Change the values (edit to your local subnet): 
-    ```
-    #rpcallowip=127.0.0.1
-    #rpcbind=127.0.01:8332
+    Add the values:  
+    * `rpcallowip=JOINMARKET_IP` or `RANGE` 
+      * either specify the LAN IP of the computer with JoinMarket
+      * or use a range like: `192.168.1.0/24` - edit to your local subnet - the first 3 numbes of the LAN IP address, the example used here is: 192.168.1.x  
+    * `rpcbind=LAN_IP_OF_THE_NODE` 
+      * use the local IP of the bitcoin node in the example: `192.168.1.4`
+    * can keep the other `rpcallowip` and `rpcbind` entires especially for the localhost: `127.0.0.1`
+
+    Example: 
+    ```bash
     rpcallowip=192.168.1.0/24
-    rpcbind=0.0.0.0
+    rpcbind=192.168.1.4
     ```
 2) #### Restart Bitcoin Core:  
     `$ sudo systemctl restart bitcoind`
