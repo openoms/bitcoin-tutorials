@@ -30,6 +30,14 @@ After the dependencies have been installed with the script above a QRcode with a
 $ lndconnect --host=$(sudo cat /mnt/hdd/tor/lndrest8080/hostname) --port=8080
 ```
 
+If the QRcode does not fit the terminal generate a the lndconnect string by adding the `-j` option:
+```bash
+$ lndconnect --host=$(sudo cat /mnt/hdd/tor/lndrest8080/hostname) --port=8080 -j
+```
+use a local QRcode generator to display the image (never paste the string into a website).  
+A list of open-source QRcode generators for Windows:
+https://listoffreeware.com/open-source-qr-code-generator-software-windows/
+
 
 ---
 ## Deprecated manual instructions:
