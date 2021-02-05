@@ -36,7 +36,7 @@ $ lndconnect --host=$(sudo cat /mnt/hdd/tor/lndrest8080/hostname) --port=8080 -j
 ```
 use a local QRcode generator to display the image (never paste the string into a website).  
 A list of open-source QRcode generators for Windows:
-https://listoffreeware.com/open-source-qr-code-generator-software-windows/
+<https://listoffreeware.com/open-source-qr-code-generator-software-windows/>
 
 
 ---
@@ -144,8 +144,8 @@ Self Sovereignty for the streets!
 
 ### Resources:
 
-* this guide is based on: https://github.com/seth586/guides/blob/master/FreeNAS/wallets/zeusln.md
+* this guide is based on: <https://github.com/seth586/guides/blob/master/FreeNAS/wallets/zeusln.md>
 
-* Have a look at the proposal of @seth586 about connecting light wallets through Tor: https://medium.com/@seth586/neutrino-can-be-dangerous-so-lets-grow-bitcoins-immunity-with-a-bip-bolt-2135956f147
+* Have a look at the proposal of @seth586 about connecting light wallets through Tor: <https://medium.com/@seth586/neutrino-can-be-dangerous-so-lets-grow-bitcoins-immunity-with-a-bip-bolt-2135956f147>
 
 
