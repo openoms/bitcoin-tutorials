@@ -1,18 +1,40 @@
 
-### Connect Zeus over Tor to the RaspiBlitz
+# Connect Zeus over Tor to the RaspiBlitz
 
 <p align="left">
   <img width="380" src="images/zeus_on_tor_logo.jpg">
 </p>
 
-Tested on the RaspiBlitz v1.3 with Tor activated.
+Zeus v0.5.0 has native Tor support on both iOS and Android (can forget Orbot)!
+
+Get the test versions from https://t.me/zeusLN or https://twitter.com/ZeusLN.  
+Tested on the RaspiBlitz v1.6.3 with Tor activated.
 
 Download the [Zeus](https://zeusln.app/) app.  
 Available on:
 * [GitHub](https://github.com/ZeusLN/zeus/releases), 
 * [F-Droid](https://f-droid.org/en/packages/com.zeusln.zeus/) 
 * [Google Play](https://play.google.com/store/apps/details?id=com.zeusln.zeus)
+* [iOS TestFlight](https://testflight.apple.com/join/gpVFzEHN)
 
+
+
+Display a QR code with the Tor connection details on the LCD and the terminal:
+```bash
+$ config.scripts/bonus.lndconnect.sh zeus-android tor
+```
+same for iOS and Android shows the QR with a v2 Tor address (to reduce the size of the QR code). The v3 onion address is preferred because it is not brute-forceable or guessable.
+
+After the dependencies have been installed with the script above a QRcode with a v3 address can be displayed in the terminal with:
+```bash
+$ lndconnect --host=$(sudo cat /mnt/hdd/tor/lndrest8080/hostname) --port=8080
+```
+
+
+---
+## Deprecated manual instructions:
+
+Tested on the RaspiBlitz v1.3 with Tor activated.
 ### Create the Hidden Service:
 * In the RaspiBlitz terminal:  
 
@@ -117,3 +139,5 @@ Self Sovereignty for the streets!
 * this guide is based on: https://github.com/seth586/guides/blob/master/FreeNAS/wallets/zeusln.md
 
 * Have a look at the proposal of @seth586 about connecting light wallets through Tor: https://medium.com/@seth586/neutrino-can-be-dangerous-so-lets-grow-bitcoins-immunity-with-a-bip-bolt-2135956f147
+
+
