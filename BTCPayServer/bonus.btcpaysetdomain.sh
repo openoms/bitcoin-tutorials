@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# On a raspiblitz:
 ## download
 # wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/BTCPayServer/bonus.btcpaysetdomain.sh
 ## inspect
@@ -7,13 +8,10 @@
 ## run and follow the instructions on screen
 # bash bonus.btcpaysetdomain.sh
 
-echo "# Custom script to set up nginx and the SSL certificate for BTCPay Server"
+# To undo the conf changes use:
+# bash bonus.btcpaysetdomain.sh revert
 
-echo "# Will remove blitzweb.conf and public.conf"
-echo "Press [ENTER] to continue or use [CTRL + C] to exit"
-read key
-sudo rm  /etc/nginx/sites-enabled/blitzweb.conf
-sudo rm -f /etc/nginx/sites-enabled/public.conf
+echo "# Custom script to set up nginx and the SSL certificate for BTCPay Server"
 
 source /mnt/hdd/raspiblitz.conf
 # add default value to raspi config if needed
@@ -24,29 +22,30 @@ fi
 echo " # Setting up Nginx and Certbot"
 
   localip=$(ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1 -d'/')
-  echo ""
+  echo
   echo "***"
   echo "Confirm that the ports 80 and 443 are forwarded to your RaspiBlitz" 
-  echo ""
-  echo "Press [ENTER] to continue or use [CTRL + C] to exit"
-  echo ""
+  echo
   echo "Example settings for your router:"
   echo "forward the port 443 to port 443 on ${localip}"
   echo "forward the port 80 to port 80 on ${localip}"
+  echo
+  echo "Press [ENTER] to continue or use [CTRL + C] to exit"
+  echo
   read key
   
-  echo ""
+  echo
   echo "***"
   echo "Type your domain or dynamicDNS pointing to your public IP and press [ENTER] or use [CTRL + C] to exit"
-  echo ""
+  echo
   echo "Example:"
   echo "btcpay.example.com"
   read YOUR_DOMAIN
 
-  echo ""
+  echo
   echo "***"
   echo "Type an email address that will be used to message about the expiration of the SSL certificate and press [ENTER] or use [CTRL + C] to exit"
-  echo ""
+  echo
   echo "Example:"
   echo "name@email.com"
   read YOUR_EMAIL
@@ -54,7 +53,8 @@ echo " # Setting up Nginx and Certbot"
 
   # install nginx and certbot
   sudo pip install cffi
-  sudo apt-get install nginx-full certbot -y
+  sudo apt uupdate
+  sudo apt-get install -y nginx-full certbot
   
   sudo ufw allow 80 comment 'HTTP web server'
   sudo ufw allow 443 comment 'btcpayserver SSL'
@@ -66,10 +66,27 @@ echo " # Setting up Nginx and Certbot"
   --post-hook "service nginx start" || exit 1
 
   # set nginx
-  sudo rm -f /etc/nginx/sites-enabled/default
-  sudo rm -f /etc/nginx/sites-enabled/btcpayserver
-  sudo rm -f /etc/nginx/sites-available/btcpayserver
+
+  echo "# Will move the default, blitzweb.conf, public.conf and btcpayserver nginx configs to /etc/nginx/backups"
+  echo "Press [ENTER] to continue or use [CTRL + C] to exit"
+  read key
+  sudo mkdir -p /etc/nginx/backups/sites-enabled
+  sudo mkdir -p /etc/nginx/backups/sites-available
+
+  sudo mv /etc/nginx/sites-enabled/blitzweb.conf /etc/nginx/backups/sites-enabled/blitzweb.conf
+  sudo mv /etc/nginx/sites-enabled/public.conf /etc/nginx/backups/sites-enabled/public.conf
+
+  sudo mv /etc/nginx/sites-enabled/default /etc/nginx/backups/sites-enabled/default
+  sudo mv /etc/nginx/sites-enabled/btcpayserver /etc/nginx/backups/sites-enabled/btcpayserver
+
+  sudo mv /etc/nginx/sites-available/btcpayserver /etc/nginx/backups/sites-available/btcpayserver
+
+  echo "# Remove the default btcpay_ssl symlink from /etc/nginx/sites-enabled"
+  sudo rm -f /etc/nginx/sites-enabled/btcpay_ssl.conf
   
+  # paste this to create the new /etc/nginx/sites-available/btcpayserver
+  # make sure YOUR_DOMAIN is set ( 'YOUR_DOMAIN=example.com')
+
   echo "
 # If we receive X-Forwarded-Proto, pass it through; otherwise, pass along the
 # scheme used to connect to this server
@@ -151,13 +168,13 @@ server {
     proxy_pass http://localhost:23000;
   }
 }
-" | sudo tee -a /etc/nginx/sites-available/btcpayserver
-  echo "# remove nginx symlinks"
-  sudo rm -f /etc/nginx/sites-enabled/btcpay_ssl.conf
+" | sudo tee /etc/nginx/sites-available/btcpayserver
+  echo "# Symlink /etc/nginx/sites-available/btcpayserver /etc/nginx/sites-enabled/"
   sudo ln -s /etc/nginx/sites-available/btcpayserver /etc/nginx/sites-enabled/ 2>/dev/null
   
+  # test 
   sudo nginx -t
-  
+  # reload
   sudo systemctl reload nginx
  
   echo "# Setting up certbot-auto renewal service"
@@ -200,3 +217,29 @@ echo "# setting value in raspiblitz config"
 sudo sed -i "s/^BTCPayDomain=.*/BTCPayDomain=$YOUR_DOMAIN/g" /mnt/hdd/raspiblitz.conf
 
 echo "OK done" 
+
+
+if [ $1 = revert ];then
+  echo "# Revert the nginx configs"
+  sudo mv  /etc/nginx/backups/sites-enabled/blitzweb.conf /etc/nginx/sites-enabled/blitzweb.conf
+  sudo mv  /etc/nginx/backups/sites-enabled/public.conf /etc/nginx/sites-enabled/public.conf
+
+  sudo mv /etc/nginx/backups/sites-enabled/default /etc/nginx/sites-enabled/default
+  sudo mv /etc/nginx/backups/sites-enabled/btcpayserver /etc/nginx/sites-enabled/btcpayserver 
+
+  sudo mv /etc/nginx/backups/sites-available/btcpayserver /etc/nginx/sites-available/btcpayserver
+
+  echo "# Remove the nginx symlink"
+  sudo rm -f /etc/nginx/sites-enabled/btcpayserver
+
+  echo "# Symlink /etc/nginx/sites-enabled/btcpay_ssl.conf to /etc/nginx/sites-enabled/"
+  sudo ln -s /etc/nginx/sites-enabled/btcpay_ssl.conf /etc/nginx/sites-enabled/
+  
+  echo "# Done"
+  
+  # test 
+  sudo nginx -t
+  # reload
+  sudo systemctl reload nginx
+fi
+  
