@@ -29,7 +29,7 @@ sudo systemctl restart tor
 ```
 * list the files in the directory
 ```
-$ sudo ls -la /mnt/hdd/tor/lndrpc10009/
+$ sudo ls -la /var/lib/tor/thunderhub/
 total 12
 drwx------ 1 debian-tor debian-tor 136 Jan 30 07:09 .
 drwx------ 1 debian-tor debian-tor 826 Jan 31 00:00 ..
