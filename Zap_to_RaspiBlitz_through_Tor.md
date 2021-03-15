@@ -1,3 +1,4 @@
+# WARNING: Zap iOS is unmaintained, use desktop or Android version. Zeus works on iOS.
 # Connect Zap over Tor to the RaspiBlitz
 
 <p align="left">
