@@ -146,5 +146,5 @@ sleep 10
 echo "Unlock lnd with the Password C"
 lncli unlock
 echo 
-echo "A restart is recommended to bring all services back online. Use: 'restart' or 'sudo reboot -f'"
+echo "A restart is recommended to bring all services back online. Use: 'restart' or 'sudo shutdown now -r'"
 echo 

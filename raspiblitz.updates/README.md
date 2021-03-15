@@ -12,7 +12,7 @@
     #inspect the script:
     cat bitcoincore.update.v0.21.0.sh
     #run:
-    bash bitcoincore.update.v0.21.0.sh`
+    bash bitcoincore.update.v0.21.0.sh
     ```
 
 ### [v0.20.0](/raspiblitz.updates/bitcoincore.update.v0.20.0.sh)
@@ -26,5 +26,4 @@
 `$ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/raspiblitz.updates/bitcoincore.update.v0.19.1.sh && bash bitcoincore.update.v0.19.1.sh`
 
 ## LND updates
-
 Find in: [https://github.com/openoms/lightning-node-management](https://github.com/openoms/lightning-node-management/blob/master/lnd.updates/README.md)
