@@ -2,25 +2,25 @@
 
 # On a raspiblitz:
 ## download
-# wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/BTCPayServer/bonus.btcpaysetdomain.sh
+# wget -O bonus.btcpaysetdomain.sh https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/BTCPayServer/bonus.btcpaysetdomain.sh
 ## inspect
 # cat bonus.btcpaysetdomain.sh
 ## run and follow the instructions on screen
-# bash bonus.btcpaysetdomain.sh
+# bash bonus.btcpaysetdomain.sh on
 
 # To undo the conf changes use:
 # bash bonus.btcpaysetdomain.sh revert
 
-echo "# Custom script to set up nginx and the SSL certificate for BTCPay Server"
+if [ $1 = on ];then
+  echo "# Custom script to set up nginx and the SSL certificate for BTCPay Server"
 
-source /mnt/hdd/raspiblitz.conf
-# add default value to raspi config if needed
-if ! grep -Eq "^BTCPayDomain=" /mnt/hdd/raspiblitz.conf; then
-  echo "BTCPayDomain=off" >> /mnt/hdd/raspiblitz.conf
-fi
+  source /mnt/hdd/raspiblitz.conf
+  # add default value to raspi config if needed
+  if ! grep -Eq "^BTCPayDomain=" /mnt/hdd/raspiblitz.conf; then
+    echo "BTCPayDomain=off" >> /mnt/hdd/raspiblitz.conf
+  fi
 
-echo " # Setting up Nginx and Certbot"
-
+  echo " # Setting up Nginx and Certbot"
   localip=$(ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1 -d'/')
   echo
   echo "***"
@@ -53,7 +53,7 @@ echo " # Setting up Nginx and Certbot"
 
   # install nginx and certbot
   sudo pip install cffi
-  sudo apt uupdate
+  sudo apt update
   sudo apt-get install -y nginx-full certbot
   
   sudo ufw allow 80 comment 'HTTP web server'
@@ -174,8 +174,8 @@ server {
   
   # test 
   sudo nginx -t
-  # reload
-  sudo systemctl reload nginx
+  # restart
+  sudo systemctl restart nginx
  
   echo "# Setting up certbot-auto renewal service"
 
@@ -213,11 +213,11 @@ RestartSec=60
 
   sudo systemctl enable certbot.timer
     
-echo "# setting value in raspiblitz config"
-sudo sed -i "s/^BTCPayDomain=.*/BTCPayDomain=$YOUR_DOMAIN/g" /mnt/hdd/raspiblitz.conf
+  echo "# setting value in raspiblitz config"
+  sudo sed -i "s/^BTCPayDomain=.*/BTCPayDomain=$YOUR_DOMAIN/g" /mnt/hdd/raspiblitz.conf
 
-echo "OK done" 
-
+  echo "OK done" 
+fi
 
 if [ $1 = revert ];then
   echo "# Revert the nginx configs"
@@ -242,4 +242,3 @@ if [ $1 = revert ];then
   # reload
   sudo systemctl reload nginx
 fi
-  
