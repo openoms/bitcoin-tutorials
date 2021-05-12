@@ -11,7 +11,10 @@ Enter the version of Electrum Wallet to install.
 Find the latest version number at:
 https://electrum.org/#download
 
-For example: '3.3.8' or '4.0.0b0'"
+For example:
+4.1.2
+or 
+4.0.0b0"
 read electrumVersion
 
 echo "
@@ -54,14 +57,14 @@ python3 -m pip install --user Electrum-$electrumVersion.tar.gz[fast]
 
 isInPath=$(echo $PATH | grep -c ~/.local/bin)
 if [ $isInPath -eq 0 ]; then
-  echo ""
+  echo
   echo "add install dir to PATH"
   PATH=$PATH:~/.local/bin
   touch ~/.profile
   export PATH
   echo "PATH=$PATH" | tee -a ~/.profile
 else 
-  echo ""
+  echo
   echo "The install dir is already in the PATH"
 fi
 
