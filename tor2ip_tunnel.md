@@ -67,6 +67,7 @@ To connect to LND in the example:
 `# netstat -tulpn`
 
     * Look for the lines:
+    
     ```
     Active Internet connections (only servers)
     Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    
@@ -76,6 +77,7 @@ To connect to LND in the example:
 
 * Monitor the service with:  
 `# systemctl status tor2ip9236`
+
 ```
 ● tor2ip9236.service - Tor2IP Tunnel Service
    Loaded: loaded (/etc/systemd/system/tor2ip9236.service; enabled; vendor preset: enabled)
