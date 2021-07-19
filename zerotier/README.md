@@ -39,7 +39,7 @@ Use a STRONG PASSWORD as anyone with your credentials will have access to your p
     `$ lncli unlock`
 
 * Renew the TLS certificates either from the EXPORT menu or run:  
-`$ ./config.scripts/lnd.newtlscert.sh`
+`$ ./config.scripts/lnd.tlscert.sh`
 
 After setting up and activating ZeroTier on my Android phone successfully tested: 
 * ZeusLN using the IP 172.x.x.x and port 8080
