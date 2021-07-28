@@ -1,4 +1,4 @@
-# Download and run this script to the Linux desktop:
+# Download and run this script on a DEbian / Ubuntu desktop:
 
 # Download
 # wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/electrs/electrum_wallet.sh 
@@ -6,37 +6,35 @@
 # bash electrum_wallet.sh
 
 echo "
-Enter the version of Electrum Wallet to install. 
+# Enter the version of Electrum Wallet to install. 
 
-Find the latest version number at:
-https://electrum.org/#download
+# Find the latest version number at:
+# https://electrum.org/#download
 
-For example:
-4.1.2
-or 
-4.0.0b0"
+# For example:
+4.1.5"
 read electrumVersion
 
 echo "
-Install dependencies: python3-pyqt5 and libsecp256k1-0
+# Install dependencies: python3-pyqt5 and libsecp256k1-0
 "
 sudo apt-get install -y python3-pyqt5 libsecp256k1-0
 
 echo "
-Download the package: 	
-https://download.electrum.org/$electrumVersion/Electrum-$electrumVersion.tar.gz
+# Download the package: 	
+# https://download.electrum.org/$electrumVersion/Electrum-$electrumVersion.tar.gz
 "
 rm -f Electrum-$electrumVersion.tar.gz.*
 wget https://download.electrum.org/$electrumVersion/Electrum-$electrumVersion.tar.gz
 
 echo "
-Verify signature
+# Verify signature
 "
 rm -f ThomasV.asc
 wget https://raw.githubusercontent.com/spesmilo/electrum/master/pubkeys/ThomasV.asc
 gpg --import ThomasV.asc
-wget https://download.electrum.org/$electrumVersion/Electrum-$electrumVersion.tar.gz.asc
-verifyResult=$(gpg --verify Electrum-$electrumVersion.tar.gz.asc 2>&1)
+wget https://download.electrum.org/$electrumVersion/Electrum-$electrumVersion.tar.gz.ThomasV.asc
+verifyResult=$(gpg --verify Electrum-$electrumVersion.tar.gz.ThomasV.asc Electrum-$electrumVersion.tar.gz 2>&1)
 goodSignature=$(echo ${verifyResult} | grep 'Good signature' -c)
 echo "goodSignature(${goodSignature})"
 if [ ${goodSignature} -lt 1 ]; then
@@ -46,8 +44,8 @@ if [ ${goodSignature} -lt 1 ]; then
 fi
 
 echo "
-Installing with the command:
-python3 -m pip install --user Electrum-$electrumVersion.tar.gz[fast]
+# Installing with the command:
+# python3 -m pip install --user Electrum-$electrumVersion.tar.gz[fast]
 "
 # Run without installing: 	tar -xvf Electrum-$electrumVersion.tar.gz
 # python3 Electrum-$electrumVersion/run_electrum
@@ -83,12 +81,14 @@ electrum setconfig oneserver true
 electrum setconfig server $RASPIBLITZ_IP:50002:s
 
 echo "
-To run with the chosen server, just use:
+# To run with the chosen server, just use:
 'electrum'
 
-To change the preset server:
-edit the file ~/.electrum/config and change:
+# To change the preset server:
+# edit the file ~/.electrum/config and change:
 \"server\": \"<your__ IP_domain_or_dynDNS>:50002:s\"
+# or
+\"server\": \"toraddress.onion:50001:t\"
 "
 
 electrum --oneserver --server $RASPIBLITZ_IP:50002:s 
