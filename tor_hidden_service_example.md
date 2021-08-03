@@ -4,64 +4,89 @@ A simple example of creating and using a Tor Hidden Service.
 Using SSH as an example, use any other name to be change the directory name.
 
 * Install Tor:
-```
-sudo apt install tor
-```
+  ```
+  sudo apt install tor
+  ```
 * Edit the config file:
-```
-sudo nano /etc/tor/torrc
-```
+  ```
+  sudo nano /etc/tor/torrc
+  ```
 * Choose v3 onion address:  
-```
-HiddenServiceDir /var/lib/tor/ssh/
-HiddenServiceVersion 3
-HiddenServicePort 80 127.0.0.1:3010
-```
+  ```
+  HiddenServiceDir /var/lib/tor/ssh/
+  HiddenServiceVersion 3
+  HiddenServicePort 80 127.0.0.1:22
+  ```
 * Restart Tor:
-```
-sudo systemctl restart tor
-```
+  ```
+  sudo systemctl restart tor
+  ```
 * List the files in the directory
-```
-$ sudo ls -la /var/lib/tor/ssh/
-total 12
-drwx------ 1 debian-tor debian-tor 136 Jan 30 07:09 .
-drwx------ 1 debian-tor debian-tor 826 Jan 31 00:00 ..
-drwx------ 1 debian-tor debian-tor   0 Feb 11  2020 authorized_clients
--rw------- 1 debian-tor debian-tor  63 Jan 30 07:09 hostname
--rwx------ 1 debian-tor debian-tor  64 Feb 11  2020 hs_ed25519_public_key
--rwx------ 1 debian-tor debian-tor  96 Feb 11  2020 hs_ed25519_secret_key
-```
+  ```
+  $ sudo ls -la /var/lib/tor/ssh/
+  total 12
+  drwx------ 1 debian-tor debian-tor 136 Jan 30 07:09 .
+  drwx------ 1 debian-tor debian-tor 826 Jan 31 00:00 ..
+  drwx------ 1 debian-tor debian-tor   0 Feb 11  2020 authorized_clients
+  -rw------- 1 debian-tor debian-tor  63 Jan 30 07:09 hostname
+  -rwx------ 1 debian-tor debian-tor  64 Feb 11  2020 hs_ed25519_public_key
+  -rwx------ 1 debian-tor debian-tor  96 Feb 11  2020 hs_ed25519_secret_key
+  ```
 * Note the Hidden Service address:
-```
-sudo cat /var/lib/tor/thunderhub/hostname
-```
-* Connect over the Tor Browser.
+  ```
+  sudo cat /var/lib/tor/ssh/hostname
+  ```
+* For `ssh` over Tor install Tor on your client
+  * Linux:
+    ```
+    sudo apt install tor
+    ```
+  * On mobile can use Termux:
+    ```
+    pkg install tor
+    ```
+    run Tor in a different window:  
+    ```
+    tor
+    ```
+    or in the background with:
+    ```
+    tor &
+    ```
+  * See this video for different Windows and MacOS: https://www.keepitsimplebitcoin.com/how-to-install-tor/
+
+* SSH over Tor:  
+  In a Linux terminal use:
+  ```
+  torify ssh username@HiddenServiceAddress.onion
+  ```
+
+* If there is a website hosted on the port open it in the [Tor Browser](https://www.torproject.org/)
 
 ## Add client authorization (Optional)
 A simple example of requiring authentication credential in order to connect to the onion service
 
 * Install required packages:
-```
-sudo apt install basez openssl
-```
+  ```
+  sudo apt install basez openssl
+  ```
 * Generate key:
-```
-openssl genpkey -algorithm x25519 -out /tmp/k1.prv.pem
-```
+  ```
+  openssl genpkey -algorithm x25519 -out /tmp/k1.prv.pem
+  ```
 * Re-format key into base32 creating public and private keys:
-```
-cat /tmp/k1.prv.pem | grep -v " PRIVATE KEY" | base64pem -d | tail --bytes=32 | base32 | sed 's/=//g' > /tmp/k1.prv.key
-openssl pkey -in /tmp/k1.prv.pem -pubout | grep -v " PUBLIC KEY" | base64pem -d | tail --bytes=32 | base32 | sed 's/=//g' > /tmp/k1.pub.key
-```
+  ```
+  cat /tmp/k1.prv.pem | grep -v " PRIVATE KEY" | base64pem -d | tail --bytes=32 | base32 | sed 's/=//g' > /tmp/k1.prv.key
+  openssl pkey -in /tmp/k1.prv.pem -pubout | grep -v " PUBLIC KEY" | base64pem -d | tail --bytes=32 | base32 | sed 's/=//g' > /tmp/k1.pub.key
+  ```
 * Note the private key (client):
-```
-cat /tmp/k1.prv.key
-```
+  ```
+  cat /tmp/k1.prv.key
+  ```
 * Note the public key: (server):
-```
-cat /tmp/k1.pub.key
-```
+  ```
+  cat /tmp/k1.pub.key
+  ```
 * Server config:
    * Create .auth file:
    ```
@@ -89,13 +114,13 @@ cat /tmp/k1.pub.key
     <56-char-onion-addr-without-.onion-part>:descriptor:x25519:<base32-priv-key>
     ```
 * Remove keys stored in /tmp:
-```
-sudo rm -f /tmp/k1.pub.key /tmp/k1.prv.key /tmp/k1.prv.pem
-```
+  ```
+  sudo rm -f /tmp/k1.pub.key /tmp/k1.prv.key /tmp/k1.prv.pem
+  ```
 * Restart Tor to apply changes (server and client):
-```
-sudo systemctl restart tor@default
-```
+  ```
+  sudo systemctl restart tor@default
+  ```
 
 #### Notes:
 
