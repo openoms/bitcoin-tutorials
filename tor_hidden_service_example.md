@@ -11,7 +11,8 @@ Using SSH as an example, use any other name to be change the directory name.
   ```
   sudo nano /etc/tor/torrc
   ```
-* Choose v3 onion address:  
+* Create a v3 onion address
+  sharing the internal shh port (22) on the port 80:
   ```
   HiddenServiceDir /var/lib/tor/ssh/
   HiddenServiceVersion 3
@@ -56,9 +57,9 @@ Using SSH as an example, use any other name to be change the directory name.
   * See this video for different Windows and MacOS: https://www.keepitsimplebitcoin.com/how-to-install-tor/
 
 * SSH over Tor:  
-  In a Linux terminal use:
+  In a Linux terminal use (set the custom port used for ssh):
   ```
-  torify ssh username@HiddenServiceAddress.onion
+  torify ssh username@HiddenServiceAddress.onion:80
   ```
 
 * If there is a website hosted on the port open it in the [Tor Browser](https://www.torproject.org/)
