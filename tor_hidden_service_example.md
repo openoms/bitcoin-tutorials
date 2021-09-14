@@ -11,12 +11,12 @@ Using SSH as an example, use any other name to be change the directory name.
   ```
   sudo nano /etc/tor/torrc
   ```
-* Create a v3 onion address
-  sharing the internal shh port (22) on the port 80:
+* Create a v3 onion address  
+  sharing the internal ssh port (22) on the custom port 8080 of the .onion service:
   ```
   HiddenServiceDir /var/lib/tor/ssh/
   HiddenServiceVersion 3
-  HiddenServicePort 80 127.0.0.1:22
+  HiddenServicePort 8080 127.0.0.1:22
   ```
 * Restart Tor:
   ```
@@ -56,13 +56,13 @@ Using SSH as an example, use any other name to be change the directory name.
     ```
   * See this video for different Windows and MacOS: https://www.keepitsimplebitcoin.com/how-to-install-tor/
 
-* SSH over Tor:  
-  In a Linux terminal use (set the custom port used for ssh):
+* SSH over Tor  
+  in a Linux terminal use (set the custom port used for ssh):
   ```
-  torify ssh username@HiddenServiceAddress.onion:80
+  torify ssh username@HiddenServiceAddress.onion:8080
   ```
 
-* If there is a website hosted on the port open it in the [Tor Browser](https://www.torproject.org/)
+* If there is a website hosted on your .onion service use the [Tor Browser](https://www.torproject.org/) to open the address.
 
 ## Add client authorization (Optional)
 A simple example of requiring authentication credential in order to connect to the onion service
