@@ -2,6 +2,17 @@
 
 ## Bitcoin Core Updates
 
+### [v22.0](/raspiblitz.updates/bitcoincore.update.v22.0.sh)
+* To download, check and run in the RaspiBlitz terminal:  
+    ```
+    #download:
+    wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/raspiblitz.updates/bitcoincore.update.v22.0.sh
+    #inspect the script:
+    cat bitcoincore.update.v22.0.sh
+    #run:
+    bash bitcoincore.update.v22.0.sh
+    ```
+
 ### [v0.21.0](/raspiblitz.updates/bitcoincore.update.v0.21.0.sh)
 * On RaspiBlitz v1.6.3 the peers won't be diplayed correctly.  
   Use: `bitcoin-cli getnetworkinfo`
