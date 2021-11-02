@@ -98,7 +98,7 @@ Alternatively use `tx_fee = 10` to aim confirmation within 10 blocks.
 * Maker (coinjoin) fees: 
   * Set `#max_cj_fee_abs = x` to `max_cj_fee_abs = 2000` to pay max 2000 sats per maker when coinjoining (more restrictive for higher amounts)
   * Set  `#max_cj_fee_rel = x` to `max_cj_fee_rel = 0.001` to pay max 0.1% per relative offer when coinjoining.  
-  These settings might make it difficult to find counterparties to coinjoin with, see the [offerbook](https://joinmarket.me/ob) for the market and increase the limits if the offers are scarce or running into errors.
+  These settings might make it difficult to find counterparties to coinjoin with, see the [order book](https://nixbitcoin.org/obwatcher/) for the market and increase the limits if the offers are scarce or running into errors.
 * press CTRL + o, ENTER to save and CTRL + x to exit. 
 
 ### Coin control
@@ -234,7 +234,7 @@ Video demonstration of using the JoinMarket-Qt GUI by @AdamISZ: <https://youtu.b
 See this review thread about the GUI option: https://twitter.com/zndtoshi/status/1191799199119134720
 
 ### Run the Order Book locally
-The order book is usually available at <https://joinmarket.me/ob>. The page being down does not affect the functionality of JoinMarket. Communication between the nodes is encrypted and passing through IRC servers.
+The order book is usually available at <https://nixbitcoin.org/obwatcher/>. The page being down does not affect the functionality of JoinMarket. Communication between the nodes is encrypted and passing through IRC servers.
 
 * Any JoinMarket instance can build and serve the order book itself:  
 run in Tmux (as described above) to keep running when the terminal is closed.
