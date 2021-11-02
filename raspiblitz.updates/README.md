@@ -37,4 +37,4 @@
 `$ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/raspiblitz.updates/bitcoincore.update.v0.19.1.sh && bash bitcoincore.update.v0.19.1.sh`
 
 ## LND updates
-Find in: [https://github.com/openoms/lightning-node-management](https://github.com/openoms/lightning-node-management/blob/master/lnd.updates/README.md)
+Find in: [https://github.com/openoms/lightning-node-management](https://github.com/openoms/lightning-node-management/blob/en/hardware/raspiblitz/lnd.updates.md)
