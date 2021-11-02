@@ -11,7 +11,7 @@ Using SSH as an example, use any other name to be change the directory name.
   ```
   sudo nano /etc/tor/torrc
   ```
-* Create a v3 onion address  
+* Create a v3 onion address
   sharing the internal ssh port (22) on the custom port 8080 of the .onion service:
   ```
   HiddenServiceDir /var/lib/tor/ssh/
