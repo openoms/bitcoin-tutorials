@@ -11,9 +11,11 @@ The ColdCards should be stored uninitialized, best to be freshly acquired in the
 ---
 ### Components grouped together by the requirement for a full restore
 #### Full backup 1
+* any BIP39 compatible wallet
 * Seed mnemonic (12/18/24 words)
 * Passphrase
 #### Full backup 2
+* ColdCard
 * Backupfile (.7z archive on the SD)
 * Backup password (12 words)
 * Passphrase
@@ -25,10 +27,12 @@ The ColdCards should be stored uninitialized, best to be freshly acquired in the
 - Backup password (12 words)
 - Backupfile (.7z archive on the SD)
 
-#### Location 2 
+#### Location 2
+- ColdCard
 - Passphrase (BIP39)
 - Backupfile (.7z archive on the SD)
 
 #### Location 3
+- ColdCard
 - Passphrase (BIP39)
 - Backup password (12 words)

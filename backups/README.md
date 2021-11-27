@@ -5,6 +5,8 @@ backups where the funds cannot be recovered from any single package,
 but can be recovered with the combination of any two.  
 Can be thought of as a physical 2-of-3 multisig solution.
 
+## [SeedXOR](seedxor.md)
+## [SpecterDIY](specterdiy.md)
 ## [ColdCard](coldcard.md)
 ## [JoinMarket](joinmarket.md)
 ## [LND](lnd.md)
