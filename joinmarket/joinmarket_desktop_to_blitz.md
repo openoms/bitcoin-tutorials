@@ -2,6 +2,18 @@
   <img width="100" src="../images/joinmarket_logo.png">
 </p>
 
+- [Connect JoinMarket running on a Linux desktop to a remote node](#connect-joinmarket-running-on-a-linux-desktop-to-a-remote-node)
+  - [LAN connection](#lan-connection)
+    - [In the node terminal](#in-the-node-terminal)
+      - [Allow remote RPC connections on the LAN](#allow-remote-rpc-connections-on-the-lan)
+    - [On the Linux desktop](#on-the-linux-desktop)
+  - [Tor connection](#tor-connection)
+    - [On the node - activate Tor and create a Hidden Service](#on-the-node---activate-tor-and-create-a-hidden-service)
+      - [Create a Hidden Service to forward the bitcoin RPC port](#create-a-hidden-service-to-forward-the-bitcoin-rpc-port)
+    - [On the Linux desktop - use `torify`](#on-the-linux-desktop---use-torify)
+  - [JoinMarket-QT icon/shortcut on the Linux desktop](#joinmarket-qt-iconshortcut-on-the-linux-desktop)
+  - [Resources:](#resources)
+
 # Connect JoinMarket running on a Linux desktop to a remote node
 
 In order to use the JoinMarketQT GUI (and other scripts) it needs to connect to a Bitcoin Core node.  
@@ -58,7 +70,7 @@ This can be skipped if you connect through Tor (see [below](#tor-connection))
     git clone https://github.com/JoinMarket-Org/joinmarket-clientserver.git
     cd joinmarket-clientserver
     # latest release: https://github.com/JoinMarket-Org/joinmarket-clientserver/releases
-    git reset --hard v0.7.0
+    git reset --hard v0.9.3
 
     ./install.sh --with-qt
     ```
