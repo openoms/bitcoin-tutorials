@@ -33,7 +33,7 @@ sudo chown -R electrumx:electrumx /home/electrumx/.electrumx
 ```
 
 ## Create a config file  
-* https://electrumx-spesmilo.readthedocs.io/en/latest/environment.html
+* <https://electrumx-spesmilo.readthedocs.io/en/latest/environment.html>
 * Can paste the this as a block to create the coinfig file, but fill in the PASSWORD_B (Bitcoin Core RPC password)
 * the ports 50010 and 50011 are used to not interfere with a possible Electrs instance
 ```
@@ -58,7 +58,7 @@ DONATION_ADDRESS=your-donation-address
 ```
 
 ## Create a systemd service  
-* https://github.com/spesmilo/electrumx/blob/master/contrib/systemd/electrumx.service
+* <https://github.com/spesmilo/electrumx/blob/master/contrib/systemd/electrumx.service>
 * Can paste the this as a block to create the electrumx.service file
 ```
 echo "\
@@ -101,10 +101,11 @@ sudo userdel -rf electrumx
 ```
 
 ## Set SSL  
-https://electrumx-spesmilo.readthedocs.io/en/latest/HOWTO.html#creating-a-self-signed-ssl-certificate
+<https://electrumx-spesmilo.readthedocs.io/en/latest/HOWTO.html#creating-a-self-signed-ssl-certificate>
 
 
 ## Sources:
-https://github.com/spesmilo/electrumx
-https://electrumx-spesmilo.readthedocs.io/en/latest/index.html
-https://sparrowwallet.com/docs/server-performance.html
+* <https://github.com/spesmilo/electrumx>
+* <https://electrumx-spesmilo.readthedocs.io>
+* <https://sparrowwallet.com/docs/server-performance.html>
+* [Running an ElectrumX server on Ubuntu by @k3tan172](https://www.youtube.com/watch?v=QiX0rR_o_fI)
