@@ -3,7 +3,7 @@
 This is a rought overview, the guide is work in progress.
 
 Tested environments:
-  * X86_64 Xeon E5 with 16GB RAM and SSD storage
+  * X86_64 Xeon E5 with 16GB RAM and SSD storage - estimated to sync in 5 days
   * bulding the database on a Raspberry Pi will likely take weeks
 
 ## Prepare the system and directories
@@ -33,8 +33,9 @@ sudo chown -R electrumx:electrumx /home/electrumx/.electrumx
 ```
 
 ## Create a config file  
-https://electrumx-spesmilo.readthedocs.io/en/latest/environment.html
-Can paste the thsi as a block, but fill in the PASSWORD_B (Bitcoin Core RPC password)
+* https://electrumx-spesmilo.readthedocs.io/en/latest/environment.html
+* Can paste the this as a block to create the coinfig file, but fill in the PASSWORD_B (Bitcoin Core RPC password)
+* the ports 50010 and 50011 are used to not interfere with a possible Electrs instance
 ```
 echo "\
 DB_DIRECTORY=/home/electrumx/.electrumx/db
@@ -57,7 +58,8 @@ DONATION_ADDRESS=your-donation-address
 ```
 
 ## Create a systemd service  
-https://github.com/spesmilo/electrumx/blob/master/contrib/systemd/electrumx.service
+* https://github.com/spesmilo/electrumx/blob/master/contrib/systemd/electrumx.service
+* Can paste the this as a block to create the electrumx.service file
 ```
 echo "\
 [Unit]
@@ -88,7 +90,7 @@ sudo journalctl -fu electrumx
 sudo systemctl status electrumx
 ```
 
-## Remove user and installation (not the database)
+## Remove the electrumx user and installation (not the database)
 ```
 sudo systemctl disable electrumx
 sudo systemctl stop electrumx
