@@ -79,6 +79,7 @@ WantedBy=multi-user.target
 ```
 
 ## Start
+* dependin on the available RAM it is a good idea to keep at least 10GB swap: <https://www.digitalocean.com/community/tutorials/how-to-add-swap-space-on-debian-10>
 ```
 sudo systemctl enable electrumx
 sudo systemctl start electrumx
