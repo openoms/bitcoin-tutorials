@@ -27,6 +27,10 @@ Start at <https://github.com/rootzoll/raspiblitz>
 * #### [BTCPayServer on the RaspiBlitz](BTCPayServer/README.md)
     This guide will make you have BTCPayServer running on your node using the already synced bitcoin blockchain and local LND node and benefit from the backup and security features of RaspiBlitz and the stock LND.  
     No added synchronization needed. 
+
+* #### [ElectrumX Server](electrumx.md)  
+    A more performant Electrum server for serious hardware.
+
 * #### [Electrum wallet](electrs/electrum_wallet.sh)
     Download, verify and install the chosen version on a Linux desktop.
     ```
