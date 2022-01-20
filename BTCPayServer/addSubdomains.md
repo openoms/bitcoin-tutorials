@@ -11,20 +11,20 @@ read EMAIL
 echo "Input 3 subdomains separated with commas (eg: pay.example.com,tips.example.com,status.example.com)"
 read SUBDOMAINS
 
-echo "Input the the URL to be redirected to for the second domain"
+echo "Input the URL to be redirected to for the second domain"
 read REDIRECT1
-echo "Input the the URL to be redirected to for the third domain"
+echo "Input the URL to be redirected to for the third domain"
 read REDIRECT2
 
-certbot certonly -a standalone -m $EMAIL --agree-tos \
+sudo certbot certonly -a standalone -m $EMAIL --agree-tos \
 -d $SUBDOMAINS --expand -n --pre-hook "service nginx stop" \
 --post-hook "service nginx start" || exit 1
 
 firstDomain=$(echo $SUBDOMAINS|cut -d"," -f1)
 
 # copy in place if needed
-#cat /etc/letsencrypt/live/$firstDomain/fullchain.pem 
-#cat /etc/letsencrypt/live/$firstDomain/privkey.pem 
+#sudo cat /etc/letsencrypt/live/$firstDomain/fullchain.pem 
+#sudo cat /etc/letsencrypt/live/$firstDomain/privkey.pem 
 
 # Add to /etc/nginx/sites-available/btcpayserver
 echo "
