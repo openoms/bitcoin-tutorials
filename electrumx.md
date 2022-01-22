@@ -3,8 +3,8 @@
 This is a rough overview, the guide is work in progress.
 
 Tested environments:
-  * X86_64 Xeon E5 with 16GB RAM and SSD storage - estimated to sync in 5 days
-  * bulding the database on a Raspberry Pi will likely take weeks
+  * X86_64 Xeon E5 with 32GB RAM and SSD storage - first sync time: 2d 16h 07m
+  * Raspberry Pi4 *GB 64bit RaspberryOS with SSD is estimated ~ 5 days
 
 Issue: <https://github.com/rootzoll/raspiblitz/issues/1130>
 
@@ -59,10 +59,10 @@ COST_HARD_LIMIT = 0
 NET=mainnet
 CACHE_MB=1200
 
-SSL_CERTFILE=/home/electrumx/.electrumx/certfile.crt
-SSL_KEYFILE=/home/electrumx/.electrumx/keyfile.key
-BANNER_FILE=/home/electrumx/.electrumx/banner
-DONATION_ADDRESS=your-donation-address
+# SSL_CERTFILE=/home/electrumx/.electrumx/certfile.crt
+# SSL_KEYFILE=/home/electrumx/.electrumx/keyfile.key
+# BANNER_FILE=/home/electrumx/.electrumx/banner
+# DONATION_ADDRESS=your-donation-address
 " | sudo -u electrumx tee /home/electrumx/.electrumx/electrumx.conf
 ```
 
