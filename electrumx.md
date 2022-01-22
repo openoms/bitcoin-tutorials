@@ -1,10 +1,12 @@
 # ElectrumX on a RaspiBlitz
 
-This is a rought overview, the guide is work in progress.
+This is a rough overview, the guide is work in progress.
 
 Tested environments:
   * X86_64 Xeon E5 with 16GB RAM and SSD storage - estimated to sync in 5 days
   * bulding the database on a Raspberry Pi will likely take weeks
+
+Issue: <https://github.com/rootzoll/raspiblitz/issues/1130>
 
 ## Prepare the system and directories
 ```
@@ -18,7 +20,13 @@ cd electrumx
 # installation
 # dependencies
 sudo -u electrumx pip install aiohttp pylru
+# for thr RPi4 see the dependencies installed here:
+# https://github.com/spesmilo/electrumx/blob/master/contrib/raspberrypi3/install_electrumx.sh
+
+# places the binaries in /home/electrumx/.local/bin/
 sudo -u electrumx pip3 install .
+
+# alternative install method (places the binaries in /usr/local/bin):
 # sudo -u electrumx python3 setup.py build
 # sudo python3 setup.py install
 
@@ -36,6 +44,7 @@ sudo chown -R electrumx:electrumx /home/electrumx/.electrumx
 * <https://electrumx-spesmilo.readthedocs.io/en/latest/environment.html>
 * Can paste the this as a block to create the coinfig file, but fill in the PASSWORD_B (Bitcoin Core RPC password)
 * the ports 50010 and 50011 are used to not interfere with a possible Electrs instance
+* edit afterwards with `sudo nano /home/electrumx/.electrumx/electrumx.conf`
 ```
 echo "\
 DB_DIRECTORY=/home/electrumx/.electrumx/db
@@ -79,7 +88,11 @@ WantedBy=multi-user.target
 ```
 
 ## Start
-* dependin on the available RAM it is a good idea to keep at least 10GB swap: <https://www.digitalocean.com/community/tutorials/how-to-add-swap-space-on-debian-10>
+* depending on the available RAM it is a good idea to keep at least 10GB swap:  
+  <https://www.digitalocean.com/community/tutorials/how-to-add-swap-space-on-debian-10>
+  can consider ZRAM: 
+  <https://haydenjames.io/raspberry-pi-performance-add-zram-kernel-parameters/>
+  <https://github.com/rootzoll/raspiblitz/issues/2905>
 ```
 sudo systemctl enable electrumx
 sudo systemctl start electrumx
@@ -101,7 +114,7 @@ sudo userdel -rf electrumx
 ```
 
 ## Set SSL  
-<https://electrumx-spesmilo.readthedocs.io/en/latest/HOWTO.html#creating-a-self-signed-ssl-certificate>
+* <https://electrumx-spesmilo.readthedocs.io/en/latest/HOWTO.html#creating-a-self-signed-ssl-certificate>
 
 
 ## Sources:
