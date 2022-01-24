@@ -20,8 +20,17 @@ cd electrumx
 # installation
 # dependencies
 sudo -u electrumx pip install aiohttp pylru
-# for thr RPi4 see the dependencies installed here:
-# https://github.com/spesmilo/electrumx/blob/master/contrib/raspberrypi3/install_electrumx.sh
+# from: https://github.com/spesmilo/electrumx/blob/master/contrib/raspberrypi3/install_electrumx.sh
+sudo apt-get install -y \
+  python3-pip \
+  build-essential \
+  libc6-dev \
+  libncurses5-dev \
+  libncursesw5-dev \
+  libreadline6-dev/stable \
+  libreadline6/stable \
+  libleveldb-dev
+sudo pip3 install plyvel
 
 # places the binaries in /home/electrumx/.local/bin/
 sudo -u electrumx pip3 install .
@@ -42,16 +51,17 @@ sudo chown -R electrumx:electrumx /home/electrumx/.electrumx
 
 ## Create a config file  
 * <https://electrumx-spesmilo.readthedocs.io/en/latest/environment.html>
-* Can paste the this as a block to create the coinfig file, but fill in the PASSWORD_B (Bitcoin Core RPC password)
-* the ports 50010 and 50011 are used to not interfere with a possible Electrs instance
-* edit afterwards with `sudo nano /home/electrumx/.electrumx/electrumx.conf`
+* Can paste the this as a block to create the config file, but fill in the PASSWORD_B (Bitcoin Core RPC password):
+```
+PASSWORD_B="your-password-here"
+```
 ```
 echo "\
 DB_DIRECTORY=/home/electrumx/.electrumx/db
-DAEMON_URL=http://raspibolt:PASSWORD_B@127.0.0.1
+DAEMON_URL=http://raspibolt:${PASSWORD_B}@127.0.0.1
 COIN=Bitcoin
 
-SERVICES = tcp://:50010,ssl://:50011,rpc://
+SERVICES = tcp://:50010,rpc://
 PEER_DISCOVERY = off
 COST_SOFT_LIMIT = 0
 COST_HARD_LIMIT = 0
@@ -59,16 +69,19 @@ COST_HARD_LIMIT = 0
 NET=mainnet
 CACHE_MB=1200
 
+# SERVICES = tcp://:50010,ssl://:50011,rpc://
 # SSL_CERTFILE=/home/electrumx/.electrumx/certfile.crt
 # SSL_KEYFILE=/home/electrumx/.electrumx/keyfile.key
 # BANNER_FILE=/home/electrumx/.electrumx/banner
 # DONATION_ADDRESS=your-donation-address
 " | sudo -u electrumx tee /home/electrumx/.electrumx/electrumx.conf
 ```
+* the ports 50010 and 50011 are used to not interfere with a possible Electrs instance
+* edit afterwards with `sudo nano /home/electrumx/.electrumx/electrumx.conf`
 
 ## Create a systemd service  
 * <https://github.com/spesmilo/electrumx/blob/master/contrib/systemd/electrumx.service>
-* Can paste the this as a block to create the electrumx.service file
+* Can paste this as a block to create the electrumx.service file:
 ```
 echo "\
 [Unit]
