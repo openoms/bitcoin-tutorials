@@ -19,20 +19,23 @@ cd /home/fulcrum
 # sudo -u fulcrum git clone https://github.com/cculianu/Fulcrum
 # cd fulcrum
 
-# installation
 # dependencies
 # sudo apt install -y libzmq3-dev
 
+# set the platform
 if [ $(uname -m) = "aarch64" ]; then
   build="arm64-linux"
 elif [ $(uname -m) = "x86_64" ]; then
   build="x86_64-linux-ub16"
 fi
 
+# download the prebuilt binary
 sudo -u fulcrum wget https://github.com/cculianu/Fulcrum/releases/download/v1.6.0/Fulcrum-1.6.0-${build}.tar.gz
 sudo -u fulcrum  wget https://github.com/cculianu/Fulcrum/releases/download/v1.6.0/Fulcrum-1.6.0-${build}.tar.gz.asc
 sudo -u fulcrum  wget https://github.com/cculianu/Fulcrum/releases/download/v1.6.0/Fulcrum-1.6.0-${build}.tar.gz.sha256sum
 
+# Verify
+# get the PGP key
 curl https://raw.githubusercontent.com/Electron-Cash/keys-n-hashes/master/pubkeys/calinkey.txt | sudo -u fulcrum gpg --import
 
 # look for 'Good signature'
@@ -41,7 +44,8 @@ sudo -u fulcrum  gpg --verify Fulcrum-1.6.0-${build}.tar.gz.asc
 # look for 'OK'
 sudo -u fulcrum sha256sum -c Fulcrum-1.6.0-${build}.tar.gz.sha256sum
 
-sudo -u fulcrum tar -xvf Fulcrum-1.6.0-${build}.tar.gz ./
+# decompress
+sudo -u fulcrum tar -xvf Fulcrum-1.6.0-${build}.tar.gz
 
 # create the database directory in /mnt/hdd/app-storage (on the disk)
 sudo mkdir -p /mnt/hdd/app-storage/fulcrum/db
