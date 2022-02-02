@@ -7,9 +7,27 @@ Tested environments:
 
 Issue: <https://github.com/rootzoll/raspiblitz/issues/2924>
 
+## Prepare bitcoind
+* To avoid errors like
+    ```
+    503 (content): Work queue depth exceeded 
+    ``` 
+    set in the `/mnt/hdd/bitcoin/bitcoin.conf`:
+    ```
+    txindex=1
+    whitelist=download@127.0.0.1
+    rpcworkqueue=512
+    rpcthreads=128
+    ```
+   `zmqpubhashblock=tcp://0.0.0.0:8433` is not set for now
+
+* restart bitcoind
+    ```
+    sudo systemctl bitcoind restart
+    ```
+    if the txindex was not built before wait until finishes (monitor the bitcoin `debug.log`).
+
 ## Prepare the system and directories
-* Requires `txindex=1` for Bitcoin Core
-* ? and `zmqpubhashblock=tcp://0.0.0.0:8433` ?
 
 ```
 # create a dedicated user
