@@ -94,14 +94,17 @@ tcp = 0.0.0.0:50020
 
 # fast-sync failed on the RPi so keep it off
 # fast-sync = 4000
+# reduce load
 bitcoind_clients = 1
+# avoid 'bitcoind request timed out'
+bitcoind_timeout = 300
+
 " | sudo -u fulcrum tee /home/fulcrum/.fulcrum/fulcrum.conf
 ```
 * the ports 50020 and 50011 are used to not interfere with a possible Electrs or ElectrumX instance
 * edit afterwards with `sudo nano /home/fulcrum/.fulcrum/fulcrum.conf`
 
 ## Create a systemd service  
-* <https://github.com/spesmilo/fulcrum/blob/master/contrib/systemd/fulcrum.service>
 * Can paste this as a block to create the fulcrum.service file:
 ```
 echo "\
