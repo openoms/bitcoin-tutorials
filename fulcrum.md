@@ -92,7 +92,8 @@ tcp = 0.0.0.0:50020
 #cert = /path/to/server-cert.pem
 #key = /path/to/server-key.pem
 
-fast-sync = 4000
+# fast-sync failed on the RPi so keep it off
+# fast-sync = 4000
 " | sudo -u fulcrum tee /home/fulcrum/.fulcrum/fulcrum.conf
 ```
 * the ports 50020 and 50011 are used to not interfere with a possible Electrs or ElectrumX instance
