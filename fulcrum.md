@@ -94,6 +94,7 @@ tcp = 0.0.0.0:50020
 
 # fast-sync failed on the RPi so keep it off
 # fast-sync = 4000
+bitcoind_clients = 1
 " | sudo -u fulcrum tee /home/fulcrum/.fulcrum/fulcrum.conf
 ```
 * the ports 50020 and 50011 are used to not interfere with a possible Electrs or ElectrumX instance
