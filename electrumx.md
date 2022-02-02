@@ -4,11 +4,13 @@ This is a rough overview, the guide is work in progress.
 
 Tested environments:
   * X86_64 Xeon E5 with 32GB RAM and SSD storage - first sync time: 2d 16h 07m
-  * Raspberry Pi4 *GB 64bit RaspberryOS with SSD is estimated ~ 5 days
+  * Raspberry Pi4 8GB 64bit RaspberryOS with SSD is ~6.5 days
 
 Issue: <https://github.com/rootzoll/raspiblitz/issues/1130>
 
 ## Prepare the system and directories
+* Requires `txindex=1` for Bitcoin Core
+
 ```
 # create a dedicated user
 sudo adduser --disabled-password --gecos "" electrumx
@@ -86,7 +88,7 @@ CACHE_MB=1200
 echo "\
 [Unit]
 Description=Electrumx
-After=network.target
+After=network.target bitcoind.service
 
 [Service]
 EnvironmentFile=/home/electrumx/.electrumx/electrumx.conf
