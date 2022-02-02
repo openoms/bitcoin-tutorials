@@ -113,6 +113,7 @@ ExecStart=/home/fulcrum//Fulcrum-1.6.0-${build}/Fulcrum /home/fulcrum/.fulcrum/f
 User=fulcrum
 LimitNOFILE=8192
 TimeoutStopSec=30min
+Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target
