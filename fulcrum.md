@@ -3,29 +3,30 @@
 This is a rough overview, the guide is work in progress.
 
 Tested environments:
-  * Raspberry Pi4 8GB 64bit RaspberryOS with SSD and ZRAM
+  * Raspberry Pi4 8GB 64bit RaspberryOS with SSD and ZRAM  
+   The first sync took 48h. Can expect 2 - 2.5 days with the settings below.
 
 Issue: <https://github.com/rootzoll/raspiblitz/issues/2924>
 
 ## Prepare bitcoind
 * To avoid errors like
-    ```
-    503 (content): Work queue depth exceeded 
-    ``` 
-    set in the `/mnt/hdd/bitcoin/bitcoin.conf`:
-    ```
-    txindex=1
-    whitelist=download@127.0.0.1
-    rpcworkqueue=512
-    rpcthreads=128
-    zmqpubhashblock=tcp://0.0.0.0:8433
-    ```
+```
+503 (content): Work queue depth exceeded
+``` 
+set in the `/mnt/hdd/bitcoin/bitcoin.conf`:
+```
+txindex=1
+whitelist=download@127.0.0.1
+rpcworkqueue=512
+rpcthreads=128
+zmqpubhashblock=tcp://0.0.0.0:8433
+```
 
 * restart bitcoind
-    ```
-    sudo systemctl bitcoind restart
-    ```
-    if the txindex was not built before wait until finishes (monitor the bitcoin `debug.log`).
+```
+sudo systemctl bitcoind restart
+```
+* if the txindex was not built before wait until finishes (monitor the bitcoin `debug.log`).
 
 ## Prepare the system and directories
 
