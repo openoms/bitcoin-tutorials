@@ -18,8 +18,8 @@ Issue: <https://github.com/rootzoll/raspiblitz/issues/2924>
     whitelist=download@127.0.0.1
     rpcworkqueue=512
     rpcthreads=128
+    zmqpubhashblock=tcp://0.0.0.0:8433
     ```
-   `zmqpubhashblock=tcp://0.0.0.0:8433` is not set for now
 
 * restart bitcoind
     ```
@@ -88,6 +88,7 @@ bitcoind = 127.0.0.1:8332
 rpcuser = raspibolt
 rpcpassword = ${PASSWORD_B}
 
+# RPi optimizations
 # avoid 'bitcoind request timed out'
 bitcoind_timeout = 300
 # reduce load
@@ -97,12 +98,17 @@ db_max_open_files=500
 db_mem=1024
 fast-sync = 2048
 
-tcp = 0.0.0.0:50020
+# server connections
+# disable peer discovery and public server options
+peering = false
+announce = false
+tcp = 0.0.0.0:50021
 #cert = /path/to/server-cert.pem
 #key = /path/to/server-key.pem
+#ssl = 0.0.0.0:50022
 " | sudo -u fulcrum tee /home/fulcrum/.fulcrum/fulcrum.conf
 ```
-* the ports 50020 and 50011 are used to not interfere with a possible Electrs or ElectrumX instance
+* the ports 50021 and 50022 are used to not interfere with a possible Electrs or ElectrumX instance
 * edit afterwards with `sudo nano /home/fulcrum/.fulcrum/fulcrum.conf`
 
 ## Create a systemd service  
