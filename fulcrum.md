@@ -40,6 +40,7 @@ cd /home/fulcrum
 
 # dependencies
 # sudo apt install -y libzmq3-dev
+sudo apt install -y libssl-dev # was needed on Debian Bullseye
 
 # set the platform
 if [ $(uname -m) = "aarch64" ]; then
@@ -121,7 +122,7 @@ Description=Fulcrum
 After=network.target bitcoind.service
 
 [Service]
-ExecStart=/home/fulcrum//Fulcrum-1.6.0-${build}/Fulcrum /home/fulcrum/.fulcrum/fulcrum.conf
+ExecStart=/home/fulcrum/Fulcrum-1.6.0-${build}/Fulcrum /home/fulcrum/.fulcrum/fulcrum.conf
 User=fulcrum
 LimitNOFILE=8192
 TimeoutStopSec=30min
