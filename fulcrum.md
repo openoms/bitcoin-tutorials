@@ -96,9 +96,15 @@ bitcoind_timeout = 300
 # reduce load
 bitcoind_clients = 1
 worker_threads = 2
-db_max_open_files=500
 db_mem=1024
-fast-sync = 2048
+
+# settings tested with 4GB RAM + ZRAM
+db_max_open_files=200
+fast-sync = 1024
+
+# settings testetd with 8GB RAM + ZRAM
+#db_max_open_files=500
+#fast-sync = 2048
 
 # server connections
 # disable peer discovery and public server options
@@ -111,6 +117,7 @@ tcp = 0.0.0.0:50021
 " | sudo -u fulcrum tee /home/fulcrum/.fulcrum/fulcrum.conf
 ```
 * the ports 50021 and 50022 are used to not interfere with a possible Electrs or ElectrumX instance
+* note the different settings for 4 and 8 GB RAM
 * edit afterwards with `sudo nano /home/fulcrum/.fulcrum/fulcrum.conf`
 
 ## Create a systemd service  
