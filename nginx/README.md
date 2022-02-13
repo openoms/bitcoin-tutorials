@@ -4,7 +4,7 @@
 In this example configuration a redirect is added to the mempool instance on the LAN:
 To download, check and run:
 ```
-wget https://github.com/openoms/bitcoin-tutorials/raw/master/nginx/custom_website_subdomain.sh 
+wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/nginx/custom_website_subdomain.sh
 
 cat custom_website_subdomain.sh
 
