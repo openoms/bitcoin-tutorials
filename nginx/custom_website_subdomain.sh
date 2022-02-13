@@ -1,13 +1,18 @@
-echo "Input your email:
+#!/bin/bash
+
+echo "
+Input your email:
 "
 read EMAIL
 
-echo "Input a subdomain set up with an A record pointing to this server:
+echo "
+Input a subdomain set up with an A record pointing to this server:
 eg.: mempool.example.com
 "
 read SUBDOMAIN
 
-echo "Input the URL to be redirected to:
+echo "
+Input the URL to be redirected to:
 eg.: https://192.168.1.42:4081
 "
 read REDIRECT
@@ -21,11 +26,10 @@ sudo certbot certonly -a standalone -m $EMAIL --agree-tos \
 #sudo cat /etc/letsencrypt/live/$SUBDOMAIN/privkey.pem 
 
 # Add to /etc/nginx/sites-available/btcpayserver
-echo "
+echo "\
 server {
   listen 443 ssl;
   server_name $SUBDOMAIN;
-  ssl on;
 
   ssl_certificate /etc/letsencrypt/live/$SUBDOMAIN/fullchain.pem;
   ssl_certificate_key /etc/letsencrypt/live/$SUBDOMAIN/privkey.pem;
@@ -42,14 +46,13 @@ server {
   location / {
           proxy_pass      $REDIRECT;
   }
-
 }" | sudo tee /etc/nginx/sites-available/$SUBDOMAIN
 
-
-sudo nano /etc/nginx/sites-available/$SUBDOMAIN
+# edit with
+# sudo nano /etc/nginx/sites-available/$SUBDOMAIN
 
 sudo ln -s /etc/nginx/sites-available/$SUBDOMAIN /etc/nginx/sites-enabled/
 
 sudo nginx -t || exit 1
 
-sudo systemctl restart nginx
+sudo systemctl reload nginx

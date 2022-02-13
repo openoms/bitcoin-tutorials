@@ -1,13 +1,18 @@
-echo "Input your email:
+#!/bin/bash
+
+echo "
+Input your email:
 "
 read EMAIL
 
-echo "Input a subdomain set up with an A record pointing to this server:
+echo "
+Input a subdomain set up with an A record pointing to this server:
 eg.: electrum.example.com
 "
 read SUBDOMAIN
 
-echo "Input the TCP port of the Electrum Server to be redirected to:
+echo "
+Input the TCP port of the Electrum Server to be redirected to:
 eg.: https://192.168.1.42:50021
 "
 read REDIRECT
@@ -73,4 +78,4 @@ stream {
 sudo nginx -t || exit 1
 
 # restart
-sudo systemctl restart nginx
+sudo systemctl reload nginx
