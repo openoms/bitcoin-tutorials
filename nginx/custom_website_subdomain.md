@@ -1,16 +1,15 @@
-# Add a custom subdomain
-
-In this example configuration I add a redirect to mempool on the LAN.
-
-
-```
-echo "Input your email:"
+echo "Input your email:
+"
 read EMAIL
 
-echo "Input a subdomain set up with an A record pointing to this server (eg: mempool.example.com)"
+echo "Input a subdomain set up with an A record pointing to this server:
+eg.: mempool.example.com
+"
 read SUBDOMAIN
 
-echo "Input the URL to be redirected to (eg. https://192.168.1.42:4081)"
+echo "Input the URL to be redirected to:
+eg.: https://192.168.1.42:4081
+"
 read REDIRECT
 
 sudo certbot certonly -a standalone -m $EMAIL --agree-tos \
@@ -50,5 +49,7 @@ server {
 sudo nano /etc/nginx/sites-available/$SUBDOMAIN
 
 sudo ln -s /etc/nginx/sites-available/$SUBDOMAIN /etc/nginx/sites-enabled/
-sudo nginx -t
-sudo systemctl reload nginx
+
+sudo nginx -t || exit 1
+
+sudo systemctl restart nginx
