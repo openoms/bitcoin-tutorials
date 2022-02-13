@@ -8,6 +8,13 @@ Tested environments:
 
 Issue: <https://github.com/rootzoll/raspiblitz/issues/2924>
 
+## FAQ
+* Do I need to stop Electrs?
+
+  Don't really need to, Electrs (and also Fulcrum) are very light once synched.
+  Chugging through the 450GB transaction history poses the challenge for the RPi.
+  Best is to stop all services you don't use, but testing is valuable in any circumstance.
+  
 ## Prepare bitcoind
 * To avoid errors like
 ```
@@ -157,11 +164,134 @@ sudo journalctl -fu fulcrum
 sudo systemctl status fulcrum
 ```
 
+## Open the firewall
+```
+sudo ufw allow 50021 comment 'Fulcrum TCP'
+sudo ufw allow 50022 comment 'Fulcrum SSL'
+```    
+
+## Set up SSL
+* paste this code as a block to make Fulcrum available on the port 50022 with SSL ncryption through Nginx
+```
+cd /home/fulcrum/.fulcrum
+
+# Create a self signed SSL certificate
+sudo -u fulcrum openssl genrsa -out selfsigned.key 2048
+
+echo "\
+[req]
+prompt             = no
+default_bits       = 2048
+default_keyfile    = selfsigned.key
+distinguished_name = req_distinguished_name
+req_extensions     = req_ext
+x509_extensions    = v3_ca
+
+[req_distinguished_name]
+C = US
+ST = Texas
+L = Fulcrum
+O = RaspiBlitz
+CN = RaspiBlitz
+
+[req_ext]
+subjectAltName = @alt_names
+
+[v3_ca]
+subjectAltName = @alt_names
+
+[alt_names]
+DNS.1   = localhost
+DNS.2   = 127.0.0.1
+" | sudo -u fulcrum tee localhost.conf
+
+sudo -u fulcrum openssl req -new -x509 -sha256 -key selfsigned.key \
+    -out selfsigned.cert -days 3650 -config localhost.conf
+
+
+# Setting up the nginx.conf
+    isConfigured=$(sudo cat /etc/nginx/nginx.conf 2>/dev/null | grep -c 'upstream fulcrum')
+    if [ ${isConfigured} -gt 0 ]; then
+            echo "fulcrum is already configured with Nginx. To edit manually run \`sudo nano /etc/nginx/nginx.conf\`"
+
+    elif [ ${isConfigured} -eq 0 ]; then
+
+            isStream=$(sudo cat /etc/nginx/nginx.conf 2>/dev/null | grep -c 'stream {')
+            if [ ${isStream} -eq 0 ]; then
+
+            echo "
+stream {
+        upstream fulcrum {
+                server 127.0.0.1:50021;
+        }
+        server {
+                listen 50022 ssl;
+                proxy_pass fulcrum;
+                ssl_certificate /home/fulcrum/.fulcrum/selfsigned.cert;
+                ssl_certificate_key /home/fulcrum/.fulcrum/selfsigned.key;
+                ssl_session_cache shared:SSL-fulcrum:1m;
+                ssl_session_timeout 4h;
+                ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;
+                ssl_prefer_server_ciphers on;
+        }
+}" | sudo tee -a /etc/nginx/nginx.conf
+
+            elif [ ${isStream} -eq 1 ]; then
+                    sudo truncate -s-2 /etc/nginx/nginx.conf
+                    echo "
+        upstream fulcrum {
+                server 127.0.0.1:50021;
+        }
+        server {
+                listen 50022 ssl;
+                proxy_pass fulcrum;
+                ssl_certificate /home/fulcrum/.fulcrum/selfsigned.cert;
+                ssl_certificate_key /home/fulcrum/.fulcrum/selfsigned.key;
+                ssl_session_cache shared:SSL-fulcrum:1m;
+                ssl_session_timeout 4h;
+                ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;
+                ssl_prefer_server_ciphers on;
+        }
+}" | sudo tee -a /etc/nginx/nginx.conf
+
+            elif [ ${isStream} -gt 1 ]; then
+                    echo " Too many \`stream\` commands in nginx.conf. Please edit manually: \`sudo nano /etc/nginx/nginx.conf\` and retry"
+                    exit 1
+            fi
+    fi
+
+# test nginx
+sudo nginx -t
+
+# restart
+sudo systemctl restart nginx
+```
+
+## Create a Tor .onion service
+* on RaspiBlitz v1.7.2 run:
+  ```
+  /home/admin/config.scripts/tor.onion-service.sh fulcrum 50021 50021 50022 50022
+  ```
+* previous versions:
+  ```
+  /home/admin/config.scripts/network.hiddenservice.sh fulcrum 50021 50021 50022 50022
+  ```
+* to set up manually see the guide [here](tor_hidden_service_example.md)
+  
+  
 ## Remove the fulcrum user and installation (not the database)
 ```
 sudo systemctl disable fulcrum
 sudo systemctl stop fulcrum
 sudo userdel -rf fulcrum
+
+# remove Tor service
+/home/admin/config.scripts/tor.onion-service.sh off electrs
+
+# close ports on firewall
+sudo ufw deny 50021
+sudo ufw deny 50022
+
 # to remove the database directory:
 # sudo rm -rf /mnt/hdd/app-storage/fulcrum
 ```
