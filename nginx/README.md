@@ -1,3 +1,4 @@
+# Nginx scripts
 
 ## Add a custom subdomain
 
@@ -9,6 +10,18 @@ wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/nginx/cu
 cat custom_website_subdomain.sh
 
 bash custom_website_subdomain.sh
+```
+
+## Add subdomain for an Electrum Server
+
+In this example configuration a redirect and SSL encryption added to a Fulcrum instance.
+To download, check and run:
+```
+wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/nginx/electrum_server_subdomain.sh
+
+cat electrum_server_subdomain.sh
+
+bash electrum_server_subdomain.sh
 ```
 
 ## Set up SSL access for the Ride The Lightning web UI on the RaspiBlitz
