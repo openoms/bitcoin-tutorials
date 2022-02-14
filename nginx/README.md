@@ -5,7 +5,7 @@
 In this example configuration a redirect is added to the mempool instance on the LAN:
 To download, check and run:
 ```
-wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/nginx/custom_website_subdomain.sh
+wget -O custom_website_subdomain.sh https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/nginx/custom_website_subdomain.sh
 
 cat custom_website_subdomain.sh
 
@@ -17,7 +17,8 @@ bash custom_website_subdomain.sh
 In this example configuration a redirect and SSL encryption added to a Fulcrum instance.
 To download, check and run:
 ```
-wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/nginx/electrum_server_subdomain.sh
+wget -O electrum_server_subdomain.sh
+https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/nginx/electrum_server_subdomain.sh
 
 cat electrum_server_subdomain.sh
 
@@ -30,7 +31,7 @@ Have a look through the script here: [bonus.SSL_for_RTL.sh](bonus.SSL_for_RTL.sh
 
 To download, check and run:
 ```
-wget https://github.com/openoms/bitcoin-tutorials/raw/master/nginx/bonus.SSL_for_RTL.sh 
+wget -O bonus.SSL_for_RTL.sh https://github.com/openoms/bitcoin-tutorials/raw/master/nginx/bonus.SSL_for_RTL.sh 
 
 cat bonus.SSL_for_RTL.sh
 
