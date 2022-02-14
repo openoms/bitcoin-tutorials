@@ -21,11 +21,11 @@ sudo certbot certonly -a standalone -m $EMAIL --agree-tos \
 -d $SUBDOMAIN --expand -n --pre-hook "service nginx stop" \
 --post-hook "service nginx start" || exit 1
 
-# copy in place if needed
+# copy in place on a remote machine if needed
 #sudo cat /etc/letsencrypt/live/$SUBDOMAIN/fullchain.pem 
 #sudo cat /etc/letsencrypt/live/$SUBDOMAIN/privkey.pem 
 
-# Add to /etc/nginx/sites-available/btcpayserver
+# add to /etc/nginx/sites-available/
 echo "\
 server {
   listen 443 ssl;
@@ -45,12 +45,20 @@ server {
 
   location / {
           proxy_pass      $REDIRECT;
+
+  # from https://github.com/rootzoll/raspiblitz/blob/v1.7/home.admin/assets/nginx/snippets/ssl-proxy-params.conf
+  proxy_redirect off;
+  proxy_set_header Host $http_host;
+  proxy_set_header X-Real-IP $remote_addr;
+  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+  proxy_set_header X-Forwarded-Proto https;
   }
 }" | sudo tee /etc/nginx/sites-available/$SUBDOMAIN
 
 # edit with
 # sudo nano /etc/nginx/sites-available/$SUBDOMAIN
 
+# add to /etc/nginx/sites-enabled/
 sudo ln -s /etc/nginx/sites-available/$SUBDOMAIN /etc/nginx/sites-enabled/
 
 sudo nginx -t || exit 1
