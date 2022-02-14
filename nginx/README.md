@@ -2,7 +2,7 @@
 
 ## Add a custom subdomain
 
-In this example configuration a redirect is added to the mempool instance on the LAN:
+In this example configuration a redirect is added to a custom service on the LAN (or VPN):
 To download, check and run:
 ```
 wget -O custom_website_subdomain.sh https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/nginx/custom_website_subdomain.sh
@@ -10,6 +10,18 @@ wget -O custom_website_subdomain.sh https://raw.githubusercontent.com/openoms/bi
 cat custom_website_subdomain.sh
 
 bash custom_website_subdomain.sh
+```
+
+## Add a subdomain for a Mempool instance
+
+In this example configuration a redirect is added to a Mempool instance on the LAN (or VPN):
+To download, check and run:
+```
+wget -O mempool_subdomain.sh https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/nginx/mempool_subdomain.sh
+
+cat mempool_subdomain.sh
+
+bash mempool_subdomain.sh
 ```
 
 ## Add subdomain for an Electrum Server
