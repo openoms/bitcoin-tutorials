@@ -285,7 +285,7 @@ sudo systemctl restart nginx
   ```
   /home/admin/config.scripts/network.hiddenservice.sh fulcrum 50021 50021 50022 50022
   ```
-* To set up manually see the guide [here](tor_hidden_service_example.md)
+* To set up manually see the guide [here](tor_hidden_service_example.md).
   
   
 ## Remove the Fulcrum user and installation (not the database)
