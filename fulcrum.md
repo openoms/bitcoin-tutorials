@@ -118,7 +118,7 @@ db_mem=1024
 db_max_open_files=500
 fast-sync = 512
 
-# Settings testetd with 8GB RAM + ZRAM
+# Settings tested with 8GB RAM + ZRAM
 #db_max_open_files=500
 #fast-sync = 2048
 
