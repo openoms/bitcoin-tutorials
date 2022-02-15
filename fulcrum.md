@@ -8,23 +8,38 @@ Tested environments:
 
   * Raspberry Pi4 4GB 64bit RaspberryOS with SSD and 10GB ZRAM  
     First sync took 3 days.
-  	
-  * See Pi-specific settings under heading "Create a config file".
-  
-Issue: <https://github.com/rootzoll/raspiblitz/issues/2924>
 
-## FAQ
+  * See RPi-specific settings under heading "Create a config file".
+
+### FAQ
 * Do I need to stop Electrs?
 
   Don't really need to, Electrs (and also Fulcrum) are very light once synched.
   Chugging through the 450GB transaction history poses the challenge for the RPi.
   Best is to stop all services you don't use, but testing is valuable in any circumstance.
-  
-## Prepare bitcoind
+
+## Automated setup
+* Issue: <https://github.com/rootzoll/raspiblitz/issues/2924>
+* PR: https://github.com/rootzoll/raspiblitz/pull/2966
+* Test the install script:
+```
+# download
+wget -O bonus.fulcrum.sh https://raw.githubusercontent.com/openoms/raspiblitz/fulcrum/home.admin/config.scripts/bonus.fulcrum.sh
+
+# check
+cat bonus.fulcrum.sh
+
+# run with debug
+bash -x bonus.fulcrum.sh
+```
+
+## Manual setup
+
+### Prepare bitcoind
 * To avoid errors like
 ```
 503 (content): Work queue depth exceeded
-``` 
+```
 set in the `/mnt/hdd/bitcoin/bitcoin.conf`:
 ```
 txindex=1
@@ -38,12 +53,13 @@ zmqpubhashblock=tcp://0.0.0.0:8433
 ```
 sudo systemctl bitcoind restart
 ```
-* If the txindex was not built before WAIT until it finishes (monitor the bitcoin `debug.log`).
+* If the txindex was not built before WAIT until it finishes (takes ~7 hours).  
+  Monitor the bitcoin `debug.log`).
 ```
 sudo tail -n 100 -f /mnt/hdd/bitcoin/debug.log | grep txindex
 ```
 
-## Prepare the system and directories
+### Prepare the system and directories
 
 ```
 # Create a dedicated user
@@ -92,7 +108,7 @@ sudo chown -R fulcrum:fulcrum /home/fulcrum/.fulcrum
 
 ```
 
-## Create a config file  
+### Create a config file
 * <https://github.com/cculianu/Fulcrum/blob/master/doc/fulcrum-example-config.conf>
 * Can paste the this as a block to create the config file, but fill in the PASSWORD_B (Bitcoin Core RPC password):
 ```
@@ -136,7 +152,7 @@ tcp = 0.0.0.0:50021
 * Note the different settings for 4 and 8 GB RAM
 * Edit afterwards with `sudo nano /home/fulcrum/.fulcrum/fulcrum.conf`
 
-## Create a systemd service  
+### Create a systemd service
 * Can paste this as a block to create the fulcrum.service file:
 ```
 echo "\
@@ -156,30 +172,30 @@ WantedBy=multi-user.target
 " | sudo tee /etc/systemd/system/fulcrum.service
 ```
 
-## Start
-* Depending on the available RAM it is a good idea to keep at least 10GB swap:  
+### Start
+* Depending on the available RAM it is a good idea to keep at least 10GB swap:
   <https://www.digitalocean.com/community/tutorials/how-to-add-swap-space-on-debian-10>
-  can consider ZRAM: 
-  <https://haydenjames.io/raspberry-pi-performance-add-zram-kernel-parameters/>
+  can consider ZRAM:  
+  <https://haydenjames.io/raspberry-pi-performance-add-zram-kernel-parameters/>  
   <https://github.com/rootzoll/raspiblitz/issues/2905>
 ```
 sudo systemctl enable fulcrum
 sudo systemctl start fulcrum
 ```
 
-## Monitor
+### Monitor
 ```
 sudo journalctl -fu fulcrum
 sudo systemctl status fulcrum
 ```
 
-## Open the firewall
+### Open the firewall
 ```
 sudo ufw allow 50021 comment 'Fulcrum TCP'
 sudo ufw allow 50022 comment 'Fulcrum SSL'
-```    
+```
 
-## Set up SSL
+### Set up SSL
 * Paste this code as a block to make Fulcrum available on the port 50022 with SSL ncryption through Nginx
 ```
 cd /home/fulcrum/.fulcrum
@@ -276,7 +292,7 @@ sudo nginx -t
 sudo systemctl restart nginx
 ```
 
-## Create a Tor .onion service
+### Create a Tor .onion service
 * On RaspiBlitz v1.7.2 run:
   ```
   /home/admin/config.scripts/tor.onion-service.sh fulcrum 50021 50021 50022 50022
@@ -286,9 +302,8 @@ sudo systemctl restart nginx
   /home/admin/config.scripts/network.hiddenservice.sh fulcrum 50021 50021 50022 50022
   ```
 * To set up manually see the guide [here](tor_hidden_service_example.md).
-  
-  
-## Remove the Fulcrum user and installation (not the database)
+
+### Remove the Fulcrum user and installation (not the database)
 ```
 sudo systemctl disable fulcrum
 sudo systemctl stop fulcrum
