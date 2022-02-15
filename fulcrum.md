@@ -21,7 +21,7 @@ Tested environments:
 ## Automated setup
 * Issue: <https://github.com/rootzoll/raspiblitz/issues/2924>
 * PR: https://github.com/rootzoll/raspiblitz/pull/2966
-* Test the install script:
+* Test the install script <https://github.com/openoms/raspiblitz/blob/fulcrum/home.admin/config.scripts/bonus.fulcrum.sh> :
 ```
 # download
 wget -O bonus.fulcrum.sh https://raw.githubusercontent.com/openoms/raspiblitz/fulcrum/home.admin/config.scripts/bonus.fulcrum.sh
