@@ -7,7 +7,7 @@ Tested environments:
    	First sync took 48h. Can expect 2 - 2.5 days.
 
   * Raspberry Pi4 4GB 64bit RaspberryOS with SSD and 10GB ZRAM
-  	 First sync took 3 days.
+    First sync took 3 days.
   	
   * See Pi-specific settings under heading "Create a config file".
   
