@@ -1,11 +1,16 @@
 # Fulcrum on a RaspiBlitz
 
-This is a rough overview, the guide is work in progress.
+This is a rough overview, the guide is a work in progress.
 
 Tested environments:
   * Raspberry Pi4 8GB 64bit RaspberryOS with SSD and ZRAM  
-   The first sync took 48h. Can expect 2 - 2.5 days with the settings below.
+   	First sync took 48h. Can expect 2 - 2.5 days.
 
+  * Raspberry Pi4 4GB 64bit RaspberryOS with SSD and 10GB ZRAM
+  	First sync took 3 days.
+  	
+  * See Pi-specific settings under heading "Create a config file".
+  
 Issue: <https://github.com/rootzoll/raspiblitz/issues/2924>
 
 ## FAQ
@@ -29,56 +34,59 @@ rpcthreads=128
 zmqpubhashblock=tcp://0.0.0.0:8433
 ```
 
-* restart bitcoind
+* Restart bitcoind
 ```
 sudo systemctl bitcoind restart
 ```
-* if the txindex was not built before wait until finishes (monitor the bitcoin `debug.log`).
+* If the txindex was not built before WAIT until it finishes (monitor the bitcoin `debug.log`).
+```
+sudo tail -n 100 -f /mnt/hdd/bitcoin/debug.log | grep txindex
+```
 
 ## Prepare the system and directories
 
 ```
-# create a dedicated user
+# Create a dedicated user
 sudo adduser --disabled-password --gecos "" fulcrum
 cd /home/fulcrum
 
 # sudo -u fulcrum git clone https://github.com/cculianu/Fulcrum
 # cd fulcrum
 
-# dependencies
+# Install dependencies
 # sudo apt install -y libzmq3-dev
 sudo apt install -y libssl-dev # was needed on Debian Bullseye
 
-# set the platform
+# Set the platform
 if [ $(uname -m) = "aarch64" ]; then
   build="arm64-linux"
 elif [ $(uname -m) = "x86_64" ]; then
   build="x86_64-linux-ub16"
 fi
 
-# download the prebuilt binary
+# Download the prebuilt binary
 sudo -u fulcrum wget https://github.com/cculianu/Fulcrum/releases/download/v1.6.0/Fulcrum-1.6.0-${build}.tar.gz
 sudo -u fulcrum  wget https://github.com/cculianu/Fulcrum/releases/download/v1.6.0/Fulcrum-1.6.0-${build}.tar.gz.asc
 sudo -u fulcrum  wget https://github.com/cculianu/Fulcrum/releases/download/v1.6.0/Fulcrum-1.6.0-${build}.tar.gz.sha256sum
 
 # Verify
-# get the PGP key
+# Get the PGP key
 curl https://raw.githubusercontent.com/Electron-Cash/keys-n-hashes/master/pubkeys/calinkey.txt | sudo -u fulcrum gpg --import
 
-# look for 'Good signature'
+# Look for 'Good signature'
 sudo -u fulcrum  gpg --verify Fulcrum-1.6.0-${build}.tar.gz.asc
 
-# look for 'OK'
+# Look for 'OK'
 sudo -u fulcrum sha256sum -c Fulcrum-1.6.0-${build}.tar.gz.sha256sum
 
-# decompress
+# Decompress
 sudo -u fulcrum tar -xvf Fulcrum-1.6.0-${build}.tar.gz
 
-# create the database directory in /mnt/hdd/app-storage (on the disk)
+# Create the database directory in /mnt/hdd/app-storage (on the disk)
 sudo mkdir -p /mnt/hdd/app-storage/fulcrum/db
 sudo chown -R fulcrum:fulcrum /mnt/hdd/app-storage/fulcrum
 
-# create a symlink to /home/fulcrum/.fulcrum
+# Create a symlink to /home/fulcrum/.fulcrum
 sudo ln -s /mnt/hdd/app-storage/fulcrum /home/fulcrum/.fulcrum
 sudo chown -R fulcrum:fulcrum /home/fulcrum/.fulcrum
 
@@ -98,23 +106,24 @@ rpcuser = raspibolt
 rpcpassword = ${PASSWORD_B}
 
 # RPi optimizations
-# avoid 'bitcoind request timed out'
+# Avoid 'bitcoind request timed out'
 bitcoind_timeout = 300
-# reduce load
+
+# Reduce load
 bitcoind_clients = 1
 worker_threads = 2
 db_mem=1024
 
-# settings tested with 4GB RAM + ZRAM
-db_max_open_files=200
-fast-sync = 1024
+# Settings tested with 4GB RAM + ZRAM
+db_max_open_files=500
+fast-sync = 512
 
-# settings testetd with 8GB RAM + ZRAM
+# Settings testetd with 8GB RAM + ZRAM
 #db_max_open_files=500
 #fast-sync = 2048
 
-# server connections
-# disable peer discovery and public server options
+# Server connections
+# Disable peer discovery and public server options
 peering = false
 announce = false
 tcp = 0.0.0.0:50021
@@ -123,9 +132,9 @@ tcp = 0.0.0.0:50021
 #ssl = 0.0.0.0:50022
 " | sudo -u fulcrum tee /home/fulcrum/.fulcrum/fulcrum.conf
 ```
-* the ports 50021 and 50022 are used to not interfere with a possible Electrs or ElectrumX instance
-* note the different settings for 4 and 8 GB RAM
-* edit afterwards with `sudo nano /home/fulcrum/.fulcrum/fulcrum.conf`
+* The ports 50021 and 50022 are used to not interfere with a possible Electrs or ElectrumX instance.
+* Note the different settings for 4 and 8 GB RAM
+* Edit afterwards with `sudo nano /home/fulcrum/.fulcrum/fulcrum.conf`
 
 ## Create a systemd service  
 * Can paste this as a block to create the fulcrum.service file:
@@ -148,7 +157,7 @@ WantedBy=multi-user.target
 ```
 
 ## Start
-* depending on the available RAM it is a good idea to keep at least 10GB swap:  
+* Depending on the available RAM it is a good idea to keep at least 10GB swap:  
   <https://www.digitalocean.com/community/tutorials/how-to-add-swap-space-on-debian-10>
   can consider ZRAM: 
   <https://haydenjames.io/raspberry-pi-performance-add-zram-kernel-parameters/>
@@ -260,39 +269,39 @@ stream {
             fi
     fi
 
-# test nginx
+# Test nginx
 sudo nginx -t
 
-# restart
+# Restart nginx
 sudo systemctl restart nginx
 ```
 
 ## Create a Tor .onion service
-* on RaspiBlitz v1.7.2 run:
+* On RaspiBlitz v1.7.2 run:
   ```
   /home/admin/config.scripts/tor.onion-service.sh fulcrum 50021 50021 50022 50022
   ```
-* previous versions:
+* Previous versions:
   ```
   /home/admin/config.scripts/network.hiddenservice.sh fulcrum 50021 50021 50022 50022
   ```
-* to set up manually see the guide [here](tor_hidden_service_example.md)
+* To set up manually see the guide [here](tor_hidden_service_example.md)
   
   
-## Remove the fulcrum user and installation (not the database)
+## Remove the Fulcrum user and installation (not the database)
 ```
 sudo systemctl disable fulcrum
 sudo systemctl stop fulcrum
 sudo userdel -rf fulcrum
 
-# remove Tor service
+# Remove Tor service
 /home/admin/config.scripts/tor.onion-service.sh off electrs
 
-# close ports on firewall
+# Close ports on firewall
 sudo ufw deny 50021
 sudo ufw deny 50022
 
-# to remove the database directory:
+# To remove the database directory
 # sudo rm -rf /mnt/hdd/app-storage/fulcrum
 ```
 
