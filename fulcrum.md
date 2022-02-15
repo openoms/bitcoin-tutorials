@@ -6,8 +6,8 @@ Tested environments:
   * Raspberry Pi4 8GB 64bit RaspberryOS with SSD and ZRAM  
    	First sync took 48h. Can expect 2 - 2.5 days.
 
-  * Raspberry Pi4 4GB 64bit RaspberryOS with SSD and 10GB ZRAM
-     First sync took 3 days.
+  * Raspberry Pi4 4GB 64bit RaspberryOS with SSD and 10GB ZRAM  
+    First sync took 3 days.
   	
   * See Pi-specific settings under heading "Create a config file".
   
@@ -180,7 +180,7 @@ sudo ufw allow 50022 comment 'Fulcrum SSL'
 ```    
 
 ## Set up SSL
-* paste this code as a block to make Fulcrum available on the port 50022 with SSL ncryption through Nginx
+* Paste this code as a block to make Fulcrum available on the port 50022 with SSL ncryption through Nginx
 ```
 cd /home/fulcrum/.fulcrum
 
