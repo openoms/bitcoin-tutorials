@@ -118,34 +118,31 @@ PASSWORD_B="your-password-here"
 echo "\
 datadir = /home/fulcrum/.fulcrum/db
 bitcoind = 127.0.0.1:8332
-rpcuser = raspibolt
+rpcuser = ${RPC_USER}
 rpcpassword = ${PASSWORD_B}
 
 # RPi optimizations
-# Avoid 'bitcoind request timed out'
+# avoid 'bitcoind request timed out'
 bitcoind_timeout = 300
-
-# Reduce load
+# reduce load (4 cores only)
 bitcoind_clients = 1
-worker_threads = 2
+worker_threads = 1
 db_mem=1024
 
-# Settings tested with 4GB RAM + ZRAM
-db_max_open_files=500
-fast-sync = 512
+# for 4GB RAM
+db_max_open_files=200
+fast-sync = 1024
 
-# Settings tested with 8GB RAM + ZRAM
+# for 8GB RAM
 #db_max_open_files=500
 #fast-sync = 2048
 
-# Server connections
-# Disable peer discovery and public server options
+# server connections
+# disable peer discovery and public server options
 peering = false
 announce = false
 tcp = 0.0.0.0:50021
-#cert = /path/to/server-cert.pem
-#key = /path/to/server-key.pem
-#ssl = 0.0.0.0:50022
+# ssl via nginx
 " | sudo -u fulcrum tee /home/fulcrum/.fulcrum/fulcrum.conf
 ```
 * The ports 50021 and 50022 are used to not interfere with a possible Electrs or ElectrumX instance.
