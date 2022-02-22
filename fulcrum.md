@@ -30,7 +30,11 @@ wget -O bonus.fulcrum.sh https://raw.githubusercontent.com/openoms/raspiblitz/fu
 cat bonus.fulcrum.sh
 
 # run with debug
-bash -x bonus.fulcrum.sh
+bash -x bonus.fulcrum.sh on
+```
+* if running RaspiBlitz v1.7.2 the script is part of the image:
+```
+config.scripts/bonus.fulcrum.sh on
 ```
 
 ## Manual setup
