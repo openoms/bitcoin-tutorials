@@ -16,11 +16,11 @@ Guidance to get started with sending bitcoin through the JoinMarket wallet follo
 ### Status labels
 * applied automatically by JoinMarket via a simple transaction analyses
 
-#### `deposit`: output of a simple transaction to new address
-#### `cj-out`: one of the equal amount outputs
-#### `change-out`: one of the unique amount outputs from a cj
-#### `non-cj-change`: output of a transaction without equal amounts
-#### `reused`: a utxo on an address which has been used previously
+  #### `deposit`: output of a simple transaction to new address
+  #### `cj-out`: one of the equal amount outputs
+  #### `change-out`: one of the unique amount outputs from a cj
+  #### `non-cj-change`: output of a transaction without equal amounts
+  #### `reused`: a utxo on an address which has been used previously
 
 ### Orderbook
 * Any platform collecting the public orders of the peers
@@ -83,18 +83,22 @@ Discussed in:
 * the `change-out` stays behind in the same acount where the funding utxo was
 
 ### Leaving the JoinMarket wallet
-
-* the more coinjoins the coins were through the better
+#### When
+* the more coinjoins the funds were through the better
 * consider that the privacy benefit from coinjoins breaks down with time as the peers are gradually exposed or clustered
 * if deposited only to m0 and followed the steps above all coins in m4 must have been through at least 5 coinjoins
 * in a long running, active Maker wallet some funds could have made multiple circles - there is no indication of this by default
+#### How
+##### Do
 * can only send (merge coins) from one account at a time
-* leave to multiple separate destinations (separate wallets with different purposes - not to be merged later)
-* avoid sending out the whole amount which entered the wallet a few transactions ago all at once
+* send to multiple separate destinations (separate wallets with different purposes - not to be merged later)
+* sweep whole accounts or coins and don't leave change behind
+* fund lightning nodes or send to cold storage via coinjoin(s)
 * pay with Payjoin to BIP78 compatible wallets to obfuscate the amount sent <https://en.bitcoin.it/wiki/PayJoin_adoption>
-* fund lightning nodes or send to cold storage with a coinjoin
-  * best is to sweep whole accounts or coins and not leave change behind
-  * don't merge a change from a previous transactions when sending to a new destinations
+
+##### Don't
+* avoid sending out the whole amount which entered the wallet a few transactions ago all at once
+* don't merge a change from a previous transaction when sending to a new destination
 
 ## More Reading
 * https://github.com/JoinMarket-Org/joinmarket-clientserver/tree/master/docs
