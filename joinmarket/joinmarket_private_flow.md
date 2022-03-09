@@ -9,9 +9,9 @@ Guidance to get started with sending bitcoin through the JoinMarket wallet follo
 * all are derived from the same BIP32 compatible HD seed
 
 ### Sweep
-* sending one or multiple utxos without creating change.
-* can be achieved by sending all utxos from a mixdepth or freezing any which should be sent.
-* the amount is not fixed and fees come of the sum of the inputs.
+* it means sending one or multiple utxos without creating change
+* it is achieved by sending all utxos (except the ones frozen) from an account
+* the amount is not fixed and fees come off the sum of the inputs
 
 ### Status labels
 * applied automatically by JoinMarket via a simple transaction analyses
