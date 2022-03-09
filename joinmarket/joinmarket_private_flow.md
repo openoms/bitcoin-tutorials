@@ -80,12 +80,12 @@ Discussed in:
 * as a Maker the coins will circle through the accounts automatically:  
 ... m0 -> m1 -> m2 -> m3 -> m4 -> m0 -> m1 -> m2 -> m3 -> m4 ...
 * only the `cj-out`  propagates to the next account
-* the `change-out` stays behind in the same acount where the funding utxo was
+* the `change-out` stays behind in the same account where the funding utxo was
 
 ### Leaving the JoinMarket wallet
 #### When
 * the more coinjoins the funds were through the better
-* consider that the privacy benefit from coinjoins breaks down with time as the peers are gradually exposed or clustered
+* consider that the privacy benefit from coinjoins is breaking down with time as the peers are gradually exposed or clustered
 * if deposited only to m0 and followed the steps above all coins in m4 must have been through at least 5 coinjoins
 * in a long running, active Maker wallet some funds could have made multiple circles - there is no indication of this by default
 #### How
