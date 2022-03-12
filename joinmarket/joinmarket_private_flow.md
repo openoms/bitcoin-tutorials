@@ -1,17 +1,18 @@
 # A private flow through JoinMarket
 
-Guidance to get started with sending bitcoin through the JoinMarket wallet following basic good practices.
+Bitcoin privacy starts on the base layer where cooperative transactions with equal amount outputs - known as coinjoins - are used.
+This document aims to provide an introduction to using JoinMarket, a decentralized, liquidity market based coinjoin implementation following basic good practices.
 
 ## Common definitions
 ### Mixdepth
-* one of the accounts in the joinmarket wallet
-* abbreviated to m0 / m1 / m2 / m3 / m4
-* all are derived from the same BIP32 compatible HD seed
+* One of the accounts in the JoinMarket wallet.
+* Abbreviated to m0 / m1 / m2 / m3 / m4
+* All are derived from the same BIP32 and BIP39 compatible HD seed.
 
 ### Sweep
-* it means sending one or multiple utxos without creating change
-* it is achieved by sending all utxos (except the ones frozen) from an account
-* the amount is not fixed and fees come off the sum of the inputs
+* It means sending one or multiple utxos without creating change.
+* It is achieved by sending all utxos (except the ones frozen) from an account.
+* The amount is not fixed and fees come off the sum of the inputs.
 
 ### Status labels
 * applied automatically by JoinMarket via a simple transaction analyses
@@ -23,18 +24,20 @@ Guidance to get started with sending bitcoin through the JoinMarket wallet follo
   #### `reused`: a utxo on an address which has been used previously
 
 ### Orderbook
-* Any platform collecting the public orders of the peers
+* Any platform collecting the public orders of the peers.
 * General docs on the order book (including how to run without Bitcoin Core): https://github.com/JoinMarket-Org/joinmarket-clientserver/blob/master/docs/orderbook.md
-* a public example: <https://nixbitcoin.org/orderbook>
+* A public example: <https://nixbitcoin.org/orderbook>
+
 ### Minimum size to coinjoin
-* the default is 100k sats (+/-10%) so that is a safe choice.
-* on the example below offers start at 6 peers offering min 27300 sats.
+* The default is 100k sats (+/-10%) so that is a safe choice.
+* On the example below offers start at 6 peers offering min 27300 sats.
+* Running the Tumbler would require to start with a higher amount as the fees can take up a significant portion.
 
 ### Maximum size to coinjoin
-* the max amount offered is limited by the wallet of each Maker
-* it is the highest amount in one single mixdepth (-0-10%)
-* multiple bitcoin amounts are offered by several (10+) peers
-* on the example below 21 peers offer 19+ BTC
+* The max amount offered is limited by the wallet of each Maker.
+* It is the highest amount in one single mixdepth (-0-10%).
+* Multiple bitcoin amounts are offered by several (10+) peers.
+* On the example below 21 peers offer 19+ BTC
 ### Screenshots taken from <https://nixbitcoin.org/orderbook> in March 2022.
 * Click the top of the line to order by it's attribute
 <p align="left">
@@ -45,16 +48,29 @@ Guidance to get started with sending bitcoin through the JoinMarket wallet follo
 
 ## The flow of funds
 
-Guidance is provided in the behaviour of the Tumbler script which could be used for the quickest result.
-Discussed in:
-* https://gist.github.com/chris-belcher/7e92810f07328fdfdef2ce444aad0968
-* https://github.com/JoinMarket-Org/joinmarket-clientserver/blob/master/docs/tumblerguide.md
-* https://joinmarket.me/blog/blog/the-445-btc-gridchain-case/
+* First need to state that [one single coinjoin doesn't improve privacy much](https://github.com/JoinMarket-Org/joinmarket-clientserver/issues/1047#issuecomment-944995635).
+* Participating in more coinjoins is essential. Find below the two main ways to achieve this.
 
+## Running the Tumbler
+* Using the Tumbler is a higher time preference option and usually is the best tool to use if the funds are needed in the near future - it can take multiple hours, up to days. 
+* Multiple coinjoins are sent through the accounts including sweeping transactions at the start and at the end.
+* Breaks up the deposited amounts and sends to at least 3 final addresses without leaving change behind.
+* For the best outcome avoid merging between the final addresses.
+* The initiator acts repeatedly as a Taker and [pays all the miner and coinjoin fees](https://github.com/JoinMarket-Org/joinmarket-clientserver/blob/master/docs/tumblerguide.md#a-note-on-fees);
+* It is implemented in the JoinMarket-QT GUI and in the command line as the `tumbler.py`.
+* For a detailed usage guide see:
+  * https://github.com/JoinMarket-Org/joinmarket-clientserver/blob/master/docs/tumblerguide.md
+* Video demonstration of the Tumbler function in QT GUI:
+  * https://www.youtube.com/watch?v=hwmvZVQ4C4M&t=827s
+* Discussed further in:
+  * https://gist.github.com/chris-belcher/7e92810f07328fdfdef2ce444aad0968
+  * https://joinmarket.me/blog/blog/the-445-btc-gridchain-case/
+
+## Sending transactions manually and running the Yield Generator
 ### Deposit
-* send to m0 - could be any of the accounts, but selected the first for simplicity
-* deposit a single or multiple coins from a single funding source at a time
-* select the newly deposited coin(s) with freeze/unfreeze if there are others in the account
+* Send to a new address in m0 - could be any of the accounts, but suggesting using the first one for simplicity.
+* Deposit a single or multiple coins from a single funding source at a time.
+* Select the newly deposited coin(s) with freeze/unfreeze if there are others in the account.
 
 ### Sweep
 * start with detaching the deposited coins from their history
@@ -62,43 +78,47 @@ Discussed in:
 * there is no change created, so there is need to separate the `cj-out` from the `change-out`
 
 ### Send or participate in multiple coinjoins
-* alternate being a Taker and a Maker for the best results
-* stretch out in time
-* the Taker acts as the coinjoin coordinator
+* Stretch out in time to avoid timing analyses.
+
+* The Taker acts as the coinjoin coordinator
     * has the most privacy benefits
     * pays the fees (miner and coinjoin fees)
 
 #### The Taker role
-* send coinjoins to the next mixdepth (acting as a Taker)
-* when sending can merge multiple coins in the coinjoin by sending custom amounts or sweeping
+* the Taker is the initiator and coordinator of the coinjoin - takes the liquidity on offer.
+* Send coinjoins to a new address in the next mixdepth.
+* In a coinjoin multiple coins can be merged by sending custom amounts or sweeping.
 
 #### The Maker role
-* activate the Yield Generator (Maker / Earn)
-* to get selected more often it is best to have a a sizeable Fidelity Bond. See:
+* The Makers are offering their coins to be used in coinjoins - market makers.
+* Being a Maker can be thought of as providing a service, but also comes with privacy benefits.
+* Activate the Yield Generator (Maker / Earn) to start.
+* To get selected more often it is best to have a a sizeable Fidelity Bond. See:
     * https://nixbitcoin.org/orderbook/fidelitybonds
     * https://github.com/JoinMarket-Org/joinmarket-clientserver/blob/master/docs/fidelity-bonds.md
-* as a Maker the coins will circle through the accounts automatically:  
+* As a Maker the coins will circle through the accounts automatically:  
 ... m0 -> m1 -> m2 -> m3 -> m4 -> m0 -> m1 -> m2 -> m3 -> m4 ...
-* only the `cj-out`  propagates to the next account
-* the `change-out` stays behind in the same account where the funding utxo was
+* Only the `cj-out`  propagates to the next account.
+* The `change-out` stays behind in the same account where the funding utxo was.
 
 ### Leaving the JoinMarket wallet
 #### When
-* the more coinjoins the funds were through the better
-* consider that the privacy benefit from coinjoins is breaking down with time as the peers are gradually exposed or clustered
-* if deposited only to m0 and followed the steps above all coins in m4 must have been through at least 5 coinjoins
-* in a long running, active Maker wallet some funds could have made multiple circles - there is no indication of this by default
+* The more coinjoins the funds were through the better.
+* Consider that the privacy benefit from coinjoins is breaking down with time as the peers are gradually exposed or clustered.
+* If deposited only to m0 and followed the steps above all coins in m4 must have been through at least 5 coinjoins.
+* In a long running, active Maker wallet some funds could have made multiple circles - there is no indication of this by default
+
 #### How
 ##### Do
-* can only send (merge coins) from one account at a time
-* send to multiple separate destinations (separate wallets with different purposes - not to be merged later)
-* sweep whole accounts or coins and don't leave change behind
-* fund lightning nodes or send to cold storage via coinjoin(s)
-* pay with Payjoin to BIP78 compatible wallets to obfuscate the amount sent <https://en.bitcoin.it/wiki/PayJoin_adoption>
+* Can only send (merge coins) from one account at a time.
+* Send to multiple separate destinations (separate wallets with different purposes - not to be merged later).
+* Sweep whole accounts or coins and don't leave change behind.
+* Fund lightning nodes or send to cold storage via coinjoin(s).
+* Pay with Payjoin to [BIP78 compatible wallets](https://en.bitcoin.it/wiki/PayJoin_adoption) to obfuscate the amount sent.
 
 ##### Don't
-* avoid sending out the whole amount which entered the wallet a few transactions ago all at once
-* don't merge a change from a previous transaction when sending to a new destination
+* Avoid sending out the whole amount which entered the wallet a few transactions ago all at once.
+* Don't merge a change from a previous transaction when sending to a new destination.
 
 ## More Reading
 * https://github.com/JoinMarket-Org/joinmarket-clientserver/tree/master/docs
