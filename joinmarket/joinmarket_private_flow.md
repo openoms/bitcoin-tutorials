@@ -52,7 +52,7 @@ This document aims to provide an introduction to using JoinMarket, a decentraliz
 * Participating in more coinjoins is essential. Find below the two main ways to achieve this.
 
 ## Running the Tumbler
-* Using the Tumbler is a higher time preference option and usually is the best tool to use if the funds are needed in the near future - it can take multiple hours, up to days. 
+* Using the Tumbler is a higher time preference option and usually is the best tool to use if the funds are needed in the near future - it can take multiple hours, up to days.
 * Multiple coinjoins are sent through the accounts including sweeping transactions at the start and at the end.
 * Breaks up the deposited amounts and sends to at least 3 final addresses without leaving change behind.
 * For the best outcome avoid merging between the final addresses.
@@ -73,9 +73,9 @@ This document aims to provide an introduction to using JoinMarket, a decentraliz
 * Select the newly deposited coin(s) with freeze/unfreeze if there are others in the account.
 
 ### Sweep
-* start with detaching the deposited coins from their history
-* can send to the same account (could be any, but keep it simple)
-* there is no change created, so there is need to separate the `cj-out` from the `change-out`
+* Start with [detaching the deposited coins from their history](https://github.com/JoinMarket-Org/joinmarket-clientserver/issues/864#issuecomment-884540079).
+* Can send to a new address in the same account (could be any, but keep it simple).
+* There is no change created, so there is need to separate the `cj-out` from the `change-out`.
 
 ### Send or participate in multiple coinjoins
 * Stretch out in time to avoid timing analyses.
