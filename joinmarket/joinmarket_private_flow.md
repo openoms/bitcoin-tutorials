@@ -1,7 +1,32 @@
+<!-- omit in toc -->
 # A private flow through JoinMarket
 
-Bitcoin privacy starts on the base layer where cooperative transactions with equal amount outputs - known as coinjoins - are used.
+Bitcoin privacy starts on the base layer where cooperative transactions with equal amount outputs - known as coinjoins - are used.  
 This document aims to provide an introduction to using JoinMarket, a decentralized, liquidity market based coinjoin implementation following basic good practices.
+
+- [Common definitions](#common-definitions)
+  - [Mixdepth](#mixdepth)
+  - [Sweep](#sweep)
+  - [Status labels](#status-labels)
+  - [Orderbook](#orderbook)
+  - [Minimum size to coinjoin](#minimum-size-to-coinjoin)
+  - [Maximum size to coinjoin](#maximum-size-to-coinjoin)
+  - [Screenshots from the orderbook](#screenshots-from-the-orderbook)
+- [The flow of funds](#the-flow-of-funds)
+- [Running the Tumbler](#running-the-tumbler)
+- [Sending transactions manually and running the Yield Generator](#sending-transactions-manually-and-running-the-yield-generator)
+  - [Deposit](#deposit)
+  - [Sweep](#sweep-1)
+  - [Send or participate in multiple coinjoins](#send-or-participate-in-multiple-coinjoins)
+    - [The Taker role](#the-taker-role)
+    - [The Maker role](#the-maker-role)
+  - [Leaving the JoinMarket wallet](#leaving-the-joinmarket-wallet)
+    - [When](#when)
+    - [How](#how)
+      - [Do](#do)
+      - [Don't](#dont)
+- [More Reading](#more-reading)
+- [Questions and discussions](#questions-and-discussions)
 
 ## Common definitions
 ### Mixdepth
@@ -38,8 +63,10 @@ This document aims to provide an introduction to using JoinMarket, a decentraliz
 * It is the highest amount in one single mixdepth (-0-10%).
 * Multiple bitcoin amounts are offered by several (10+) peers.
 * On the example below 21 peers offer 19+ BTC
-### Screenshots taken from <https://nixbitcoin.org/orderbook> in March 2022.
-* On the website click the top of a column to order by it's attribute
+
+### Screenshots from the orderbook
+* Taken in March 2022.
+* On the website click the top of a column to order by it's attribute.
 <p align="left">
   <img width="107" src="../images/joinmarket_minsize.png">
   <img width="50">
@@ -124,6 +151,6 @@ This document aims to provide an introduction to using JoinMarket, a decentraliz
 * <https://github.com/JoinMarket-Org/joinmarket-clientserver/tree/master/docs>
 * <https://en.bitcoin.it/Privacy>
 
-## Questions and discussions:
+## Questions and discussions
 * IRC through Matrix: <https://matrix.to/#/#joinmarket:libera.chat>
 * Telegram: <https://t.me/joinmarket.org>
