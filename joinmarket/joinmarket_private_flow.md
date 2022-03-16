@@ -6,7 +6,7 @@ This document aims to provide an introduction to using JoinMarket, a decentraliz
 ## Common definitions
 ### Mixdepth
 * One of the accounts in the JoinMarket wallet.
-* Abbreviated to m0 / m1 / m2 / m3 / m4
+* Abbreviated to `m0` / `m1` / `m2` / `m3` / `m4`
 * All are derived from the same BIP32 and BIP39 compatible HD seed.
 
 ### Sweep
@@ -15,17 +15,17 @@ This document aims to provide an introduction to using JoinMarket, a decentraliz
 * The amount is not fixed and fees come off the sum of the inputs.
 
 ### Status labels
-* applied automatically by JoinMarket via a simple transaction analyses
+* applied automatically by JoinMarket via a [simple script](https://github.com/JoinMarket-Org/joinmarket-clientserver/blob/a0991fad0be03f133236f635c95691e807bfeecb/jmclient/jmclient/wallet_utils.py#L457)
 
-  #### `deposit`: output of a simple transaction to new address
-  #### `cj-out`: one of the equal amount outputs
-  #### `change-out`: one of the unique amount outputs from a cj
-  #### `non-cj-change`: output of a transaction without equal amounts
-  #### `reused`: a utxo on an address which has been used previously
+  * `deposit`: output of a simple transaction to new address
+  * `cj-out`: one of the equal amount outputs
+  * `change-out`: one of the unique amount outputs from a cj
+  * `non-cj-change`: output of a transaction without equal amounts
+  * `reused`: a utxo on an address which has been used previously
 
 ### Orderbook
 * Any platform collecting the public orders of the peers.
-* General docs on the order book (including how to run without Bitcoin Core): https://github.com/JoinMarket-Org/joinmarket-clientserver/blob/master/docs/orderbook.md
+* General docs on the order book (including how to run without Bitcoin Core): <https://github.com/JoinMarket-Org/joinmarket-clientserver/blob/master/docs/orderbook.md>
 * A public example: <https://nixbitcoin.org/orderbook>
 
 ### Minimum size to coinjoin
@@ -39,11 +39,11 @@ This document aims to provide an introduction to using JoinMarket, a decentraliz
 * Multiple bitcoin amounts are offered by several (10+) peers.
 * On the example below 21 peers offer 19+ BTC
 ### Screenshots taken from <https://nixbitcoin.org/orderbook> in March 2022.
-* Click the top of the line to order by it's attribute
+* On the website click the top of a column to order by it's attribute
 <p align="left">
-  <img width="147" src="../images/joinmarket_minsize.png">
-  <img width="100">
-  <img width="150"  src="../images/joinmarket_maxsize.png">
+  <img width="107" src="../images/joinmarket_minsize.png">
+  <img width="50">
+  <img width="110"  src="../images/joinmarket_maxsize.png">
 </p>
 
 ## The flow of funds
@@ -59,12 +59,12 @@ This document aims to provide an introduction to using JoinMarket, a decentraliz
 * The initiator acts repeatedly as a Taker and [pays all the miner and coinjoin fees](https://github.com/JoinMarket-Org/joinmarket-clientserver/blob/master/docs/tumblerguide.md#a-note-on-fees);
 * It is implemented in the JoinMarket-QT GUI and in the command line as the `tumbler.py`.
 * For a detailed usage guide see:
-  * https://github.com/JoinMarket-Org/joinmarket-clientserver/blob/master/docs/tumblerguide.md
+  * <https://github.com/JoinMarket-Org/joinmarket-clientserver/blob/master/docs/tumblerguide.md>
 * Video demonstration of the Tumbler function in QT GUI:
-  * https://www.youtube.com/watch?v=hwmvZVQ4C4M&t=827s
+  * <https://www.youtube.com/watch?v=hwmvZVQ4C4M&t=827s>
 * Discussed further in:
-  * https://gist.github.com/chris-belcher/7e92810f07328fdfdef2ce444aad0968
-  * https://joinmarket.me/blog/blog/the-445-btc-gridchain-case/
+  * <https://gist.github.com/chris-belcher/7e92810f07328fdfdef2ce444aad0968>
+  * <https://joinmarket.me/blog/blog/the-445-btc-gridchain-case/>
 
 ## Sending transactions manually and running the Yield Generator
 ### Deposit
@@ -80,12 +80,10 @@ This document aims to provide an introduction to using JoinMarket, a decentraliz
 ### Send or participate in multiple coinjoins
 * Stretch out in time to avoid timing analyses.
 
-* The Taker acts as the coinjoin coordinator
-    * has the most privacy benefits
-    * pays the fees (miner and coinjoin fees)
-
 #### The Taker role
 * the Taker is the initiator and coordinator of the coinjoin - takes the liquidity on offer.
+* As the coordinator it has the most privacy benefits.
+* The Taker pays all the fees (miner and coinjoin fees).
 * Send coinjoins to a new address in the next mixdepth.
 * In a coinjoin multiple coins can be merged by sending custom amounts or sweeping.
 
@@ -94,10 +92,12 @@ This document aims to provide an introduction to using JoinMarket, a decentraliz
 * Being a Maker can be thought of as providing a service, but also comes with privacy benefits.
 * Activate the Yield Generator (Maker / Earn) to start.
 * To get selected more often it is best to have a a sizeable Fidelity Bond. See:
-    * https://nixbitcoin.org/orderbook/fidelitybonds
-    * https://github.com/JoinMarket-Org/joinmarket-clientserver/blob/master/docs/fidelity-bonds.md
-* As a Maker the coins will circle through the accounts automatically:  
-... m0 -> m1 -> m2 -> m3 -> m4 -> m0 -> m1 -> m2 -> m3 -> m4 ...
+    * <https://nixbitcoin.org/orderbook/fidelitybonds>
+    * <https://github.com/JoinMarket-Org/joinmarket-clientserver/blob/master/docs/fidelity-bonds.md>
+* As a Maker the coins will circle through the accounts automatically:
+  ```
+  ... m0 -> m1 -> m2 -> m3 -> m4 -> m0 -> m1 -> m2 -> m3 -> m4 ...
+  ```
 * Only the `cj-out`  propagates to the next account.
 * The `change-out` stays behind in the same account where the funding utxo was.
 
@@ -121,9 +121,9 @@ This document aims to provide an introduction to using JoinMarket, a decentraliz
 * Don't merge a change from a previous transaction when sending to a new destination.
 
 ## More Reading
-* https://github.com/JoinMarket-Org/joinmarket-clientserver/tree/master/docs
-* https://en.bitcoin.it/Privacy
+* <https://github.com/JoinMarket-Org/joinmarket-clientserver/tree/master/docs>
+* <https://en.bitcoin.it/Privacy>
 
 ## Questions and discussions:
-* IRC through Matrix: https://matrix.to/#/#joinmarket:libera.chat
-* Telegram: https://t.me/joinmarket.org
+* IRC through Matrix: <https://matrix.to/#/#joinmarket:libera.chat>
+* Telegram: <https://t.me/joinmarket.org>
