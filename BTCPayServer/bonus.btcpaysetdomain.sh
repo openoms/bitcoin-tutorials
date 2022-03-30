@@ -240,5 +240,5 @@ if [ $1 = revert ];then
   # test 
   sudo nginx -t
   # reload
-  sudo systemctl reload nginx
+  sudo systemctl restart nginx
 fi

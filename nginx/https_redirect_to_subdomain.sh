@@ -7,32 +7,36 @@ read EMAIL
 
 echo "
 Input a subdomain set up with an A record pointing to this server:
-eg.: mempool.example.com
+eg.: tips.diynodes.com
 "
 read SUBDOMAIN
 
 echo "
-Input the URL to be redirected to:
-eg.: https://192.168.1.42:4081
+Input the URL where the subdomain should be redirected to:
+eg.: https://pay.diynodes.com/apps/otJAn2YiMRKeHnKrsZYQF8VuCJD/pos
 "
-read REDIRECT
+read SERVER
+
+echo "
+Input the host address where the site is served:
+eg.: https://192.168.1.42:23001
+"
+read SERVER
 
 sudo certbot certonly -a standalone -m $EMAIL --agree-tos \
 -d $SUBDOMAIN --expand -n --pre-hook "service nginx stop" \
 --post-hook "service nginx start" || exit 1
 
-# copy in place on a remote machine if needed
-#sudo cat /etc/letsencrypt/live/$SUBDOMAIN/fullchain.pem
-#sudo cat /etc/letsencrypt/live/$SUBDOMAIN/privkey.pem
 
-# add to /etc/nginx/sites-available/
 echo "\
 server {
   listen 443 ssl;
-  server_name $SUBDOMAIN;
+  server_name SUBDOMAIN;
+  return 301  $REDIRECT;
+  ssl on;
 
-  ssl_certificate /etc/letsencrypt/live/$SUBDOMAIN/fullchain.pem;
-  ssl_certificate_key /etc/letsencrypt/live/$SUBDOMAIN/privkey.pem;
+  ssl_certificate /etc/letsencrypt/live/tips.diynodes.com/fullchain.pem;
+  ssl_certificate_key /etc/letsencrypt/live/tips.diynodes.com/privkey.pem;
   ssl_session_timeout 1d;
   ssl_session_cache shared:SSL:50m;
   ssl_session_tickets off;
@@ -41,19 +45,17 @@ server {
   ssl_prefer_server_ciphers on;
   ssl_stapling on;
   ssl_stapling_verify on;
-  ssl_trusted_certificate /etc/letsencrypt/live/$SUBDOMAIN/chain.pem;
+  ssl_trusted_certificate /etc/letsencrypt/live/tips.diynodes.com/chain.pem;
 
   location / {
-          proxy_pass      $REDIRECT;
-
-  # from https://github.com/rootzoll/raspiblitz/blob/v1.7/home.admin/assets/nginx/snippets/ssl-proxy-params.conf
-  proxy_redirect off;
-  proxy_set_header Host \$http_host;
-  proxy_set_header X-Real-IP \$remote_addr;
-  proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-  proxy_set_header X-Forwarded-Proto https;
+    proxy_set_header Host \$host;
+    proxy_set_header X-Real-IP \$remote_addr;
+    proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto \$scheme;
+    proxy_pass $SERVER;
   }
-}" | sudo tee /etc/nginx/sites-available/$SUBDOMAIN
+}
+" | sudo tee /etc/nginx/sites-available/$SUBDOMAIN
 
 # edit with
 # sudo nano /etc/nginx/sites-available/$SUBDOMAIN

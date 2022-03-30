@@ -78,4 +78,4 @@ stream {
 sudo nginx -t || exit 1
 
 # restart
-sudo systemctl reload nginx
+sudo systemctl restart nginx

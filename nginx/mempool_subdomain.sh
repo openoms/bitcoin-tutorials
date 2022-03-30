@@ -85,4 +85,4 @@ sudo ln -s /etc/nginx/sites-available/$SUBDOMAIN /etc/nginx/sites-enabled/
 
 sudo nginx -t || exit 1
 
-sudo systemctl reload nginx
+sudo systemctl restart nginx
