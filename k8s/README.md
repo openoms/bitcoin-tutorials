@@ -7,7 +7,7 @@
   - [Install](#install)
 - [Bitcoind in kubernetes helm](#bitcoind-in-kubernetes-helm)
   - [install](#install-1)
-  - [logs](#logs)
+  - [monitor](#monitor)
   - [copy chain](#copy-chain)
   - [get bitcoind password](#get-bitcoind-password)
 - [Secrets](#secrets)
@@ -67,12 +67,16 @@ microk8s kubectl get service -n galoy
 ## install
 ```
 helm install bitcoind galoy-repo/bitcoind
-# monitor
-kubectl describe pod bitcoind
+
+# bitcoind RPC can be accessed via port  on the following DNS name from within your cluster:
+# bitcoind.default.svc.cluster.local
 ```
 
-## logs
+## monitor
 ```
+# monitor pod
+kubectl describe pod bitcoind
+# logs
 sudo tail -f /var/snap/microk8s/common/default-storage/default-bitcoind-pvc-*/debug.log
 ```
 
@@ -80,6 +84,9 @@ sudo tail -f /var/snap/microk8s/common/default-storage/default-bitcoind-pvc-*/de
 ```
 # check storage
 ls -la /var/snap/microk8s/common/default-storage
+# note user:group and permissions
+sudo ls -la /var/snap/microk8s/common/default-storage/default-bitcoind-pvc-*
+
 # stop with helm
 helm uninstall bitcoind
 
@@ -88,9 +95,10 @@ helm uninstall bitcoind
 cd /mnt/hdd/*/bitcoin
 
 # copy ./chainstate ./blocks ./indexes recursively and verbose
-sudo rsync -rv ./chainstate ./blocks ./indexes \
-/var/snap/microk8s/common/default-storage/container-registry-registry-claim-pvc-*/
+sudo rsync -rv ./chainstate ./blocks ./indexes /var/snap/microk8s/common/default-storage/default-bitcoind-pvc-*/
 
+# fix user:group
+sudo chown -R user:3000 /var/snap/microk8s/common/default-storage/default-bitcoind-pvc-*
 # restart with helm
 helm install bitcoind galoy-repo/bitcoind
 ```
