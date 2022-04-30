@@ -12,6 +12,7 @@
   - [monitor](#monitor)
   - [copy the chain from an external source](#copy-the-chain-from-an-external-source)
   - [get bitcoind password](#get-bitcoind-password)
+  - [modify the stateful set](#modify-the-stateful-set)
 - [LND](#lnd)
   - [activate mainnet with an added yaml file](#activate-mainnet-with-an-added-yaml-file)
   - [check template](#check-template)
@@ -20,6 +21,7 @@
   - [Forward a local port to container port](#forward-a-local-port-to-container-port)
   - [Run lncli](#run-lncli)
   - [Create wallet](#create-wallet)
+  - [lnd autounlock password from the secrets](#lnd-autounlock-password-from-the-secrets)
   - [Monitor](#monitor-1)
 - [Secrets](#secrets)
 - [Debug](#debug)
@@ -101,6 +103,8 @@ helm install bitcoind galoy-repo/bitcoind
 # monitor pod
 kubectl describe pod bitcoind
 # logs
+kubectl logs bitcoind-0 bitcoind
+# same as: 
 sudo tail -f /var/snap/microk8s/common/default-storage/default-bitcoind-pvc-*/debug.log
 ```
 
@@ -132,6 +136,11 @@ helm install bitcoind galoy-repo/bitcoind
 microk8s kubectl get secret bitcoind-rpcpassword -o jsonpath='{.data.password}'
 ```
 
+## modify the stateful set
+```
+kubectl -n default edit sts bitcoind
+```
+
 # LND
 
 ## activate mainnet with an added yaml file
@@ -140,6 +149,11 @@ echo "\
 configmap:
   customValues:
     - bitcoin.mainnet=true
+    - bitcoind.rpchost=bitcoind:8332
+    - bitcoind.zmqpubrawblock=tcp://bitcoind:28332
+    - bitcoind.zmqpubrawtx=tcp://bitcoind:28333
+    - minchansize=200000
+    - db.bolt.auto-compact=true
 " | tee -a lndvalues.yaml
 ```
 ## check template
@@ -197,13 +211,52 @@ lncli -n mainnet --rpcserver localhost:10010 state
 ```
 
 ## Create wallet
-
+```
 lncli -n mainnet --rpcserver localhost:10010 create
+```
+## lnd autounlock password from the secrets
+```
+# get (decode from base64)
+kubectl get secret lnd-pass -o jsonpath='{.data.password}' | base64 -d
 
+# set
+https://stackoverflow.com/questions/37180209/kubernetes-modify-a-secret-using-kubectl
+
+# what to look for:
+kubectl get secret lnd-pass -o jsonpath='{.data.password}' 
+
+# run:
+kubectl edit secrets
+
+# edit:
+- apiVersion: v1
+  data:
+    password: base64_encoded_password_here
+  kind: Secret
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: bitcoind
+      meta.helm.sh/release-namespace: default
+    creationTimestamp: "2022-04-27T16:49:53Z"
+    labels:
+      app.kubernetes.io/instance: bitcoind
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: bitcoind
+      app.kubernetes.io/version: 0.21.0
+      helm.sh/chart: bitcoind-0.1.2
+    name: bitcoind-rpcpassword
+    namespace: default
+    resourceVersion: "201394"
+    selfLink: /api/v1/namespaces/default/secrets/bitcoind-rpcpassword
+    uid: 9135ade7-1584-4f9b-a5f3-2b5cb4abcd0e
+  type: Opaque
+```
 
 ## Monitor
 ```
 # logs
+kubectl logs lnd-0 lnd
+# same as:
 sudo tail -f /var/snap/microk8s/common/default-storage/default-lnd-pvc-*/logs/bitcoin/mainnet/lnd.log
 
 # check template
