@@ -14,15 +14,23 @@
   - [get bitcoind password](#get-bitcoind-password)
   - [modify the stateful set](#modify-the-stateful-set)
 - [LND](#lnd)
-  - [activate mainnet with an added yaml file](#activate-mainnet-with-an-added-yaml-file)
+  - [activate mainnet and autamic seed creation with an added yaml file](#activate-mainnet-and-autamic-seed-creation-with-an-added-yaml-file)
   - [check template](#check-template)
-  - [install with the overrirding setting](#install-with-the-overrirding-setting)
-  - [credentials for local use (user the k8s user)](#credentials-for-local-use-user-the-k8s-user)
-  - [Forward a local port to container port](#forward-a-local-port-to-container-port)
-  - [Run lncli](#run-lncli)
-  - [Create wallet](#create-wallet)
-  - [lnd autounlock password from the secrets](#lnd-autounlock-password-from-the-secrets)
+  - [install with the overriding setting](#install-with-the-overriding-setting)
+  - [lncli command line inside the pod](#lncli-command-line-inside-the-pod)
+  - [lncli through the RPC interface (needs a local lncli in the PATH of the host like on a raspiblitz)](#lncli-through-the-rpc-interface-needs-a-local-lncli-in-the-path-of-the-host-like-on-a-raspiblitz)
+    - [credentials for local user (using the k8s user)](#credentials-for-local-user-using-the-k8s-user)
+    - [Forward a local port to container port](#forward-a-local-port-to-container-port)
+    - [Run lncli](#run-lncli)
+    - [Create wallet](#create-wallet)
   - [Monitor](#monitor-1)
+  - [lnd autounlock password from the secrets](#lnd-autounlock-password-from-the-secrets)
+    - [get current](#get-current)
+    - [to modify the password manually:](#to-modify-the-password-manually)
+- [Loop](#loop)
+  - [Monitor](#monitor-2)
+  - [stateful set](#stateful-set)
+  - [cli](#cli)
 - [Secrets](#secrets)
 - [Debug](#debug)
   - [Troubleshooting](#troubleshooting)
@@ -104,7 +112,7 @@ helm install bitcoind galoy-repo/bitcoind
 kubectl describe pod bitcoind
 # logs
 kubectl logs bitcoind-0 bitcoind
-# same as: 
+# same as:
 sudo tail -f /var/snap/microk8s/common/default-storage/default-bitcoind-pvc-*/debug.log
 ```
 
@@ -135,7 +143,7 @@ helm install bitcoind galoy-repo/bitcoind
 ```
 microk8s kubectl get secret bitcoind-rpcpassword -o jsonpath='{.data.password}'
 ```
-
+k
 ## modify the stateful set
 ```
 kubectl -n default edit sts bitcoind
@@ -143,7 +151,8 @@ kubectl -n default edit sts bitcoind
 
 # LND
 
-## activate mainnet with an added yaml file
+## activate mainnet and autamic seed creation with an added yaml file
+* full example: https://github.com/zoop-btc/lndchart/blob/main/myvalues.yaml
 ```
 echo "\
 configmap:
@@ -154,6 +163,9 @@ configmap:
     - bitcoind.zmqpubrawtx=tcp://bitcoind:28333
     - minchansize=200000
     - db.bolt.auto-compact=true
+
+autoGenerateSeed:
+    enabled: true
 " | tee -a lndvalues.yaml
 ```
 ## check template
@@ -161,10 +173,11 @@ configmap:
 helm template -f lndvalues.yaml galoy-repo/lnd | grep "mainnet=true" -A2 -B5
 ```
 
-## install with the overrirding setting
+## install with the overriding setting
 ```
 helm install lnd -f lndvalues.yaml galoy-repo/lnd
 ```
+* these notes need updates (https://github.com/GaloyMoney/charts/blob/main/charts/lnd/templates/NOTES.txt):
 ```
 NAME: lnd
 LAST DEPLOYED: Wed Apr 27 19:33:40 2022
@@ -191,7 +204,17 @@ kubectl -n default delete pod lnd-wallet-create
 Warning: Make sure you write/store the seed somewhere, because if lost you will not be able to retrieve it again, and you might end up losing all your funds.
 ```
 
-## credentials for local use (user the k8s user)
+## lncli command line inside the pod
+```
+# kubectl -n <lnd-namespace> exec -it <lnd-pod-name> -c lnd -- bash
+kubectl -n default exec -it lnd-0 -c lnd -- bash
+
+lncli help
+```
+
+## lncli through the RPC interface (needs a local lncli in the PATH of the host like on a raspiblitz)
+
+### credentials for local user (using the k8s user)
 ```
 mkdir -p ~/.lnd/data/chain/bitcoin/mainnet/
 
@@ -201,55 +224,18 @@ kubectl -n default exec lnd-0 -c lnd -- cat /root/.lnd/tls.cert > ~/.lnd/tls.cer
 # get admin.macaroon
 kubectl exec -n default lnd-0 -c lnd -- cat /root/.lnd/data/chain/bitcoin/mainnet/admin.macaroon > ~/.lnd/data/chain/bitcoin/mainnet/admin.macaroon
 ```
-## Forward a local port to container port
+### Forward a local port to container port
+* this needs to run in the background eg. in tmux)
 ```
 kubectl -n default port-forward lnd-0 10010:10009
 ```
-## Run lncli
+### Run lncli
 ```
 lncli -n mainnet --rpcserver localhost:10010 state
 ```
-
-## Create wallet
+### Create wallet
 ```
 lncli -n mainnet --rpcserver localhost:10010 create
-```
-## lnd autounlock password from the secrets
-```
-# get (decode from base64)
-kubectl get secret lnd-pass -o jsonpath='{.data.password}' | base64 -d
-
-# set
-https://stackoverflow.com/questions/37180209/kubernetes-modify-a-secret-using-kubectl
-
-# what to look for:
-kubectl get secret lnd-pass -o jsonpath='{.data.password}' 
-
-# run:
-kubectl edit secrets
-
-# edit:
-- apiVersion: v1
-  data:
-    password: base64_encoded_password_here
-  kind: Secret
-  metadata:
-    annotations:
-      meta.helm.sh/release-name: bitcoind
-      meta.helm.sh/release-namespace: default
-    creationTimestamp: "2022-04-27T16:49:53Z"
-    labels:
-      app.kubernetes.io/instance: bitcoind
-      app.kubernetes.io/managed-by: Helm
-      app.kubernetes.io/name: bitcoind
-      app.kubernetes.io/version: 0.21.0
-      helm.sh/chart: bitcoind-0.1.2
-    name: bitcoind-rpcpassword
-    namespace: default
-    resourceVersion: "201394"
-    selfLink: /api/v1/namespaces/default/secrets/bitcoind-rpcpassword
-    uid: 9135ade7-1584-4f9b-a5f3-2b5cb4abcd0e
-  type: Opaque
 ```
 
 ## Monitor
@@ -274,6 +260,78 @@ kubectl -n default edit sts lnd
 
 # kubectl -n <lnd-namespace> exec -it <lnd-pod-name> -c lnd -- bash
 kubectl -n default exec -it lnd-0 -c lnd -- bash
+```
+
+
+## lnd autounlock password from the secrets
+### get current
+* the easiest is to set this autogenerated password as the wallet unlock password when you create the wallet manually
+```
+# get (decode from base64)
+kubectl get secret lnd-pass -o jsonpath='{.data.password}' | base64 -d
+```
+### to modify the password manually:
+* https://stackoverflow.com/questions/37180209/kubernetes-modify-a-secret-using-kubectl
+
+* semi-automatic method:
+```
+NewPassword="NEW_PASSWORD_HERE"
+kubectl get secret lnd-pass -o json | jq --arg password "$(echo $NewPassword | base64)" '.data["password"]=$password' | kubectl apply -f -
+```
+
+* more manual method:
+```
+# what to look for:
+kubectl get secret lnd-pass -o jsonpath='{.data.password}'
+
+# encode the new password to base64 and copy
+echo "new_password" | base64
+
+# run:
+kubectl edit secrets
+
+# edit:
+- apiVersion: v1
+  data:
+    password: base64_encoded_new_password_here
+  kind: Secret
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: bitcoind
+      meta.helm.sh/release-namespace: default
+    creationTimestamp: "2022-04-27T16:49:53Z"
+    labels:
+      app.kubernetes.io/instance: bitcoind
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: bitcoind
+      app.kubernetes.io/version: 0.21.0
+      helm.sh/chart: bitcoind-0.1.2
+    name: bitcoind-rpcpassword
+    namespace: default
+    resourceVersion: "201394"
+    selfLink: /api/v1/namespaces/default/secrets/bitcoind-rpcpassword
+    uid: 9135ade7-1584-4f9b-a5f3-2b5cb4abcd0e
+  type: Opaque
+```
+
+# Loop
+
+## Monitor
+kubectl logs lnd-loop-0 -f
+kubectl describe pod lnd-loop-0
+
+## stateful set
+kubectl -n default edit sts lnd-loop
+
+## cli
+```
+kubectl -n default exec -it lnd-loop-0 -- bash
+
+loop --help
+
+loopd --lnd.host=lnd:10009 --network mainnet
+
+loop -n mainnet terms
 ```
 
 # Secrets

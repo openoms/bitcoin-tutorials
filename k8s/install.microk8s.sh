@@ -23,7 +23,9 @@ if [ "$1" = on ]; then
   sudo apt install -y snapd
   sudo snap install microk8s --classic
 
-  echo 'export PATH=/snap/bin:$PATH' >> ~/.bashrc
+  echo 'export PATH=/snap/bin:$PATH'      >> ~/.bashrc
+  echo "alias kubectl='microk8s.kubectl'" >> ~/.bashrc
+
   source ~/.bashrc
 
   sudo usermod -a -G microk8s k8s
