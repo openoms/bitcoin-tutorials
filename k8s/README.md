@@ -2,19 +2,18 @@
 # Kubernetes - Helm tips
 
 - [Install microk8s and helm on Debian 11 - RaspiBlitz](#install-microk8s-and-helm-on-debian-11---raspiblitz)
+  - [Install on a working raspiblitz system: install.microk8s.sh](#install-on-a-working-raspiblitz-system-installmicrok8ssh)
+  - [install on pure Debian 11 (eg Digital Ocean)](#install-on-pure-debian-11-eg-digital-ocean)
 - [Using the Galoy Helm charts](#using-the-galoy-helm-charts)
-  - [Inspect chart without installing](#inspect-chart-without-installing)
-  - [pull locally](#pull-locally)
-  - [logs](#logs)
-  - [Install](#install)
+  - [install the chart repo](#install-the-chart-repo)
 - [Bitcoind in kubernetes helm](#bitcoind-in-kubernetes-helm)
-  - [install](#install-1)
+  - [install](#install)
   - [monitor](#monitor)
-  - [copy the chain from an external source](#copy-the-chain-from-an-external-source)
+  - [copy the chain from an external source (optional to speed up sync)](#copy-the-chain-from-an-external-source-optional-to-speed-up-sync)
   - [get bitcoind password](#get-bitcoind-password)
   - [modify the stateful set](#modify-the-stateful-set)
 - [LND](#lnd)
-  - [activate mainnet and autamic seed creation with an added yaml file](#activate-mainnet-and-autamic-seed-creation-with-an-added-yaml-file)
+  - [activate mainnet and the automatic seed creation with an added yaml file](#activate-mainnet-and-the-automatic-seed-creation-with-an-added-yaml-file)
   - [check template](#check-template)
   - [install with the overriding setting](#install-with-the-overriding-setting)
 - [get seed and delete](#get-seed-and-delete)
@@ -48,64 +47,76 @@
 - [Networking](#networking)
   - [check local tbitcoind](#check-local-tbitcoind)
 - [Testnet LND connected to the bitcoin nodeon the host](#testnet-lnd-connected-to-the-bitcoin-nodeon-the-host)
-  - [install](#install-2)
+  - [install](#install-1)
   - [save seed and unlock password](#save-seed-and-unlock-password)
   - [change the wallet unlock password](#change-the-wallet-unlock-password)
-  - [logs](#logs-1)
+  - [logs](#logs)
   - [cli](#cli-1)
   - [remove pods and data](#remove-pods-and-data)
+- [Galoy](#galoy)
+  - [Install](#install-2)
+  - [remove](#remove)
 
 # Install microk8s and helm on Debian 11 - RaspiBlitz
 
-[install.microk8s.sh](install.microk8s.sh)
+## Install on a working raspiblitz system: [install.microk8s.sh](install.microk8s.sh)
+  * tested on an amd64 server Running DEbian 11 as base
+
+## install on pure Debian 11 (eg Digital Ocean)
+```
+sudo adduser --disabled-password --gecos "" k8s
+sudo apt update
+sudo apt install -y snapd
+sudo snap install microk8s --classic
+echo 'export PATH=/snap/bin:$PATH'      >> ~/.bashrc
+
+echo "alias kubectl='microk8s.kubectl'" >> ~/.bashrc
+
+source ~/.bashrc
+sudo usermod -a -G microk8s k8s
+sudo chown -f -R k8s ~/.kube
+newgrp microk8s
+
+# microk8s.inspect
+# troubleshooting steps on Debian
+# https://microk8s.io/docs/troubleshooting
+sudo iptables -P FORWARD ACCEPT
+sudo apt-get install -y iptables-persistent
+echo '{
+    "insecure-registries" : ["localhost:32000"]
+}
+' | sudo tee -a /etc/docker/daemon.json
+
+sudo apt install ufw
+sudo ufw enable
+sudo ufw allow in on vxlan.calico && sudo ufw allow out on vxlan.calico
+sudo ufw allow in on cali+ && sudo ufw allow out on cali+
+sudo ufw allow 16443 comment "microk8s"
+sudo ufw allow 10443 comment "kubernetes-dashboard"
+
+microk8s start
+
+microk8s enable helm
+microk8s enable dns
+microk8s enable dashboard
+microk8s enable storage
+microk8s enable ingress
+microk8s enable registry
+
+# make the config permanent
+microk8s config > ~/.kube/config
+sudo chmod 0600 /home/k8s/.kube/config
+
+# helm
+sudo snap install helm --classic
+```
 
 # Using the Galoy Helm charts
 
-## Inspect chart without installing
-```
-helm pull galoy-repo/galoy
-helm show chart galoy-0.2.52.tgz
-helm show values galoy-0.2.52.tgz
-```
-## pull locally
-```
-helm pull galoy-repo/lnd
-tar -xzf lnd-0.2.6.tgz
-tar -xzf lnd-0.2.6.tgz
-```
-
-## logs
-```
-microk8s.kubectl logs lnd-0 lnd
-```
-
-## Install
-
+## install the chart repo
 ```
 helm repo add galoy-repo https://github.com/GaloyMoney/charts
 helm repo update
-# microk8s.kubectl create namespace galoy
-# helm install galoy -n galoy --set global.persistence.storageClass=microk8s-hostpath galoy-repo/galoy
-# helm uninstall galoy -n galoy
-helm install galoy --set global.persistence.storageClass=microk8s-hostpath galoy-repo/galoy --debug --timeout 10m
-
-helm install galoy \
- --set needFirebaseServiceAccount=false \
- --set global.persistence.storageClass=microk8s-hostpath \
- galoy-repo/galoy --debug --timeout 10m
-
-# needFirebaseServiceAccount: true
-needFirebaseServiceAccount=false
-
-helm install bitcoind galoy-repo/bitcoind
-helm install lnd galoy-repo/lnd
-
-helm install bitcoin galoy-repo/bitcoin
-
-# monitor
-microk8s kubectl get pod -n galoy -w
-
-microk8s kubectl get service -n galoy
 ```
 
 # Bitcoind in kubernetes helm
@@ -127,7 +138,7 @@ kubectl logs bitcoind-0 bitcoind
 sudo tail -f /var/snap/microk8s/common/default-storage/default-bitcoind-pvc-*/debug.log
 ```
 
-## copy the chain from an external source
+## copy the chain from an external source (optional to speed up sync)
 ```
 # check storage
 ls -la /var/snap/microk8s/common/default-storage
@@ -154,15 +165,14 @@ helm install bitcoind galoy-repo/bitcoind
 ```
 microk8s kubectl get secret bitcoind-rpcpassword -o jsonpath='{.data.password}'
 ```
-k
+
 ## modify the stateful set
 ```
 kubectl -n default edit sts bitcoind
 ```
 
 # LND
-
-## activate mainnet and autamic seed creation with an added yaml file
+## activate mainnet and the automatic seed creation with an added yaml file
 * full example: https://github.com/zoop-btc/lndchart/blob/main/myvalues.yaml
 ```
 echo "\
@@ -569,4 +579,35 @@ lncli -n testnet  getinfo
 ```
 helm uninstall tlnd
 sudo rm -r /var/snap/microk8s/common/default-storage/default-tlnd-*
+```
+
+# Galoy 
+
+## Install
+
+```
+
+
+helm install galoy galoy-repo/galoy
+
+helm install galoy \
+ --set needFirebaseServiceAccount=false \
+ galoy-repo/galoy --debug
+
+# needFirebaseServiceAccount: true
+needFirebaseServiceAccount=false
+
+helm install bitcoind galoy-repo/bitcoind
+helm install lnd galoy-repo/lnd
+
+helm install bitcoin galoy-repo/bitcoin
+
+# monitor
+microk8s kubectl get pod -n galoy -w
+
+microk8s kubectl get service -n galoy
+```
+## remove
+```
+helm uninstall galoy -n galoy
 ```
