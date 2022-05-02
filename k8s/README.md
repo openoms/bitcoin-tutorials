@@ -17,6 +17,7 @@
   - [activate mainnet and autamic seed creation with an added yaml file](#activate-mainnet-and-autamic-seed-creation-with-an-added-yaml-file)
   - [check template](#check-template)
   - [install with the overriding setting](#install-with-the-overriding-setting)
+- [get seed and delete](#get-seed-and-delete)
   - [lncli command line inside the pod](#lncli-command-line-inside-the-pod)
   - [lncli through the RPC interface (needs a local lncli in the PATH of the host like on a raspiblitz)](#lncli-through-the-rpc-interface-needs-a-local-lncli-in-the-path-of-the-host-like-on-a-raspiblitz)
     - [credentials for local user (using the k8s user)](#credentials-for-local-user-using-the-k8s-user)
@@ -43,6 +44,16 @@
   - [Free space without restart](#free-space-without-restart)
   - [Directories taking space](#directories-taking-space)
   - [Change microk8s default-storage path in config](#change-microk8s-default-storage-path-in-config)
+- [External Service ports](#external-service-ports)
+- [Networking](#networking)
+  - [check local tbitcoind](#check-local-tbitcoind)
+- [Testnet LND connected to the bitcoin nodeon the host](#testnet-lnd-connected-to-the-bitcoin-nodeon-the-host)
+  - [install](#install-2)
+  - [save seed and unlock password](#save-seed-and-unlock-password)
+  - [change the wallet unlock password](#change-the-wallet-unlock-password)
+  - [logs](#logs-1)
+  - [cli](#cli-1)
+  - [remove pods and data](#remove-pods-and-data)
 
 # Install microk8s and helm on Debian 11 - RaspiBlitz
 
@@ -158,9 +169,9 @@ echo "\
 configmap:
   customValues:
     - bitcoin.mainnet=true
-    - bitcoind.rpchost=bitcoind:8332
-    - bitcoind.zmqpubrawblock=tcp://bitcoind:28332
-    - bitcoind.zmqpubrawtx=tcp://bitcoind:28333
+    - bitcoind.rpchost=host-tunnel:8332
+    - bitcoind.zmqpubrawblock=tcp://host-tunnel:28332
+    - bitcoind.zmqpubrawtx=tcp://host-tunnel:28333
     - minchansize=200000
     - db.bolt.auto-compact=true
 
@@ -202,6 +213,12 @@ kubectl -n default logs lnd-wallet-create
 kubectl -n default delete pod lnd-wallet-create
 
 Warning: Make sure you write/store the seed somewhere, because if lost you will not be able to retrieve it again, and you might end up losing all your funds.
+```
+
+# get seed and delete
+```
+kubectl -n default logs lnd-0 -c init-wallet
+kubectl -n default delete pod lnd-init-wallet
 ```
 
 ## lncli command line inside the pod
@@ -359,17 +376,18 @@ microk8s.kubectl get pod -Aw
 ## Stop terminated pods
 * https://computingforgeeks.com/force-delete-evicted-terminated-pods-in-kubernetes/
 ```
-# Define namespace
-namespace="default"
+stop_terminated_pods() {
+ # Define namespace
+ namespace="default"
 
-# Get all pods in Terminated / Evicted State
-epods=$(kubectl get pods -n ${namespace} | egrep -i 'Terminating|Terminated|Evicted' | awk '{print $1 }')
+ # Get all pods in Terminated / Evicted State
+ epods=$(kubectl get pods -n ${namespace} | egrep -i 'Terminating|Terminated|Evicted' | awk '{print $1 }')
 
-# Force deletion of the pods
-
-for i in ${epods[@]}; do
-  kubectl delete pod --force=true --wait=false --grace-period=0 $i -n ${namespace}
-done
+ # Force deletion of the pods
+ for i in ${epods[@]}; do
+   kubectl delete pod --force=true --wait=false --grace-period=0 $i -n ${namespace}
+ done
+}
 ```
 
 ## Status
@@ -436,4 +454,119 @@ Change in:
           path: /mnt/ext/microk8s/common/default-storage
           type: ""
         name: pv-volume
+```
+
+
+# External Service ports
+* https://stackoverflow.com/questions/37648553/is-there-anyway-to-get-the-external-ports-of-the-kubernetes-cluster
+```
+kubectl describe service --all-namespaces | grep -i nodeport
+
+# This gets all services in all namespaces, and does basically: "for each service, for each port, if nodePort is defined, print nodePort".
+kubectl get svc --all-namespaces -o go-template='{{range .items}}{{range.spec.ports}}{{if .nodePort}}{{.nodePort}}{{"\n"}}{{end}}{{end}}{{end}}'
+
+# this will give more information about each NodePort listed
+kubectl get svc --all-namespaces -o go-template='{{range .items}}{{range.spec.ports}}{{if .nodePort}}{{.nodePort}}{{.}}{{"\n"}}{{end}}{{end}}{{end}}'
+```
+
+# Networking
+* https://webapp.io/blog/container-tcp-tunnel/
+* https://betterprogramming.pub/how-to-ssh-into-a-kubernetes-pod-from-outside-the-cluster-354b4056c42b
+
+## check local tbitcoind
+```
+nc -zv localhost 18332
+```
+
+```
+k8stunnel() {
+    POD="$1"
+    CONTAINER="$2"
+    HOSTPORT="$3"
+    PODPORT="$4"
+    if [ -z "$POD" -o -z "$CONTAINER" -o -z "$HOSTPORT" -o -z "$PODPORT" ]; then
+    	echo "Usage: k8stunnel [pod name] [container] [host port] [pod port]"
+        return 1
+    fi
+    pkill -f 'nc 127.0.0.1 "$HOSTPORT"'
+    kubectl exec -it "$POD" -c "$CONTAINER"  -- apk add ucspi-tcp6
+    nc 127.0.0.1 "$HOSTPORT" | microk8s kubectl exec -it "$POD" -c "$CONTAINER" -- tcpserver 127.0.0.1 "$PODPORT" cat &
+    echo "To access the host:"$HOSTPORT" Connect to 127.0.0.1:"$HOSTPORT" in the pod"
+}
+```
+
+```
+k8stunnel tlnd-0 lnd 18332 18332
+k8stunnel tlnd-0 lnd 21332 21332
+k8stunnel tlnd-0 lnd 21333 21333
+```
+
+# Testnet LND connected to the bitcoin nodeon the host
+
+* bitcoind on the raspiblitz node needs:
+```
+localip=$(hostname -I | awk '{print $1}')
+
+echo "\
+test.rpcbind=${localip}:18332
+test.zmqpubrawblock=tcp://${localip}:21332
+test.zmqpubrawtx=tcp://${localip}:21333
+" | sudo tee -a /mnt/hdd/bitcoin/bitcoin.conf
+
+sudo systemctl restart tbitcoind
+```
+
+## install
+```
+localip=$(hostname -I | awk '{print $1}')
+rpcpass=$(sudo cat /mnt/hdd/bitcoin/bitcoin.conf | grep rpcpassword | cut -c 13-)
+
+echo "\
+configmap:
+  customValues:
+    - bitcoin.testnet=true
+    - bitcoind.rpchost=${localip}:18332
+    - bitcoind.zmqpubrawblock=tcp://${localip}:21332
+    - bitcoind.zmqpubrawtx=tcp://${localip}:21333
+    - db.bolt.auto-compact=true
+    - bitcoind.rpcuser=raspibolt
+    - bitcoind.rpcpassword=${rpcpass}
+autoGenerateSeed:
+    enabled: true
+" | tee tlndvalues.yaml
+
+helm install tlnd -f tlndvalues.yaml galoy-repo/lnd
+```
+
+## save seed and unlock password
+```
+kubectl -n default logs tlnd-0 -c init-wallet
+
+kubectl get secret tlnd-pass -o jsonpath='{.data.password}' | base64 -d, echo
+```
+## change the wallet unlock password
+* semi-automatic method:
+```
+NewPassword="NEW_PASSWORD_HERE"
+kubectl get secret tlnd-pass -o json | jq --arg password "$(echo $NewPassword | base64)" '.data["password"]=$password' | kubectl apply -f -
+```
+
+## logs
+```
+kubectl -n default logs tlnd-0 -c lnd -f
+
+sudo tail -f /var/snap/microk8s/common/default-storage/default-tlnd-pvc-*/logs/bitcoin/mainnet/lnd.log
+```
+
+## cli
+```
+kubectl -n default exec -it tlnd-0 -c lnd -- bash
+lncli -n testnet  getinfo
+
+```
+
+## remove pods and data
+```
+helm uninstall tlnd
+sudo rm -r /var/snap/microk8s/common/default-storage/default-tlnd-*
 ```
