@@ -413,6 +413,16 @@ kubectl create secret generic galoy-price-history-postgres-creds \
   --from-file=./password \
   --from-file=./username \
   --from-file=./database
+
+kubectl create secret generic gcs-sa-key
+
+kubectl create secret generic geetest-key
+  --from-literal=key='dummy' \
+  --from-literal=id='dummy'
+
+kubectl create secret generic dropbox-access-token \
+  --from-literal=token=''
+
 ```
 
 ## Decode to view
@@ -685,10 +695,6 @@ for i in $(kubectl get pvc | grep galoy | awk '{print $1}' ); do kubectl delete 
 # in filesystem
 for i in $(sudo ls /var/snap/microk8s/common/default-storage/ | grep galoy); do sudo rm -rf /var/snap/microk8s/common/default-storage/${i}; done
 
-
-# delete galoy storage
-for i in $(kubectl get pvc | grep galoy| awk '{print $1}' ); do kubectl delete pvc ${i}; done
-
 # delete the manually generated secrets
 kubectl delete secret galoy-mongodb
 kubectl delete secret galoy-price-history-postgres-creds
@@ -738,6 +744,15 @@ kubectl create secret generic galoy-price-history-postgres-creds \
   --from-file=./password \
   --from-file=./username \
   --from-file=./database
+
+kubectl create secret generic gcs-sa-key
+
+kubectl create secret generic geetest-key
+  --from-literal=key='dummy' \
+  --from-literal=id='dummy'
+
+kubectl create secret generic dropbox-access-token \
+  --from-literal=token=''
 
 cd
 
