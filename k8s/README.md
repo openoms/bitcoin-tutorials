@@ -1,6 +1,7 @@
 <!-- omit in toc -->
 # Kubernetes - Helm tips
 
+- [kubectl cheat sheet](#kubectl-cheat-sheet)
 - [Install microk8s and helm on Debian 11 - RaspiBlitz](#install-microk8s-and-helm-on-debian-11---raspiblitz)
   - [Install on a working raspiblitz system: install.microk8s.sh](#install-on-a-working-raspiblitz-system-installmicrok8ssh)
   - [install on pure Debian 11 (eg Digital Ocean)](#install-on-pure-debian-11-eg-digital-ocean)
@@ -32,6 +33,9 @@
   - [stateful set](#stateful-set)
   - [cli](#cli)
 - [Secrets](#secrets)
+  - [create](#create)
+  - [Decode to view](#decode-to-view)
+  - [Edit](#edit)
 - [Debug](#debug)
   - [Troubleshooting](#troubleshooting)
   - [Check pods](#check-pods)
@@ -43,19 +47,25 @@
   - [Free space without restart](#free-space-without-restart)
   - [Directories taking space](#directories-taking-space)
   - [Change microk8s default-storage path in config](#change-microk8s-default-storage-path-in-config)
-- [External Service ports](#external-service-ports)
 - [Networking](#networking)
+  - [External Service ports](#external-service-ports)
   - [check local tbitcoind](#check-local-tbitcoind)
-- [Testnet LND connected to the bitcoin nodeon the host](#testnet-lnd-connected-to-the-bitcoin-nodeon-the-host)
+- [Testnet LND connected to the bitcoin node on the host](#testnet-lnd-connected-to-the-bitcoin-node-on-the-host)
   - [install](#install-1)
   - [save seed and unlock password](#save-seed-and-unlock-password)
   - [change the wallet unlock password](#change-the-wallet-unlock-password)
   - [logs](#logs)
   - [cli](#cli-1)
   - [remove pods and data](#remove-pods-and-data)
-- [Galoy](#galoy)
+- [testnet Galoy](#testnet-galoy)
   - [Install](#install-2)
+- [monitor](#monitor-3)
   - [remove](#remove)
+- [Galoy with bitcoin and lnd on mainnet](#galoy-with-bitcoin-and-lnd-on-mainnet)
+
+# kubectl cheat sheet
+* https://kubernetes.io/docs/reference/kubectl/cheatsheet/
+
 
 # Install microk8s and helm on Debian 11 - RaspiBlitz
 
@@ -65,14 +75,21 @@
 ## install on pure Debian 11 (eg Digital Ocean)
 ```
 sudo adduser --disabled-password --gecos "" k8s
+
+sudo usermod -a -G sudo,bitcoin,debian-tor k8s
+
+sudo su - k8s
+
 sudo apt update
 sudo apt install -y snapd
 sudo snap install microk8s --classic
-echo 'export PATH=/snap/bin:$PATH'      >> ~/.bashrc
 
+echo 'export PATH=/snap/bin:$PATH'      >> ~/.bashrc
 echo "alias kubectl='microk8s.kubectl'" >> ~/.bashrc
+echo 'export KUBE_EDITOR="nano"'        >> ~/.bashrc
 
 source ~/.bashrc
+
 sudo usermod -a -G microk8s k8s
 sudo chown -f -R k8s ~/.kube
 newgrp microk8s
@@ -179,9 +196,9 @@ echo "\
 configmap:
   customValues:
     - bitcoin.mainnet=true
-    - bitcoind.rpchost=host-tunnel:8332
-    - bitcoind.zmqpubrawblock=tcp://host-tunnel:28332
-    - bitcoind.zmqpubrawtx=tcp://host-tunnel:28333
+    - bitcoind.rpchost=bitcoind:8332
+    - bitcoind.zmqpubrawblock=tcp://bitcoind:28332
+    - bitcoind.zmqpubrawtx=tcp://bitcoind:28333
     - minchansize=200000
     - db.bolt.auto-compact=true
 
@@ -363,8 +380,52 @@ loop -n mainnet terms
 
 # Secrets
 * https://kubernetes.io/docs/tasks/configmap-secret/managing-secret-using-kubectl/
+
+## create
 ```
-microk8s kubectl edit secrets
+# galoy-mongodb as in https://github.com/GaloyMoney/charts/blob/cc000d4f11e215892b11fc7407a4440fd4d200c8/dev/galoy/main.tf#L64
+
+mkdir -p ~/test-secrets/galoy-mongodb
+cd ~/test-secrets/galoy-mongodb
+
+#echo -n 'testGaloy' >./username
+echo -n "$(openssl rand -hex 64)" > ./mongodb-password
+echo -n "$(openssl rand -hex 64)" > ./mongodb-root-password
+echo -n "$(openssl rand -hex 64)" > ./mongodb-replica-set-key
+
+kubectl create secret generic galoy-mongodb \
+  --from-file=./mongodb-password \
+  --from-file=./mongodb-root-password \
+  --from-file=./mongodb-replica-set-key
+
+# galoy-price-history-postgres-creds as in https://github.com/GaloyMoney/charts/blob/cc000d4f11e215892b11fc7407a4440fd4d200c8/dev/galoy/main.tf#L214
+
+mkdir -p ~/test-secrets/galoy-price-history-postgres-creds
+cd ~/test-secrets/galoy-price-history-postgres-creds
+
+# The password cannot be longer than 100 characters.
+echo -n "$(openssl rand -hex 48)" > ./password
+
+echo -n 'price-history' > ./username
+echo -n 'price-history' > ./database
+
+kubectl create secret generic galoy-price-history-postgres-creds \
+  --from-file=./password \
+  --from-file=./username \
+  --from-file=./database
+```
+
+## Decode to view
+```
+kubectl get secret galoy-price-history-postgres-creds -o jsonpath='{.data.password}' | base64 -d, echo
+
+## compare
+cat ~/test-secrets/galoy-price-history-postgres-creds/password
+```
+
+## Edit
+```
+kubectl edit secrets
 ```
 
 # Debug
@@ -466,8 +527,11 @@ Change in:
         name: pv-volume
 ```
 
+# Networking
+* https://webapp.io/blog/container-tcp-tunnel/
+* https://betterprogramming.pub/how-to-ssh-into-a-kubernetes-pod-from-outside-the-cluster-354b4056c42b
 
-# External Service ports
+##  External Service ports
 * https://stackoverflow.com/questions/37648553/is-there-anyway-to-get-the-external-ports-of-the-kubernetes-cluster
 ```
 kubectl describe service --all-namespaces | grep -i nodeport
@@ -479,9 +543,6 @@ kubectl get svc --all-namespaces -o go-template='{{range .items}}{{range.spec.po
 kubectl get svc --all-namespaces -o go-template='{{range .items}}{{range.spec.ports}}{{if .nodePort}}{{.nodePort}}{{.}}{{"\n"}}{{end}}{{end}}{{end}}'
 ```
 
-# Networking
-* https://webapp.io/blog/container-tcp-tunnel/
-* https://betterprogramming.pub/how-to-ssh-into-a-kubernetes-pod-from-outside-the-cluster-354b4056c42b
 
 ## check local tbitcoind
 ```
@@ -511,7 +572,7 @@ k8stunnel tlnd-0 lnd 21332 21332
 k8stunnel tlnd-0 lnd 21333 21333
 ```
 
-# Testnet LND connected to the bitcoin nodeon the host
+# Testnet LND connected to the bitcoin node on the host
 
 * bitcoind on the raspiblitz node needs:
 ```
@@ -572,7 +633,6 @@ sudo tail -f /var/snap/microk8s/common/default-storage/default-tlnd-pvc-*/logs/b
 ```
 kubectl -n default exec -it tlnd-0 -c lnd -- bash
 lncli -n testnet  getinfo
-
 ```
 
 ## remove pods and data
@@ -581,33 +641,114 @@ helm uninstall tlnd
 sudo rm -r /var/snap/microk8s/common/default-storage/default-tlnd-*
 ```
 
-# Galoy 
+# testnet Galoy
 
 ## Install
-
+* create custom values
+```
+echo "\
+global:
+  network: testnet
+galoy:
+  name: "Testnet Galoy Wallet"
+bitcoind:
+  port: 18332
+needFirebaseServiceAccount: false
+twilio: false
+" | tee tgaloyvalues.yaml
+```
+* install
+```
+helm install tgaloy -f tgaloyvalues.yaml galoy-repo/galoy
 ```
 
-
-helm install galoy galoy-repo/galoy
-
-helm install galoy \
- --set needFirebaseServiceAccount=false \
- galoy-repo/galoy --debug
-
-# needFirebaseServiceAccount: true
-needFirebaseServiceAccount=false
-
-helm install bitcoind galoy-repo/bitcoind
-helm install lnd galoy-repo/lnd
-
-helm install bitcoin galoy-repo/bitcoin
-
 # monitor
-microk8s kubectl get pod -n galoy -w
+```
+kubectl get pod -n galoy -w
 
-microk8s kubectl get service -n galoy
+kubectl get service -n galoy
 ```
 ## remove
 ```
-helm uninstall galoy -n galoy
+helm uninstall galoy
+
+# check pvc -s
+kubectl get pvc
+
+## CAREFUL HERE
+# delete all pending
+for i in $(kubectl get pvc | grep Pending | awk '{print $1}' ); do kubectl delete pvc ${i}; done
+
+# delete galoy storage
+for i in $(kubectl get pvc | grep galoy | awk '{print $1}' ); do kubectl delete pvc ${i}; done
+
+# in filesystem
+for i in $(sudo ls /var/snap/microk8s/common/default-storage/ | grep galoy); do sudo rm -rf /var/snap/microk8s/common/default-storage/${i}; done
+
+
+# delete galoy storage
+for i in $(kubectl get pvc | grep galoy| awk '{print $1}' ); do kubectl delete pvc ${i}; done
+
+# delete the manually generated secrets
+kubectl delete secret galoy-mongodb
+kubectl delete secret galoy-price-history-postgres-creds
+
+sudo rm -rf /home/k8s/test-secrets
+```
+
+# Galoy with bitcoin and lnd on mainnet
+```
+# bitcoind
+helm install bitcoind galoy-repo/bitcoin
+
+# lnd
+echo "\
+configmap:
+  customValues:
+    - bitcoin.mainnet=true
+    - bitcoind.rpchost=bitcoind:8332
+    - bitcoind.zmqpubrawblock=tcp://bitcoind:28332
+    - bitcoind.zmqpubrawtx=tcp://bitcoind:28333
+    - minchansize=200000
+    - db.bolt.auto-compact=true
+autoGenerateSeed:
+    enabled: true
+" | tee -a lndvalues.yaml
+
+helm install lnd -f lndvalues.yaml galoy-repo/lnd
+
+# galoy
+# secrets
+mkdir -p ~/test-secrets/galoy-mongodb
+cd ~/test-secrets/galoy-mongodb
+echo -n "$(openssl rand -hex 64)" > ./mongodb-password
+echo -n "$(openssl rand -hex 64)" > ./mongodb-root-password
+echo -n "$(openssl rand -hex 64)" > ./mongodb-replica-set-key
+kubectl create secret generic galoy-mongodb \
+  --from-file=./mongodb-password \
+  --from-file=./mongodb-root-password \
+  --from-file=./mongodb-replica-set-key
+
+mkdir -p ~/test-secrets/galoy-price-history-postgres-creds
+cd ~/test-secrets/galoy-price-history-postgres-creds
+echo -n "$(openssl rand -hex 48)" > ./password
+echo -n 'price-history' > ./username
+echo -n 'price-history' > ./database
+kubectl create secret generic galoy-price-history-postgres-creds \
+  --from-file=./password \
+  --from-file=./username \
+  --from-file=./database
+
+cd
+
+echo "\
+global:
+  network: mainnet
+bitcoind:
+  port: 8332
+needFirebaseServiceAccount: false
+twilio: false
+" | tee galoyvalues.yaml
+
+helm install galoy -f galoyvalues.yaml galoy-repo/galoy
 ```
