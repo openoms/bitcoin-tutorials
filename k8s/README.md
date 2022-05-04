@@ -6,7 +6,7 @@
   - [Install on a working raspiblitz system: install.microk8s.sh](#install-on-a-working-raspiblitz-system-installmicrok8ssh)
   - [install on pure Debian 11 (eg Digital Ocean)](#install-on-pure-debian-11-eg-digital-ocean)
 - [Using the Galoy Helm charts](#using-the-galoy-helm-charts)
-  - [install the chart repo](#install-the-chart-repo)
+  - [install the Galoy charts repo](#install-the-galoy-charts-repo)
 - [Bitcoind in kubernetes helm](#bitcoind-in-kubernetes-helm)
   - [install](#install)
   - [monitor](#monitor)
@@ -51,17 +51,19 @@
   - [External Service ports](#external-service-ports)
   - [check local tbitcoind](#check-local-tbitcoind)
 - [Testnet LND connected to the bitcoin node on the host](#testnet-lnd-connected-to-the-bitcoin-node-on-the-host)
-  - [install](#install-1)
   - [save seed and unlock password](#save-seed-and-unlock-password)
   - [change the wallet unlock password](#change-the-wallet-unlock-password)
+  - [restart](#restart)
   - [logs](#logs)
   - [cli](#cli-1)
-  - [remove pods and data](#remove-pods-and-data)
 - [testnet Galoy](#testnet-galoy)
-  - [Install](#install-2)
-- [monitor](#monitor-3)
+  - [Install](#install-1)
+  - [monitor](#monitor-3)
   - [remove](#remove)
 - [Galoy with bitcoin and lnd on mainnet](#galoy-with-bitcoin-and-lnd-on-mainnet)
+- [Galoy with bitcoin and lnd on mainnet](#galoy-with-bitcoin-and-lnd-on-mainnet-1)
+- [Configure with terraform](#configure-with-terraform)
+- [install terraform](#install-terraform)
 
 # kubectl cheat sheet
 * https://kubernetes.io/docs/reference/kubectl/cheatsheet/
@@ -130,9 +132,13 @@ sudo snap install helm --classic
 
 # Using the Galoy Helm charts
 
-## install the chart repo
+## install the Galoy charts repo
 ```
 helm repo add galoy-repo https://github.com/GaloyMoney/charts
+
+# add the bitnami charts https://charts.bitnami.com/
+helm repo add bitnami https://charts.bitnami.com/bitnami
+
 helm repo update
 ```
 
@@ -583,42 +589,7 @@ k8stunnel tlnd-0 lnd 21333 21333
 ```
 
 # Testnet LND connected to the bitcoin node on the host
-
-* bitcoind on the raspiblitz node needs:
-```
-localip=$(hostname -I | awk '{print $1}')
-
-echo "\
-test.rpcbind=${localip}:18332
-test.zmqpubrawblock=tcp://${localip}:21332
-test.zmqpubrawtx=tcp://${localip}:21333
-" | sudo tee -a /mnt/hdd/bitcoin/bitcoin.conf
-
-sudo systemctl restart tbitcoind
-```
-
-## install
-```
-localip=$(hostname -I | awk '{print $1}')
-rpcpass=$(sudo cat /mnt/hdd/bitcoin/bitcoin.conf | grep rpcpassword | cut -c 13-)
-
-echo "\
-configmap:
-  customValues:
-    - bitcoin.testnet=true
-    - bitcoind.rpchost=${localip}:18332
-    - bitcoind.zmqpubrawblock=tcp://${localip}:21332
-    - bitcoind.zmqpubrawtx=tcp://${localip}:21333
-    - db.bolt.auto-compact=true
-    - bitcoind.rpcuser=raspibolt
-    - bitcoind.rpcpassword=${rpcpass}
-autoGenerateSeed:
-    enabled: true
-" | tee tlndvalues.yaml
-
-helm install tlnd -f tlndvalues.yaml galoy-repo/lnd
-```
-
+* [galoy.testnet.sh](galoy.testnet.sh)
 ## save seed and unlock password
 ```
 kubectl -n default logs tlnd-0 -c init-wallet
@@ -629,30 +600,27 @@ kubectl get secret tlnd-pass -o jsonpath='{.data.password}' | base64 -d, echo
 * semi-automatic method:
 ```
 NewPassword="NEW_PASSWORD_HERE"
-kubectl get secret tlnd-pass -o json | jq --arg password "$(echo $NewPassword | base64)" '.data["password"]=$password' | kubectl apply -f -
+kubectl -n test get secret lnd1-pass -o json | jq --arg password "$(echo $NewPassword | base64)" '.data["password"]=$password' | kubectl -n test apply -f -
+```
+## restart
+```
+kubectl delete pod lnd1-0 --wait=false --grace-period=0  -n test
 ```
 
 ## logs
 ```
-kubectl -n default logs tlnd-0 -c lnd -f
+kubectl logs lnd1-0 -n test -c lnd -f
 
-sudo tail -f /var/snap/microk8s/common/default-storage/default-tlnd-pvc-*/logs/bitcoin/mainnet/lnd.log
+sudo tail -f /var/snap/microk8s/common/default-storage/test-lnd1-pvc-[TAB]/logs/bitcoin/testnet/lnd.log
 ```
-
 ## cli
 ```
-kubectl -n default exec -it tlnd-0 -c lnd -- bash
+kubectl exec lnd1-0 -n test -c lnd  -- sh
 lncli -n testnet  getinfo
 ```
 
-## remove pods and data
-```
-helm uninstall tlnd
-sudo rm -r /var/snap/microk8s/common/default-storage/default-tlnd-*
-```
 
 # testnet Galoy
-
 ## Install
 * create custom values
 ```
@@ -660,19 +628,20 @@ echo "\
 global:
   network: testnet
 galoy:
-  name: "Testnet Galoy Wallet"
+  name: 'Testnet Galoy Wallet'
 bitcoind:
   port: 18332
 needFirebaseServiceAccount: false
 twilio: false
+devDisableMongoBackup: true
 " | tee tgaloyvalues.yaml
 ```
 * install
 ```
-helm install tgaloy -f tgaloyvalues.yaml galoy-repo/galoy
+helm install galoy -f tgaloyvalues.yaml -n test galoy-repo/galoy
 ```
 
-# monitor
+## monitor
 ```
 kubectl get pod -n galoy -w
 
@@ -686,7 +655,7 @@ helm uninstall galoy
 kubectl get pvc
 
 ## CAREFUL HERE
-# delete all pending
+# delete all pending storage
 for i in $(kubectl get pvc | grep Pending | awk '{print $1}' ); do kubectl delete pvc ${i}; done
 
 # delete galoy storage
@@ -738,12 +707,14 @@ kubectl create secret generic galoy-mongodb \
 mkdir -p ~/test-secrets/galoy-price-history-postgres-creds
 cd ~/test-secrets/galoy-price-history-postgres-creds
 echo -n "$(openssl rand -hex 48)" > ./password
-echo -n 'price-history' > ./username
-echo -n 'price-history' > ./database
+
 kubectl create secret generic galoy-price-history-postgres-creds \
   --from-file=./password \
-  --from-file=./username \
-  --from-file=./database
+  --from-literal=username=price-history \
+  --from-file=database=price-history
+
+kubectl create secret generic dropbox-access-token \
+  --from-literal=token=''
 
 kubectl create secret generic gcs-sa-key
 
@@ -751,8 +722,6 @@ kubectl create secret generic geetest-key
   --from-literal=key='dummy' \
   --from-literal=id='dummy'
 
-kubectl create secret generic dropbox-access-token \
-  --from-literal=token=''
 
 cd
 
@@ -763,7 +732,24 @@ bitcoind:
   port: 8332
 needFirebaseServiceAccount: false
 twilio: false
+devDisableMongoBackup: true
 " | tee galoyvalues.yaml
 
 helm install galoy -f galoyvalues.yaml galoy-repo/galoy
+```
+
+
+https://learnk8s.io/a/a-visual-guide-on-troubleshooting-kubernetes-deployments/troubleshooting-kubernetes.en_en.v2.pdf
+
+
+
+# Galoy with bitcoin and lnd on mainnet
+* [galoy.testnet.sh](galoy.testnet.sh)
+
+# Configure with terraform
+
+# install terraform
+curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+sudo apt-get update && sudo apt-get install terraform
 ```
