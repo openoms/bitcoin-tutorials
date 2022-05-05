@@ -66,6 +66,10 @@ bitcoind:
 needFirebaseServiceAccount: false
 twilio: false
 devDisableMongoBackup: true
+lnd1:
+  dns: lnd1.default.svc.cluster.local
+lnd2:
+  dns: lnd1.default.svc.cluster.local
 " | tee galoyvalues.yaml
 
 helm install galoy -f galoyvalues.yaml galoy-repo/galoy

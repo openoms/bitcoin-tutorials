@@ -35,6 +35,7 @@
 - [Secrets](#secrets)
   - [create](#create)
   - [Decode to view](#decode-to-view)
+  - [List](#list)
   - [Edit](#edit)
 - [Debug](#debug)
   - [Troubleshooting](#troubleshooting)
@@ -439,6 +440,25 @@ kubectl get secret galoy-price-history-postgres-creds -o jsonpath='{.data.passwo
 cat ~/test-secrets/galoy-price-history-postgres-creds/password
 ```
 
+## List
+```
+$ kubectl -n test get secret
+NAME                                 TYPE                                  DATA   AGE
+default-token-x5k8f                  kubernetes.io/service-account-token   3      22h
+bitcoind-rpcpassword                 Opaque                                1      22h
+network                              Opaque                                1      22h
+lnd1-credentials                     Opaque                                11     22h
+lnd1-token-lklww                     kubernetes.io/service-account-token   3      20h
+sh.helm.release.v1.lnd1.v1           helm.sh/release.v1                    1      20h
+lnd1-pass                            Opaque                                1      20h
+lnd1-pubkey                          Opaque                                1      22h
+galoy-price-history-postgres-creds   Opaque                                3      20h
+gcs-sa-key                           Opaque                                0      19h
+galoy-mongodb                        Opaque                                3      19h
+dropbox-access-token                 Opaque                                1      19h
+lnd2-credentials                     Opaque                                11     63s
+```
+
 ## Edit
 ```
 kubectl edit secrets
@@ -738,18 +758,36 @@ devDisableMongoBackup: true
 helm install galoy -f galoyvalues.yaml galoy-repo/galoy
 ```
 
-
 https://learnk8s.io/a/a-visual-guide-on-troubleshooting-kubernetes-deployments/troubleshooting-kubernetes.en_en.v2.pdf
-
 
 
 # Galoy with bitcoin and lnd on mainnet
 * [galoy.testnet.sh](galoy.testnet.sh)
 
 # Configure with terraform
-
+* https://github.com/GaloyMoney/charts/tree/main/dev
 # install terraform
 curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
 sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
 sudo apt-get update && sudo apt-get install terraform
 ```
+
+git clone https://github.com/openoms/charts
+cd charts
+git checkout -b mikrok8s
+cd testnet
+
+direnv allow
+
+terraform init
+
+make deploy-services
+make deploy
+
+
+helm uninstall lnd1 -n galoy-dev-bitcoin
+helm uninstall bitcoind -n galoy-dev-bitcoin
+helm uninstall monitoring -n galoy-dev-monitoring
+helm uninstall cert-manager -n  galoy-dev-ingress
+helm uninstall opentelemetry-collector -n galoy-dev-otel
+helm uninstall ingress-nginx -n galoy-dev-ingress

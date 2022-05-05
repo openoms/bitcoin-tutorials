@@ -50,7 +50,7 @@ lndmon:
   enabled: false
 " | tee tlndvalues.yaml
 ## install
-helm install lnd1 -f tlndvalues.yaml --namespace test galoy-repo/lnd --create-namespace 
+helm install lnd1 -f tlndvalues.yaml --namespace test galoy-repo/lnd --create-namespace
 
 ## save seed and unlock password
 mkdir -p ~/test-secrets/lnd
@@ -85,23 +85,99 @@ kubectl -n test  create secret generic gcs-sa-key
 # for galoy-pre-migration-backup-1
 kubectl -n test  create secret generic dropbox-access-token \
   --from-literal=token=''
-# kubectl create secret generic geetest-key
-#   --from-literal=key='dummy' \
-#   --from-literal=id='dummy'
+
+# Error: secret "geetest-key" not found
+
+kubectl -n test create secret generic geetest-key \
+  --from-literal=key='dummy' \
+  --from-literal=id='dummy'
+
+# copy lnd1-credential and pubkey to lnd2
+kubectl -n test get secret lnd1-credentials -o yaml | \
+ sed -r 's/lnd1/lnd2/g' | \
+ kubectl -n test apply -f -
+kubectl -n test get secret lnd1-pubkey -o yaml | \
+ sed -r 's/lnd1/lnd2/g' | \
+ kubectl -n test apply -f -
+
+# Error: secret "galoy-apollo-secret" not found
+kubectl -n test create secret generic galoy-apollo-secret \
+  --from-literal=key='test' \
+  --from-literal=id='test'
+# Error: secret "twilio-secret" not found
+kubectl -n test create secret generic twilio-secret \
+ --from-literal=TWILIO_PHONE_NUMBER="" \
+ --from-literal=TWILIO_ACCOUNT_SID="" \
+ --from-literal=TWILIO_AUTH_TOKEN=""
 
 cd
 
 # galoy
+# https://github.com/GaloyMoney/charts/blob/main/ci/testflight/galoy/testflight-values.yml
+# https://github.com/GaloyMoney/charts/blob/main/dev/galoy/galoy-values.yml
+# https://github.com/GaloyMoney/charts/blob/main/dev/galoy/main.tf#L196
 echo "\
 global:
   network: testnet
+
 galoy:
   name: 'Testnet Wallet'
+  test_accounts:
+  - phone:  '+59981730222'
+    code: '111111'
+    role: 'bankowner'
+    username: 'bankowner'
+  apollo:
+    playground: true
+
 bitcoind:
   port: 18332
+
+lnd1:
+  dns: lnd1-0.test.svc.cluster.local
+lnd2:
+  dns: lnd1-0.test.svc.cluster.local
+
+jwtSecret: 'my_non_secured_secret'
+
 needFirebaseServiceAccount: false
+
+mongodb:
+  architecture: standalone
+  volumePermissions:
+    enabled: true
+  persistence:
+    enabled: false
+  replicaCount: 1
+  metrics:
+    enabled: false
+  initDbScripts: {}
+
+redis:
+  volumePermissions:
+    enabled: true
+  replica:
+    replicaCount: 1
+  master:
+    persistence:
+      enabled: false
+  metrics:
+    enabled: false
+
+mongodbaddress: 'galoy-mongodb'
+
+cron: []
+
 twilio: false
+
+price:
+  service:
+    type: NodePort
+
 devDisableMongoBackup: true
+
+dealer_price:
+  host: dealer-price.test.svc.cluster.local
 " | tee tgaloyvalues.yaml
 
 helm install galoy -f tgaloyvalues.yaml -n test galoy-repo/galoy
@@ -123,14 +199,14 @@ if [ "$1" = off ]; then
   helm uninstall lnd1 --wait=false
   stop_terminated_pods
 
-# delete galoy storage
-for i in $(kubectl -n test get pvc | grep galoy | awk '{print $1}' ); do kubectl -n test delete pvc ${i}; done
+  # delete galoy storage
+  for i in $(kubectl -n test get pvc | grep galoy | awk '{print $1}' ); do kubectl -n test delete pvc ${i}; done
 
-# in filesystem (skip lnd)
-for i in $(sudo ls /var/snap/microk8s/common/default-storage/ | grep test | grep -v lnd ); do sudo rm -rf /var/snap/microk8s/common/default-storage/${i}; done
+  # in filesystem (skip lnd)
+  for i in $(sudo ls /var/snap/microk8s/common/default-storage/ | grep test | grep -v lnd ); do sudo rm -rf /var/snap/microk8s/common/default-storage/${i}; done
 
-# delete the manually generated secrets
-kubectl -n test delete secret galoy-mongodb
+  # delete the manually generated secrets
+  kubectl -n test delete secret galoy-mongodb
 
 
 fi
