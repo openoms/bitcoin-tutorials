@@ -1,0 +1,22 @@
+# /etc/systemd/system/ob-watcher.service
+[Unit]
+Description=ob-watcher
+
+[Service]
+WorkingDirectory=/home/joinmarket/joinmarket-clientserver/scripts/obwatch
+ExecStart=/bin/sh -c \
+'. /home/joinmarket/joinmarket-clientserver/jmvenv/bin/activate && python ob-watcher.py'
+User=joinmarket
+Group=joinmarket
+Type=simple
+TimeoutSec=600
+Restart=on-failure
+
+# Hardening measures
+PrivateTmp=true
+ProtectSystem=full
+NoNewPrivileges=true
+PrivateDevices=true
+
+[Install]
+WantedBy=multi-user.target
