@@ -3,7 +3,7 @@
 ## Create the snapshot, clone and mount
 ```
 # create snapshot of /mnt/hdd - fourdiskpool/hdd@hdd-snapshot
-zfs snap fourdiskpool/hdd@hdd-snapshot
+sudo zfs snap fourdiskpool/hdd@hdd-snapshot
 # display snapshots
 zfs list -t snap
 # clone snapshot (fourdiskpool/hdd/hdd-snapshot-clone)
@@ -15,8 +15,12 @@ zfs list
 sudo rm /mnt/hdd/hdd-snapshot-clone/bitcoin/.lock
 # delete bitcoin.conf
 sudo rm /mnt/hdd/hdd-snapshot-clone/bitcoin/bitcoin.conf
+```
 
-# sync (not reliable while the source bitcoind is running)
+## sync an existing snapshot
+```
+# make sure the source bitcoind is stopped
+# it is faster to just create a new snapshot
 sudo -u bitcoin rsync -v -r /mnt/hdd/bitcoin/blocks/ /mnt/hdd/hdd-snapshot-clone/bitcoin/blocks/
 sudo -u bitcoin rsync -v -r /mnt/hdd/bitcoin/chainstate/ /mnt/hdd/hdd-snapshot-clone/bitcoin/chainstate/
 ```
@@ -38,6 +42,7 @@ bitcoin-qt --listen=0 --server=0 --datadir=/mnt/hdd/hdd-snapshot-clone/bitcoin
 ```
 # choose the disk to be prepared
 lsblk
+# !! careful here to choose the right disk !!
 hdd=sde
 
 # create the filesystem and label
@@ -49,14 +54,15 @@ sudo mkfs.ext4 -F -L BLOCKCHAIN /dev/${hdd}1
 
 # mount
 sudo mount /dev/${hdd}1  /media/usb
-sudo mkdir /media/usb/bitcoin/
+sudo mkdir /media/usb/bitcoin
+sudo chown -R bitcoin:bitcoin /media/usb/bitcoin
 
 # work in tmux
 tmux
 cd /mnt/hdd/hdd-snapshot-clone/bitcoin/
-sudo cp -rv ./chainstate ./blocks ./indexes ./testnet3 /media/usb/bitcoin/
+sudo -u bitcoin cp -rv ./chainstate ./blocks ./indexes ./testnet3 /media/usb/bitcoin/
 
-# monitor disk load
+# monitor disk load in a split pane (CTRL+B, ")
 sudo iotop
 
 # remove disk
@@ -65,8 +71,10 @@ sudo umount /media/usb
 
 ## OFF
 ```
+zfs list
 # destroy the clone filesystem
 sudo zfs destroy fourdiskpool/hdd/hdd-snapshot-clone
 # destroy the snapshot
 sudo zfs destroy fourdiskpool/hdd@hdd-snapshot
+zfs list
 ```
