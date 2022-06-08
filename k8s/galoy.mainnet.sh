@@ -1,5 +1,5 @@
 # charts
-helm repo add galoy-repo https://github.com/GaloyMoney/charts
+helm repo add galoy-repo https://galoymoney.github.io/charts/
 
 # add the bitnami charts https://charts.bitnami.com/
 helm repo add bitnami https://charts.bitnami.com/bitnami

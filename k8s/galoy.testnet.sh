@@ -16,7 +16,7 @@ sudo systemctl restart tbitcoind
 ############
 
 ## charts
-helm repo add galoy-repo https://github.com/GaloyMoney/charts
+helm repo add galoy-repo https://galoymoney.github.io/charts/
 ## add the bitnami charts https://charts.bitnami.com/
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
@@ -207,7 +207,6 @@ if [ "$1" = off ]; then
 
   # delete the manually generated secrets
   kubectl -n test delete secret galoy-mongodb
-
 
 fi
 
