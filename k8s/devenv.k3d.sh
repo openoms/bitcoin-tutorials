@@ -2,10 +2,14 @@
 
 # dedicated user
 sudo adduser --disabled-password --gecos "" k3d
-
+sudo usermod -aG sudo k3d
 # aliases and fzf
-echo '/usr/share/doc/fzf/examples/key-bindings.bash' >> /home/k3d/.bashrc
-echo '/usr/share/doc/fzf/examples/completion.bash' >> /home/k3d/.bashrc
+echo '\
+/usr/share/doc/fzf/examples/key-bindings.bashrc
+/usr/share/doc/fzf/examples/completion.bash
+export KUBE_CONFIG_PATH=~/.kube/config' \
+ | sudo -u k3d tee -a /home/k3d/.bashrc
+
 echo "\
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
@@ -17,8 +21,8 @@ alias l='ls -CF'
 alias la='ls -A'
 alias ll='ls -alF'
 alias ls='ls --color=auto'
-alias tf='terraform'\
-" | sudo -u k3d tee -a /home/k3d/.bash_aliases
+alias tf='terraform'" \
+ | sudo -u k3d tee -a /home/k3d/.bash_aliases
 
 # kubectl
 kubectl_version="1.21.9"
@@ -41,13 +45,14 @@ sudo usermod -aG docker k3d
 wget -q -O - https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
 
 # starting the charts
-sudo -u k3d https://github.com/GaloyMoney/charts
+cd /home/k3d/
+sudo -u k3d git clone  https://github.com/GaloyMoney/charts
 cd /home/k3d/charts/dev
 
 sudo -u k3d direnv allow
 sudo -u k3d make create-cluster
 sudo -u k3d make init
-sudo -u k3d make deploy-services
+sudo -u k3d bash -c 'export KUBE_CONFIG_PATH=~/.kube/config; make deploy-services'
 sudo -u k3d make deploy
 
 
