@@ -1,5 +1,14 @@
-# notes to set up a local enviroment to run https://github.com/GaloyMoney/charts/tree/main/dev
+#!/bin/bash
 
+function help() {
+  echo "
+Script to set up a local enviroment to run https://github.com/GaloyMoney/charts/tree/main/dev
+Usage:
+devenv.k3d.sh [on|off]"
+  exit 1
+}
+
+function setup_devenv_k3d() {
 # dedicated user
 sudo adduser --disabled-password --gecos "" k3d
 sudo usermod -aG sudo k3d
@@ -38,6 +47,8 @@ wget https://bitcoincore.org/bin/bitcoin-core-${bitcoin_version}/bitcoin-${bitco
 
 # docker
 # https://docs.docker.com/desktop/linux/install/debian/
+curl -fsSL https://get.docker.com -o get-docker.sh
+sh get-docker.sh
 sudo groupadd docker
 sudo usermod -aG docker k3d
 
@@ -53,10 +64,20 @@ sudo -u k3d direnv allow
 sudo -u k3d make create-cluster
 sudo -u k3d make init
 sudo -u k3d bash -c 'export KUBE_CONFIG_PATH=~/.kube/config; make deploy-services'
-sudo -u k3d make deploy
+sudo -u k3d bash -c 'export KUBE_CONFIG_PATH=~/.kube/config; make deploy'
+}
 
+function delete_cluster() {
+  ## REMOVE
+  cd /home/k3d/charts/dev
+  make delete-cluster
+  # k3d cluster delete && rm terraform.tfstate
+}
 
-## REMOVE
-cd /home/k3d/charts/dev
-make delete-cluster
-# k3d cluster delete && rm terraform.tfstate
+if [ "$1" = "1" ] || [ "$1" = "on" ]; then
+  setup_devenv_k3d
+elif [ "$1" = "0" ] || [ "$1" = "off" ]; then
+  delete_cluster
+else
+  help
+fi
