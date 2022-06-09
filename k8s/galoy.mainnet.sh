@@ -7,7 +7,8 @@ helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
 
 # bitcoind
-helm install bitcoind galoy-repo/bitcoin
+helm show values galoy-repo/bitcoind
+helm install bitcoind galoy-repo/bitcoind
 
 # lnd
 echo "\
