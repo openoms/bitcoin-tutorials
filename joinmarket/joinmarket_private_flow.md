@@ -91,7 +91,7 @@ This document aims to provide an introduction to using JoinMarket, a decentraliz
   * <https://www.youtube.com/watch?v=hwmvZVQ4C4M&t=827s>
 * Discussed further in:
   * <https://gist.github.com/chris-belcher/7e92810f07328fdfdef2ce444aad0968>
-  * <https://joinmarket.me/blog/blog/the-445-btc-gridchain-case/>
+  * <https://reyify.com/blog/the-445-btc-gridchain-case#recommendations>
 
 ## Sending transactions manually and running the Yield Generator
 ### Deposit
