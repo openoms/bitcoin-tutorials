@@ -34,7 +34,7 @@ alias tf='terraform'" \
  | sudo -u k3d tee -a /home/k3d/.bash_aliases
 
 # kubectl
-kubectl_version="1.21.9"
+kubectl_version="1.24.1"
 curl -LO https://storage.googleapis.com/kubernetes-release/release/v${kubectl_version}/bin/linux/amd64/kubectl
 chmod +x ./kubectl
 sudo mv ./kubectl /usr/local/bin
