@@ -522,7 +522,17 @@ sysctl fs.inotify
 ```
 Fix:
 ```
-sudo sysctl fs.inotify.max_user_instances=512
+sudo sysctl -w fs.inotify.max_user_instances=1024
+
+sudo sysctl -w fs.inotify.max_user_watches=524288
+```
+
+To keep after reboot:
+```
+echo "\
+fs.inotify.max_user_instances=1024
+fs.inotify.max_user_watches=524288
+" | sudo tee -a /etc/sysctl.conf
 ```
 
 ## Free space without restart
