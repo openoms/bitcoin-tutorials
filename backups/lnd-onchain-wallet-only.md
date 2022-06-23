@@ -17,23 +17,32 @@ More on LND wallet recovery: <https://github.com/lightningnetwork/lnd/blob/maste
 LND seed format (different from Bip39 or Electrum): <https://github.com/lightningnetwork/lnd/tree/master/aezeed>  
 Test at https://guggero.github.io/cryptography-toolkit/#!/aezeed  
 
+Include the Node ID on all backup locations. It is derived from the bip32 root key (encoded by the Seed + Cypher Phrase) so can be used to identify the backup and test the successful recovery.
+Obtain the Node ID with
+```
+$ lncli getinfo | grep identity_pubkey
+```
+
 ---
 ## Full backup required to restore
 * Seed (24 words - split in two)
   * Seed words #1 - #12
   * Seed words #13 - #24
 * Cypher Phrase (aka passphrase)
-
+* Node ID (for verification)
 ---
 ## Packages for a 2-of-3 setup
 ### Location 1
+* Node ID
 * Seed words #1 - #12
 * Cypher Phrase
 
 ### Location 2
+* Node ID
 * Seed words #13 - #24
 * Cypher Phrase
 
 ### Location 3
+* Node ID
 * Seed words #1 - #12
 * Seed words #13 - #24
