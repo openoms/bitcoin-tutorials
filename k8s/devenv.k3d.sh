@@ -99,6 +99,14 @@ alias ll='ls -alF'
 alias ls='ls --color=auto'
 alias tf='terraform'" \
  | sudo -u k3d tee -a /home/k3d/.bash_aliases
+
+if [ "${cpu}" = arm64 ]; then
+  # https://code.pinske.eu/k3d-raspi.html
+  if ! grep "cgroup_memory=1 cgroup_enable=memory" < /boot/cmdline.txt; then
+    sudo sed -i s/$/ cgroup_memory=1 cgroup_enable=memory/ /boot/cmdline.txt
+    echo "# Will need to reboot to create a cluster successfully"
+  fi
+fi
 }
 
 function start_dev_charts() {
@@ -117,7 +125,7 @@ function start_dev_charts() {
 function delete_cluster() {
   ## REMOVE
   cd /home/k3d/charts/dev
-  make delete-cluster
+  sudo -u k3d make delete-cluster
   # k3d cluster delete && rm terraform.tfstate
 }
 
@@ -129,8 +137,3 @@ elif [ "$1" = "off" ]; then
 else
   help
 fi
-
-# RPi problems:
-# k -n galoy-dev-otel logs opentelemetry-collector-675b6bb545-ss4mc
-# standard_init_linux.go:228: exec user process caused: exec format error
-# https://github.com/GaloyMoney/galoy/pull/1209#issuecomment-1098095373
