@@ -60,7 +60,8 @@ sudo chown -R bitcoin:bitcoin /media/usb/bitcoin
 # work in tmux
 tmux
 cd /mnt/hdd/hdd-snapshot-clone/bitcoin/
-sudo -u bitcoin cp -rv ./chainstate ./blocks ./indexes ./testnet3 /media/usb/bitcoin/
+# use time to compare disks (see below)
+time sudo -u bitcoin cp -rv ./chainstate ./blocks ./indexes ./testnet3 /media/usb/bitcoin/
 
 # monitor disk load in a split pane (CTRL+B, ")
 sudo iotop
@@ -77,4 +78,17 @@ sudo zfs destroy fourdiskpool/hdd/hdd-snapshot-clone
 # destroy the snapshot
 sudo zfs destroy fourdiskpool/hdd@hdd-snapshot
 zfs list
+```
+
+# Measurements
+```
+WD Blue 1TB
+real    49m35.539s
+user    0m8.089s
+sys     15m20.593s
+
+Samsung 870 QVO 1TB
+real    113m42.488s
+user    0m8.947s
+sys     16m33.474s
 ```
