@@ -21,10 +21,10 @@ Tested environments:
 ## Automated setup
 * Issue: <https://github.com/rootzoll/raspiblitz/issues/2924>
 * PR: https://github.com/rootzoll/raspiblitz/pull/2966
-* Test the install script <https://github.com/openoms/raspiblitz/blob/fulcrum/home.admin/config.scripts/bonus.fulcrum.sh> :
+* Install script <https://github.com/rootzoll/raspiblitz/blob/dev/home.admin/config.scripts/bonus.fulcrum.sh> :
 ```
 # download
-wget -O bonus.fulcrum.sh https://raw.githubusercontent.com/openoms/raspiblitz/fulcrum/home.admin/config.scripts/bonus.fulcrum.sh
+wget -O bonus.fulcrum.sh https://raw.githubusercontent.com/rootzoll/raspiblitz/dev/home.admin/config.scripts/bonus.fulcrum.sh
 
 # check
 cat bonus.fulcrum.sh
@@ -85,22 +85,22 @@ elif [ $(uname -m) = "x86_64" ]; then
 fi
 
 # Download the prebuilt binary
-sudo -u fulcrum wget https://github.com/cculianu/Fulcrum/releases/download/v1.6.0/Fulcrum-1.6.0-${build}.tar.gz
-sudo -u fulcrum  wget https://github.com/cculianu/Fulcrum/releases/download/v1.6.0/Fulcrum-1.6.0-${build}.tar.gz.asc
-sudo -u fulcrum  wget https://github.com/cculianu/Fulcrum/releases/download/v1.6.0/Fulcrum-1.6.0-${build}.tar.gz.sha256sum
+sudo -u fulcrum wget https://github.com/cculianu/Fulcrum/releases/download/v1.7.0/Fulcrum-1.7.0-${build}.tar.gz
+sudo -u fulcrum  wget https://github.com/cculianu/Fulcrum/releases/download/v1.7.0/Fulcrum-1.7.0-${build}.tar.gz.asc
+sudo -u fulcrum  wget https://github.com/cculianu/Fulcrum/releases/download/v1.7.0/Fulcrum-1.7.0-${build}.tar.gz.sha256sum
 
 # Verify
 # Get the PGP key
 curl https://raw.githubusercontent.com/Electron-Cash/keys-n-hashes/master/pubkeys/calinkey.txt | sudo -u fulcrum gpg --import
 
 # Look for 'Good signature'
-sudo -u fulcrum  gpg --verify Fulcrum-1.6.0-${build}.tar.gz.asc
+sudo -u fulcrum  gpg --verify Fulcrum-1.7.0-${build}.tar.gz.asc
 
 # Look for 'OK'
-sudo -u fulcrum sha256sum -c Fulcrum-1.6.0-${build}.tar.gz.sha256sum
+sudo -u fulcrum sha256sum -c Fulcrum-1.7.0-${build}.tar.gz.sha256sum
 
 # Decompress
-sudo -u fulcrum tar -xvf Fulcrum-1.6.0-${build}.tar.gz
+sudo -u fulcrum tar -xvf Fulcrum-1.7.0-${build}.tar.gz
 
 # Create the database directory in /mnt/hdd/app-storage (on the disk)
 sudo mkdir -p /mnt/hdd/app-storage/fulcrum/db
@@ -132,15 +132,9 @@ bitcoind_timeout = 300
 bitcoind_clients = 1
 worker_threads = 1
 db_mem=1024
-
 # for 4GB RAM
 db_max_open_files=200
 fast-sync = 1024
-
-# for 8GB RAM
-#db_max_open_files=500
-#fast-sync = 2048
-
 # server connections
 # disable peer discovery and public server options
 peering = false
@@ -162,7 +156,7 @@ Description=Fulcrum
 After=network.target bitcoind.service
 
 [Service]
-ExecStart=/home/fulcrum/Fulcrum-1.6.0-${build}/Fulcrum /home/fulcrum/.fulcrum/fulcrum.conf
+ExecStart=/home/fulcrum/Fulcrum-1.7.0-${build}/Fulcrum /home/fulcrum/.fulcrum/fulcrum.conf
 User=fulcrum
 LimitNOFILE=8192
 TimeoutStopSec=30min
