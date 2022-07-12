@@ -11,12 +11,23 @@ Tested environments:
 
   * See RPi-specific settings under heading "Create a config file".
 
-### FAQ
-* Do I need to stop Electrs?
-
-  Don't really need to, Electrs (and also Fulcrum) are very light once synched.
+## FAQ
+### Do I need to stop Electrs?
+* Don't really need to, Electrs (and also Fulcrum) are very light once synched.
   Chugging through the 450GB transaction history poses the challenge for the RPi.
   Best is to stop all services you don't use, but testing is valuable in any circumstance.
+### Database corrupted
+* Received an error like:
+  ```
+  FATAL: Caught exception: It appears that Fulcrum was forcefully killed in the middle of committing a block to the db.
+  We cannot figure out where exactly in the update process Fulcrum was killed, so we cannot undo the inconsistent state caused by the unexpected shutdown. Sorry!
+  The database has been corrupted. Please delete the datadir and resynch to bitcoind.
+  ```
+* Delete the database and restart Fulcrum to start the sync from scratch
+  ```
+  sudo rm -rf /mnt/hdd/app-storage/fulcrum/db
+  sudo systemctl restart fulcrum
+  ```
 
 ## Automated setup
 * Issue: <https://github.com/rootzoll/raspiblitz/issues/2924>
@@ -312,7 +323,7 @@ sudo ufw deny 50021
 sudo ufw deny 50022
 
 # To remove the database directory
-# sudo rm -rf /mnt/hdd/app-storage/fulcrum
+# sudo rm -rf /mnt/hdd/app-storage/fulcrum/db
 ```
 
 ## Sources:
