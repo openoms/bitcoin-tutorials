@@ -22,21 +22,18 @@ echo "export EDITOR=$(which nano)" >> ~/.bashrc
 # tmuxinator config
 echo "\
 name: nokyc
-root: ~/
+root: ~/nokyc/
 
 windows:
   - nokyc:
-    layout: even-vertical
-    panes:
-    - buyeur:
-      - cd ~/_storage/dev/nokyc/
-      - while ./nokyc.py -f eur -t buy -d 5; do sleep 600; done
-    - buygbp:
-      - cd ~/nokyc
-      - while ./nokyc.py -f gbp -t buy -d 5; do sleep 600; done
-    - sellgbp:
-      - cd ~/nokyc/
-      - while ./nokyc.py -f gbp -t sell -d 5; do sleep 600; done
+      layout: even-vertical
+      panes:
+      - buyeur:
+        - while ./nokyc.py -f eur -t buy -d 5; do sleep 600; done
+      - buygbp:
+        - while ./nokyc.py -f gbp -t buy -d 5; do sleep 600; done
+      - sellgbp:
+        - while ./nokyc.py -f gbp -t sell -d 5; do sleep 600; done
 " | tee ~/.config/tmuxinator/nokyc.yml
 ```
 
