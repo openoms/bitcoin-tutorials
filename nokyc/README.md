@@ -14,6 +14,15 @@ git clone https://github.com/j4imefoo/nokyc
 cd nokyc
 pip install -r requirements.txt
 
+
+[DEFAULT]
+# Local port where tor is running. 9050 for tor daemon, 9150 for tor browser
+TOR_PORT = 9050
+
+# Payment methods to avoid. In lower case.
+avoid_methods = ["ripple", "litecoin", "ethereum", "satispay", "f2f", "paypal", "cardano", "hal-cash", "sepa_instant", "binance smart chain (bsc)", "amazon fr giftcard"]
+
+
 # install https://github.com/tmuxinator/tmuxinator
 sudo gem install tmuxinator
 sudo wget https://raw.githubusercontent.com/tmuxinator/tmuxinator/master/completion/tmuxinator.bash -O /etc/bash_completion.d/tmuxinator.bash
@@ -43,6 +52,4 @@ bash
 mux s nokyc
 ```
 ## Exit window
-```
-CTRL+B -> & , y
-```
+`CTRL+b` -> `&` -> `y`
