@@ -6,7 +6,7 @@ Using:
 
 ## Install
 ```
-sudo apt-get install tmux git rubygems -y
+sudo apt-get install -y git tor tmux rubygems
 
 cd
 git clone https://github.com/j4imefoo/nokyc
