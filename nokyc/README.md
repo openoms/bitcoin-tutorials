@@ -28,7 +28,7 @@ sudo wget https://raw.githubusercontent.com/tmuxinator/tmuxinator/master/complet
 echo "export EDITOR=$(which nano)" >> ~/.bashrc
 
 # tmuxinator config
-cat << EOF > ~/.config/tmuxinator/nokyceur.yml
+cat << EOF > ~/.config/tmuxinator/nokyc.yml
 name: nokyc
 root: ~/nokyc/
 
