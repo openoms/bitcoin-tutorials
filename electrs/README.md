@@ -163,7 +163,7 @@ Shared experiences:
 If you run into problems:
 * test the connection through the unencrypted local TCP port:  
     * On Windows use the shortcut target:  
-    `"C:\Program Files (x86)\Electrum\electrum-3.3.8.exe" --oneserver --server 192.168.X.X:50002:s`
+    `"C:\Program Files (x86)\Electrum\electrum-3.3.8.exe" --oneserver --server 192.168.X.X:50001:t`
     * On Linux use the command:  
     `$ electrum --oneserver --server RASPIBLITZ_IP:50001:t`
 * if after a reinstall Electrum would not connect delete the relevant old certificate on the desktop from:
