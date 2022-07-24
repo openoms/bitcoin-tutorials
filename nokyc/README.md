@@ -28,7 +28,7 @@ sudo wget https://raw.githubusercontent.com/tmuxinator/tmuxinator/master/complet
 echo "export EDITOR=$(which nano)" >> ~/.bashrc
 
 # tmuxinator config
-cat << EOF > ~/.config/tmuxinator/nokyc.yml
+cat << EOF > ~/.config/tmuxinator/nokyceur.yml
 name: nokyc
 root: ~/nokyc/
 
@@ -37,11 +37,11 @@ windows:
       layout: even-vertical
       panes:
       - selleur:
-        - while ./nokyc.py -f eur -t sell -d 5; do sleep 600; done
+        - while true; do ./nokyc.py -f eur -t sell -d 5; sleep 600; done
       - sellgbp:
-        - while ./nokyc.py -f gbp -t sell -d 5; do sleep 600; done
+        - while true; do ./nokyc.py -f gbp -t sell -d 5; sleep 600; done
       - buyeur:
-        - while ./nokyc.py -f eur -t buy -d 5; do sleep 600; done
+        - while true; do ./nokyc.py -f eur -t buy -d 5; sleep 600; done
 EOF
 ```
 
