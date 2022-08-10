@@ -59,7 +59,7 @@ Using SSH as an example, use any other name to be change the directory name.
 * SSH over Tor  
   in a Linux terminal use (set the custom port used for ssh):
   ```
-  torify ssh username@HiddenServiceAddress.onion:8080
+  torsocks ssh -p8080 username@HiddenServiceAddress.onion
   ```
 
 * If there is a website hosted on your .onion service use the [Tor Browser](https://www.torproject.org/) to open the address.
