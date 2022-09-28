@@ -8,6 +8,12 @@ devenv.k3d.sh [on|off]"
   exit 1
 }
 
+function clone_all_galoy() {
+  mkdir GaloyMoney && cd GaloyMoney
+  # clone all repos
+  curl -s https://api.github.com/users/GaloyMoney/repos | grep \"clone_url\" | awk '{print $2}' | sed -e 's/"//g' -e 's/,//g' | xargs -n1 git clone
+}
+
 function setup_devenv_k3d() {
   # dedicated user
   sudo adduser --disabled-password --gecos "" k3d
