@@ -57,3 +57,6 @@ cat bonus.SSL_for_RTL.sh
 bash bonus.SSL_for_RTL.sh
 ```
 
+## Resources
+
+* Virtual Hosts on nginx <https://gist.github.com/soheilhy/8b94347ff8336d971ad0>
