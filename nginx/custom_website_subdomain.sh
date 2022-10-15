@@ -28,6 +28,7 @@ sudo certbot certonly -a standalone -m $EMAIL --agree-tos \
 # add to /etc/nginx/sites-available/
 echo "\
 server {
+  listen 80;
   listen 443 ssl;
   server_name $SUBDOMAIN;
 

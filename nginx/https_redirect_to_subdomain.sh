@@ -30,6 +30,7 @@ sudo certbot certonly -a standalone -m $EMAIL --agree-tos \
 
 echo "\
 server {
+  listen 80;
   listen 443 ssl;
   server_name SUBDOMAIN;
   return 301  $REDIRECT;
