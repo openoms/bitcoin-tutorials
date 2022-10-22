@@ -117,7 +117,7 @@ stream {
                 server 127.0.0.1:50001;
         }
         server {
-                listen 50002 ssl;
+                listen 50002;
                 proxy_pass electrs;
                 ssl_certificate /etc/letsencrypt/live/$YOUR_DOMAIN/fullchain.pem;
                 ssl_certificate_key /etc/letsencrypt/live/$YOUR_DOMAIN/privkey.pem;
@@ -136,7 +136,7 @@ stream {
                 server 127.0.0.1:50001;
         }
         server {
-                listen 50002 ssl;
+                listen 50002;
                 proxy_pass electrs;
                 ssl_certificate /etc/letsencrypt/live/$YOUR_DOMAIN/fullchain.pem;
                 ssl_certificate_key /etc/letsencrypt/live/$YOUR_DOMAIN/privkey.pem;

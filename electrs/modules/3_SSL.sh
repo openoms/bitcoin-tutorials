@@ -84,7 +84,7 @@ stream {
                 server 127.0.0.1:50001;
         }
         server {
-                listen 50002 ssl;
+                listen 50002;
                 proxy_pass electrs;
                 ssl_certificate /etc/ssl/certs/localhost.crt;
                 ssl_certificate_key /etc/ssl/private/localhost.key;
@@ -103,7 +103,7 @@ stream {
                 server 127.0.0.1:50001;
         }
         server {
-                listen 50002 ssl;
+                listen 50002;
                 proxy_pass electrs;
                 ssl_certificate /etc/ssl/certs/localhost.crt;
                 ssl_certificate_key /etc/ssl/private/localhost.key;
