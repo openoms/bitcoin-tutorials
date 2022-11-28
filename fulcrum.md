@@ -1,4 +1,25 @@
+
+<!-- omit in toc -->
 # Fulcrum on a RaspiBlitz
+
+- [FAQ](#faq)
+  - [Do I need to stop Electrs?](#do-i-need-to-stop-electrs)
+  - [Database corrupted](#database-corrupted)
+- [Automated setup](#automated-setup)
+- [Manual setup](#manual-setup)
+  - [Prepare bitcoind](#prepare-bitcoind)
+  - [Prepare the system and directories](#prepare-the-system-and-directories)
+  - [Create a config file](#create-a-config-file)
+  - [Create a systemd service](#create-a-systemd-service)
+  - [Start](#start)
+  - [Monitor](#monitor)
+  - [Open the firewall](#open-the-firewall)
+  - [Set up SSL](#set-up-ssl)
+  - [Create a Tor .onion service](#create-a-tor-onion-service)
+  - [Remove the Fulcrum user and installation (not the database)](#remove-the-fulcrum-user-and-installation-not-the-database)
+- [Docker setup](#docker-setup)
+  - [Start the image](#start-the-image)
+- [Sources:](#sources)
 
 This is a rough overview, the guide is a work in progress.
 
@@ -10,7 +31,6 @@ Tested environments:
     First sync took 3 days.
 
   * See RPi-specific settings under heading "Create a config file".
-
 ## FAQ
 ### Do I need to stop Electrs?
 * Don't really need to, Electrs (and also Fulcrum) are very light once synched.
@@ -325,7 +345,44 @@ sudo ufw deny 50022
 # To remove the database directory
 # sudo rm -rf /mnt/hdd/app-storage/fulcrum/db
 ```
+## Docker setup
+The database persisted and serving on port 50025.
 
+Will mount the existing database from (can be any directory to sync new in < 10h on an SSD):
+```
+/mnt/hdd/hdd-snapshot-clone/app-storage/fulcrum/db
+```
+bitcoind is running on the localhost.
+
+Adapted config in the `./fulcrum.conf`
+```
+bitcoind = 127.0.0.1:8332
+rpcuser = RPCUSER
+rpcpassword = RPCPASSWORD
+bitcoind_timeout = 600
+bitcoind_clients = 1
+worker_threads = 1
+db_mem=1024
+db_max_open_files=200
+fast-sync = 1024
+peering = false
+announce = false
+tcp = 0.0.0.0:50025
+```
+
+### Start the image
+adapt the values as needed
+```
+docker image pull openoms/fulcrum:latest
+docker run \
+ --network="host" \
+ -p 50025:50025 \
+ -v "$(pwd)"/fulcrum.conf:/fulcrum.conf \
+ -v /mnt/hdd/hdd-snapshot-clone/app-storage/fulcrum/db:/db \
+ -e DATA_DIR=/db \
+ openoms/fulcrum \
+ Fulcrum /fulcrum.conf
+```
 ## Sources:
 * <https://github.com/cculianu/Fulcrum>
 * <https://sparrowwallet.com/docs/server-performance.html>
