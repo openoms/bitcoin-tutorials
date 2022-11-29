@@ -18,7 +18,9 @@
   - [Create a Tor .onion service](#create-a-tor-onion-service)
   - [Remove the Fulcrum user and installation (not the database)](#remove-the-fulcrum-user-and-installation-not-the-database)
 - [Docker setup](#docker-setup)
+  - [Generate TLS credentials](#generate-tls-credentials)
   - [Start the image](#start-the-image)
+  - [Docker compose snippet](#docker-compose-snippet)
 - [Sources:](#sources)
 
 This is a rough overview, the guide is a work in progress.
@@ -346,7 +348,7 @@ sudo ufw deny 50022
 # sudo rm -rf /mnt/hdd/app-storage/fulcrum/db
 ```
 ## Docker setup
-The database persisted and serving on port 50025.
+The database persisted and serving on ports tcp: 50025, ssl: 50027.
 
 Will mount the existing database from (can be any directory to sync new in < 10h on an SSD):
 ```
@@ -368,20 +370,46 @@ fast-sync = 1024
 peering = false
 announce = false
 tcp = 0.0.0.0:50025
+ssl = 0.0.0.0:50027
+```
+
+### Generate TLS credentials
+```
+openssl req -newkey rsa:2048 -sha256 -nodes -x509 -days 3650 -subj "/O=Fulcrum" -keyout "tls.key" -out "tls.cert"
 ```
 
 ### Start the image
 adapt the values as needed
 ```
-docker image pull openoms/fulcrum:latest
+docker image pull cculianu/fulcrum:latest
 docker run \
  --network="host" \
  -p 50025:50025 \
+ -p 50027:50027 \
  -v "$(pwd)"/fulcrum.conf:/fulcrum.conf \
+ -v "$(pwd)"/tls.key:/tls.key \
+ -v "$(pwd)"/tls.cert:/tls.cert \
  -v /mnt/hdd/hdd-snapshot-clone/app-storage/fulcrum/db:/db \
  -e DATA_DIR=/db \
+ -e SSL_CERTFILE=/tls.cert \
+ -e SSL_KEYFILE=/tls.key \
  openoms/fulcrum \
  Fulcrum /fulcrum.conf
+```
+### Docker compose snippet
+```
+  fulcrum:
+    image: cculianu/fulcrum:latest
+    depends_on: [bitcoind]
+    volumes:
+      - ${PWD}/fulcrum.conf:/fulcrum.conf
+      - ${PWD}/tls.key:/tls.key
+      - ${PWD}/tls.cert:/tls.cert
+    environment:
+      - DATA_DIR=/db
+      - SSL_CERTFILE=/tls.cert
+      - SSL_KEYFILE=/tls.key
+    command: [ "Fulcrum", "/fulcrum.conf" ]
 ```
 ## Sources:
 * <https://github.com/cculianu/Fulcrum>
