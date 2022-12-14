@@ -2,6 +2,7 @@
 # Kubernetes - Helm tips
 
 - [kubectl cheat sheet](#kubectl-cheat-sheet)
+- [helm debugging](#helm-debugging)
 - [Install microk8s and helm on Debian 11 - RaspiBlitz](#install-microk8s-and-helm-on-debian-11---raspiblitz)
   - [Install on a working raspiblitz system: install.microk8s.sh](#install-on-a-working-raspiblitz-system-installmicrok8ssh)
   - [install on pure Debian 11 (eg Digital Ocean)](#install-on-pure-debian-11-eg-digital-ocean)
@@ -69,6 +70,16 @@
 # kubectl cheat sheet
 * https://kubernetes.io/docs/reference/kubectl/cheatsheet/
 
+
+# helm debugging
+* in the chart directory run:
+```
+helm template loop .
+```
+* add the new values to be tested:
+```
+helm template loop . -f ../../dev/bitcoin/loop-values.yml 
+```
 
 # Install microk8s and helm on Debian 11 - RaspiBlitz
 
@@ -549,7 +560,7 @@ df -h
 # Find all opened file descriptors, grep deleted, StdError to /dev/null
 sudo find /proc/*/fd -ls 2> /dev/null | grep '(deleted)'
 # Find and truncate all deleted files, -p prompt before execute truncate
-sudo find /proc/*/fd -ls 2> /dev/null | awk '/deleted/ {print $11}' | xargs -p -n 1 sudo truncate -s 0
+sudo find /proc/*/fd -ls 2> /dev/null | awk '/deleted/ {print $11}' | xargs -n 1 sudo truncate -s 0
 df -h
 ```
 
