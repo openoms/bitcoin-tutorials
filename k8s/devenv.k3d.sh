@@ -4,7 +4,7 @@ function help() {
   echo "
 Script to set up a local enviroment to run https://github.com/GaloyMoney/charts/tree/main/dev
 Usage:
-devenv.k3d.sh [on|off]"
+devenv.k3d.sh [setup_devenv_k3d|start_dev_charts|delete_cluster]"
   exit 1
 }
 
@@ -36,38 +36,37 @@ function setup_devenv_k3d() {
     sudo mv ./kubectl /usr/local/bin
   fi
 
-
   # terraform
   if ! terraform version; then
-      if [ "${cpu}" = amd64 ]; then
-        if ! sudo apt install terraform; then
-          sudo apt-get install -y software-properties-common
-          curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
-          sudo apt-add-repository "deb [arch=$(dpkg --print-architecture)] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-          sudo apt-get update
-          sudo apt-get install -y terraform
-        fi
-      elif [ "${cpu}" = arm64 ]; then
-        # RPI
-        wget -O terraform_1.2.4_linux_arm64.zip https://releases.hashicorp.com/terraform/1.2.4/terraform_1.2.4_linux_arm64.zip || exit 1
-        wget https://releases.hashicorp.com/terraform/1.2.4/terraform_1.2.4_SHA256SUMS
-        sha256sum -c terraform_1.2.4_SHA256SUMS --ignore-missing || exit 1
-        wget https://releases.hashicorp.com/terraform/1.2.4/terraform_1.2.4_SHA256SUMS.sig || exit 1
-        gpg --verify terraform_1.2.4_SHA256SUMS.sig || exit 1
-        unzip terraform_1.2.4_linux_arm64.zip
-        sudo mv ./terraform /usr/local/bin/
-      fi
-  fi
-
-  # bitcoin
-  bitcoin_version="22.0"
-  if ! bitcoind --version; then
     if [ "${cpu}" = amd64 ]; then
-      wget https://bitcoincore.org/bin/bitcoin-core-${bitcoin_version}/bitcoin-${bitcoin_version}-x86_64-linux-gnu.tar.gz \
-        && tar -xvf bitcoin-${bitcoin_version}-x86_64-linux-gnu.tar.gz \
-        && sudo mv bitcoin-${bitcoin_version}/bin/* /usr/local/bin
+      if ! sudo apt install terraform; then
+        sudo apt-get install -y software-properties-common
+        curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+        sudo apt-add-repository "deb [arch=$(dpkg --print-architecture)] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+        sudo apt-get update
+        sudo apt-get install -y terraform
+      fi
+    elif [ "${cpu}" = arm64 ]; then
+      # RPI
+      wget -O terraform_1.2.4_linux_arm64.zip https://releases.hashicorp.com/terraform/1.2.4/terraform_1.2.4_linux_arm64.zip || exit 1
+      wget https://releases.hashicorp.com/terraform/1.2.4/terraform_1.2.4_SHA256SUMS
+      sha256sum -c terraform_1.2.4_SHA256SUMS --ignore-missing || exit 1
+      wget https://releases.hashicorp.com/terraform/1.2.4/terraform_1.2.4_SHA256SUMS.sig || exit 1
+      gpg --verify terraform_1.2.4_SHA256SUMS.sig || exit 1
+      unzip terraform_1.2.4_linux_arm64.zip
+      sudo mv ./terraform /usr/local/bin/
     fi
   fi
+
+  ## bitcoin
+  #bitcoin_version="22.0"
+  #if ! bitcoind --version; then
+  #  if [ "${cpu}" = amd64 ]; then
+  #    wget https://bitcoincore.org/bin/bitcoin-core-${bitcoin_version}/bitcoin-${bitcoin_version}-x86_64-linux-gnu.tar.gz \
+  #      && tar -xvf bitcoin-${bitcoin_version}-x86_64-linux-gnu.tar.gz \
+  #      && sudo mv bitcoin-${bitcoin_version}/bin/* /usr/local/bin
+  #  fi
+  #fi
 
   # docker
   if ! docker version; then
@@ -82,6 +81,15 @@ function setup_devenv_k3d() {
   fi
   sudo groupadd docker
   sudo usermod -aG docker k3d
+
+  if ! docker compose version; then
+    # docker compose
+    # https://docs.docker.com/compose/install/linux/
+    sudo apt-get install docker-compose-plugin
+    #sudo wget "https://github.com/docker/compose/releases/download/v2.14.1/docker-compose-linux-x86_64" -O /usr/libexec/docker/cli-plugins/docker-compose
+    #sudo chmod +x /usr/libexec/docker/cli-plugins/docker-compose
+    #PATH=$PATH:/usr/libexec/docker/cli-plugins
+  fi
 
   # k3d
   if ! k3d version; then
@@ -135,10 +143,11 @@ function delete_cluster() {
   # k3d cluster delete && rm terraform.tfstate
 }
 
-if [ "$1" = "on" ]; then
+if [ "$1" = "setup_devenv_k3d" ]; then
   setup_devenv_k3d
+elif [ "$1" = "start_dev_charts" ]; then
   start_dev_charts
-elif [ "$1" = "off" ]; then
+elif [ "$1" = "delete_cluster" ]; then
   delete_cluster
 else
   help
