@@ -1,10 +1,21 @@
 #!/bin/bash
 
+# wget https://raw.githubusercontent.com/openoms/bitcoin-tutorials/master/k8s/devenv.k3d.sh
+
+# versions:
+# https://github.com/GaloyMoney/galoy-infra/blob/main/ci/image/gcp/Dockerfile
+# https://github.com/GaloyMoney/galoy-infra/blob/main/modules/inception/gcp/bastion.tf
+
 function help() {
-  echo "
-Script to set up a local enviroment to run https://github.com/GaloyMoney/charts/tree/main/dev
+  echo "Script to set up a local environment to run https://github.com/GaloyMoney/charts/tree/main/dev
 Usage:
-devenv.k3d.sh [setup_devenv_k3d|start_dev_charts|delete_cluster]"
+devenv.k3d.sh [
+  clone_all_galoy
+  install_ssh_nosuspend
+  setup_devenv_k3d
+  start_dev_charts
+  delete_cluster
+  ]"
   exit 1
 }
 
@@ -14,6 +25,27 @@ function clone_all_galoy() {
   curl -s https://api.github.com/users/GaloyMoney/repos | grep \"clone_url\" | awk '{print $2}' | sed -e 's/"//g' -e 's/,//g' | xargs -n1 git clone
 }
 
+function install_ssh_nosuspend() {
+  # https://raspibolt.org/guide/raspberry-pi/security.html#fail2ban
+  sudo apt update
+  sudo apt install openssh-server -y
+  sudo systemctl status ssh
+  sudo ufw allow 22/tcp
+  sudo apt install fail2ban
+  # https://github.com/rootzoll/raspiblitz/blob/nosuspend/build_sdcard.sh#L279
+  sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
+  sudo mkdir /etc/systemd/sleep.conf.d
+  echo "[Sleep]
+AllowSuspend=no
+AllowHibernation=no
+AllowSuspendThenHibernate=no
+AllowHybridSleep=no" | sudo tee /etc/systemd/sleep.conf.d/nosuspend.conf
+  sudo mkdir /etc/systemd/logind.conf.d
+  echo "[Login]
+HandleLidSwitch=ignore
+HandleLidSwitchDocked=ignore" | sudo tee /etc/systemd/logind.conf.d/nosuspend.conf
+}
+
 function setup_devenv_k3d() {
   # dedicated user
   sudo adduser --disabled-password --gecos "" k3d
@@ -21,7 +53,7 @@ function setup_devenv_k3d() {
 
   # tools
   sudo apt update
-  sudo apt install -y git tmux gnupg unzip curl
+  sudo apt install -y git tmux gnupg unzip curl make htop
 
   # fzf
   sudo -u k3d sh -c 'git clone --depth 1 https://github.com/junegunn/fzf.git /home/k3d/.fzf; /home/k3d/.fzf/install --all'
@@ -29,7 +61,7 @@ function setup_devenv_k3d() {
   cpu=$(dpkg --print-architecture)
 
   # kubectl
-  if ! kubectl version; then
+  if ! kubectl version 2>/dev/null; then
     kubectl_version="1.24.1"
     curl -LO https://storage.googleapis.com/kubernetes-release/release/v${kubectl_version}/bin/linux/${cpu}/kubectl
     chmod +x ./kubectl
@@ -37,12 +69,12 @@ function setup_devenv_k3d() {
   fi
 
   # terraform
-  if ! terraform version; then
+  if ! terraform version 2>/dev/null; then
     if [ "${cpu}" = amd64 ]; then
       if ! sudo apt install terraform; then
         sudo apt-get install -y software-properties-common
         curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
-        sudo apt-add-repository "deb [arch=$(dpkg --print-architecture)] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+        sudo apt-add-repository -y "deb [arch=$(dpkg --print-architecture)] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
         sudo apt-get update
         sudo apt-get install -y terraform
       fi
@@ -59,7 +91,7 @@ function setup_devenv_k3d() {
   fi
 
   ## bitcoin
-  #bitcoin_version="22.0"
+  #bitcoin_version="23.0"
   #if ! bitcoind --version; then
   #  if [ "${cpu}" = amd64 ]; then
   #    wget https://bitcoincore.org/bin/bitcoin-core-${bitcoin_version}/bitcoin-${bitcoin_version}-x86_64-linux-gnu.tar.gz \
@@ -69,7 +101,7 @@ function setup_devenv_k3d() {
   #fi
 
   # docker
-  if ! docker version; then
+  if ! docker version 2>/dev/null; then
     # look for raspiblitz install script
     if [ -f /home/admin/config.scripts/blitz.docker.sh ]; then
       /home/admin/config.scripts/blitz.docker.sh on
@@ -82,7 +114,7 @@ function setup_devenv_k3d() {
   sudo groupadd docker
   sudo usermod -aG docker k3d
 
-  if ! docker compose version; then
+  if ! docker compose version 2>/dev/null; then
     # docker compose
     # https://docs.docker.com/compose/install/linux/
     sudo apt-get install docker-compose-plugin
@@ -91,8 +123,14 @@ function setup_devenv_k3d() {
     #PATH=$PATH:/usr/libexec/docker/cli-plugins
   fi
 
+  # helm
+  if ! helm version 2>/dev/null; then
+    # https://helm.sh/docs/intro/install/
+    curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+  fi
+
   # k3d
-  if ! k3d version; then
+  if ! k3d version 2>/dev/null; then
     wget -q -O - https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
   fi
 
@@ -120,6 +158,20 @@ if [ "${cpu}" = arm64 ]; then
     sudo sed -i s/$/ cgroup_memory=1 cgroup_enable=memory/ /boot/cmdline.txt
     echo "# Will need to reboot to create a cluster successfully"
   fi
+fi
+
+# ZFS # https://github.com/k3s-io/k3s/issues/1688#issuecomment-619570374
+if [ $(df -T /var/lib/docker | grep -c zfs) -gt 0 ]; then
+  zfs create -s -V 750GB rpool/ROOT/docker
+  mkfs.ext4 /dev/zvol/rpool/ROOT/docker
+  echo "/dev/zvol/rpool/ROOT/docker /var/lib/docker ext4 defaults 0 0" >> /etc/fstab
+  echo "# needs reboot"
+fi
+
+# swap # https://github.com/lightningnetwork/lnd/issues/3612#issuecomment-1399208499
+if [ $(cat /proc/swaps | wc -l) -lt 2 ]; then
+  sudo apt install zram-config
+  echo "# needs reboot"
 fi
 }
 
@@ -149,6 +201,10 @@ elif [ "$1" = "start_dev_charts" ]; then
   start_dev_charts
 elif [ "$1" = "delete_cluster" ]; then
   delete_cluster
+elif [ "$1" = "clone_all_galoy" ]; then
+  clone_all_galoy
+elif [ "$1" = "install_ssh_nosuspend" ]; then
+  install_ssh_nosuspend
 else
   help
 fi
