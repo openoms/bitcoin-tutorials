@@ -50,6 +50,10 @@ server {
   location / {
     proxy_pass      ${REDIRECT};
 
+    # For websockets
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection $http_connection;
+
     # from https://github.com/rootzoll/raspiblitz/blob/v1.9/home.admin/assets/nginx/snippets/ssl-proxy-params.conf
     proxy_redirect off;
     proxy_set_header Host $http_host;
