@@ -1,6 +1,17 @@
+<!-- omit from toc -->
 # Nginx scripts
 
-Lightning Payable VPS services:
+- [Lightning Payable VPS services](#lightning-payable-vps-services)
+- [Add a custom subdomain](#add-a-custom-subdomain)
+- [Snippets for NIP5, LNaddress and LNURLpay](#snippets-for-nip5-lnaddress-and-lnurlpay)
+- [CORS headers for ln-address](#cors-headers-for-ln-address)
+- [Add a subdomain for a Mempool instance](#add-a-subdomain-for-a-mempool-instance)
+- [Add subdomain for an Electrum Server](#add-subdomain-for-an-electrum-server)
+- [Set up SSL access for the Ride The Lightning web UI on the RaspiBlitz](#set-up-ssl-access-for-the-ride-the-lightning-web-ui-on-the-raspiblitz)
+- [Resources](#resources)
+
+
+## Lightning Payable VPS services
 * [host4coins.net](https://host4coins.net) - from $8/month - only email address is required
 * A long list of providers: <https://bitcoin-vps.com/#VPS-Europe>
 
@@ -16,6 +27,25 @@ cat custom_website_subdomain.sh
 
 bash custom_website_subdomain.sh
 ```
+
+## Snippets for NIP5, LNaddress and LNURLpay
+* [snippets](/nginx/nostr_lnaddress_snippets.conf)
+
+## CORS headers for ln-address
+
+* allow the `GET` `request_method` with these lines in `location / { }`
+```
+location / {
+
+    if ($request_method != 'GET') {
+        return 403;
+    }
+    add_header 'Access-Control-Allow-Origin' '*';
+
+}
+```
+
+* More info from https://enable-cors.org/server_nginx.html
 
 ## Add a subdomain for a Mempool instance
 
