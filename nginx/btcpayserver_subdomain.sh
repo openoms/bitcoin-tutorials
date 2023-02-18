@@ -32,7 +32,7 @@ cat EOF | sudo tee /etc/nginx/sites-available/${SUBDOMAIN}
 # sudo cat /etc/nginx/sites-enabled/${SUBDOMAIN}
 server {
   listen 80;
-  listen 443 ssl;
+  listen 443 ssl http2;
   server_name ${SUBDOMAIN};
 
   ssl_certificate /etc/letsencrypt/live/${SUBDOMAIN}/fullchain.pem;
