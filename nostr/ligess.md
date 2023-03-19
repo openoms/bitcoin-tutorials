@@ -28,8 +28,14 @@
   sudo -u ligess cp .env.example .env
   ```
 
+## Bootstrap the zapper node
+* generate a new private key at https://iris.to
+* save the hex private key for ligess
+* save the hex public key (for NIP-05)
+* keep the window open to add the NIP-05 identifier when ready
+
 ## Edit the .env config file with your info
-* 
+*
   ```
   sudo nano /home/ligess/ligess/.env
   ```
@@ -59,20 +65,19 @@
 
 
 # NIP05
-## create a json file called nostr.json with your username and hex pubkey
-* 
+## create a json file called nostr.json with your and the zapper username and hex pubkeys
+*
   ```
   sudo nano /var/www/html/.well-known/nostr.json
   ```
   ```
   {
     "names": {
-      "username1": "hex_public_key_1",
-      "username2": "hex_public_key_2",
+      "username": "hex_public_key_1",
+      "zapper": "hex_public_key_2"
     }
   }
   ```
-
 
 # SSL config
 ## Set up SSL for a (sub)domain
@@ -86,7 +91,7 @@
   sudo nginx -t && sudo systemctl restart nginx
   ```
 
-### NIP05
+### NIP-05
 *
   ```
   location /.well-known/nostr.json {
@@ -114,3 +119,7 @@
     }
   }
   ```
+
+## Finish
+* add the NIP-05 identifier and lightning address to your nostr profile
+* add the NIP-05 identifier to the zapper profile and broadcast it's relays publicly
