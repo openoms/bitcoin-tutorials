@@ -6,21 +6,18 @@
   - [Do I need to stop Electrs?](#do-i-need-to-stop-electrs)
   - [Database corrupted](#database-corrupted)
 - [Automated setup](#automated-setup)
-- [Manual setup](#manual-setup)
-  - [Prepare bitcoind](#prepare-bitcoind)
-  - [Prepare the system and directories](#prepare-the-system-and-directories)
+  - [Display the Tor address](#display-the-tor-address)
+  - [Restart](#restart)
+  - [Edit the config](#edit-the-config)
   - [Create a config file](#create-a-config-file)
   - [Create a systemd service](#create-a-systemd-service)
   - [Start](#start)
   - [Monitor](#monitor)
-  - [Open the firewall](#open-the-firewall)
   - [Set up SSL](#set-up-ssl)
   - [Create a Tor .onion service](#create-a-tor-onion-service)
   - [Remove the Fulcrum user and installation (not the database)](#remove-the-fulcrum-user-and-installation-not-the-database)
 - [Docker setup](#docker-setup)
   - [Generate TLS credentials](#generate-tls-credentials)
-  - [Start the image](#start-the-image)
-  - [Docker compose snippet](#docker-compose-snippet)
 - [Sources:](#sources)
 
 This is a rough overview, the guide is a work in progress.
@@ -54,151 +51,172 @@ Tested environments:
 ## Automated setup
 * Issue: <https://github.com/rootzoll/raspiblitz/issues/2924>
 * PR: https://github.com/rootzoll/raspiblitz/pull/2966
-* Install script <https://github.com/rootzoll/raspiblitz/blob/dev/home.admin/config.scripts/bonus.fulcrum.sh> :
-```
-# download
-wget -O bonus.fulcrum.sh https://raw.githubusercontent.com/rootzoll/raspiblitz/dev/home.admin/config.scripts/bonus.fulcrum.sh
+  * Install script <https://github.com/rootzoll/raspiblitz/blob/dev/home.admin/config.scripts/bonus.fulcrum.sh> :
+  ```
+  # download
+  wget -O bonus.fulcrum.sh https://raw.githubusercontent.com/rootzoll/raspiblitz/dev/home.admin/config.scripts/bonus.fulcrum.sh
 
-# check
-cat bonus.fulcrum.sh
+  # check
+  cat bonus.fulcrum.sh
 
-# run with debug
-bash -x bonus.fulcrum.sh on
-```
-* if running RaspiBlitz v1.7.2 the script is part of the image:
-```
-config.scripts/bonus.fulcrum.sh on
-```
+  # run with debug
+  bash -x bonus.fulcrum.sh on
+  ```
+* if running RaspiBlitz v1.7.2 and above the script is part of the image:
+  ```
+  config.scripts/bonus.fulcrum.sh on
+  ```
+### Display the Tor address
+* ```
+  sudo cat /mnt/hdd/tor/fulcrum/hostname
+  ```
+### Connect
+* TCP port 50021
+* SSL 50022
+* the IP address is your Raspiblitz IP
+* consider using Zerotier or Tailscale for remote connection though clearnet 
+
+### Monitor
+* ```
+  sudo journalctl -fu fulcrum
+  ```
+### Restart
+sudo systemctl restart fulcrum
+
+### Edit the config
+* ```
+  sudo nano /home/fulcrum/.fulcrum/fulcrum.conf
+  ```
 
 ## Manual setup
 
 ### Prepare bitcoind
 * To avoid errors like
-```
-503 (content): Work queue depth exceeded
-```
-set in the `/mnt/hdd/bitcoin/bitcoin.conf`:
-```
-txindex=1
-whitelist=download@127.0.0.1
-rpcworkqueue=512
-rpcthreads=128
-zmqpubhashblock=tcp://0.0.0.0:8433
-```
+  ```
+  503 (content): Work queue depth exceeded
+  ```
+  set in the `/mnt/hdd/bitcoin/bitcoin.conf`:
+  ```
+  txindex=1
+  whitelist=download@127.0.0.1
+  rpcworkqueue=512
+  rpcthreads=128
+  zmqpubhashblock=tcp://0.0.0.0:8433
+  ```
 
 * Restart bitcoind
-```
-sudo systemctl bitcoind restart
-```
+  ```
+  sudo systemctl bitcoind restart
+  ```
 * If the txindex was not built before WAIT until it finishes (takes ~7 hours).  
   Monitor the bitcoin `debug.log`).
-```
-sudo tail -n 100 -f /mnt/hdd/bitcoin/debug.log | grep txindex
-```
+  ```
+  sudo tail -n 100 -f /mnt/hdd/bitcoin/debug.log | grep txindex
+  ```
 
 ### Prepare the system and directories
 
-```
-# Create a dedicated user
-sudo adduser --disabled-password --gecos "" fulcrum
-cd /home/fulcrum
+* ```
+  # Create a dedicated user
+  sudo adduser --disabled-password --gecos "" fulcrum
+  cd /home/fulcrum
 
-# sudo -u fulcrum git clone https://github.com/cculianu/Fulcrum
-# cd fulcrum
+  # sudo -u fulcrum git clone https://github.com/cculianu/Fulcrum
+  # cd fulcrum
 
-# Install dependencies
-# sudo apt install -y libzmq3-dev
-sudo apt install -y libssl-dev # was needed on Debian Bullseye
+  # Install dependencies
+  # sudo apt install -y libzmq3-dev
+  sudo apt install -y libssl-dev # was needed on Debian Bullseye
 
-# Set the platform
-if [ $(uname -m) = "aarch64" ]; then
-  build="arm64-linux"
-elif [ $(uname -m) = "x86_64" ]; then
-  build="x86_64-linux-ub16"
-fi
+  # Set the platform
+  if [ $(uname -m) = "aarch64" ]; then
+    build="arm64-linux"
+  elif [ $(uname -m) = "x86_64" ]; then
+    build="x86_64-linux-ub16"
+  fi
 
-# Download the prebuilt binary
-sudo -u fulcrum wget https://github.com/cculianu/Fulcrum/releases/download/v1.7.0/Fulcrum-1.7.0-${build}.tar.gz
-sudo -u fulcrum  wget https://github.com/cculianu/Fulcrum/releases/download/v1.7.0/Fulcrum-1.7.0-${build}.tar.gz.asc
-sudo -u fulcrum  wget https://github.com/cculianu/Fulcrum/releases/download/v1.7.0/Fulcrum-1.7.0-${build}.tar.gz.sha256sum
+  # Download the prebuilt binary
+  sudo -u fulcrum wget https://github.com/cculianu/Fulcrum/releases/download/v1.7.0/Fulcrum-1.7.0-${build}.tar.gz
+  sudo -u fulcrum  wget https://github.com/cculianu/Fulcrum/releases/download/v1.7.0/Fulcrum-1.7.0-${build}.tar.gz.asc
+  sudo -u fulcrum  wget https://github.com/cculianu/Fulcrum/releases/download/v1.7.0/Fulcrum-1.7.0-${build}.tar.gz.sha256sum
 
-# Verify
-# Get the PGP key
-curl https://raw.githubusercontent.com/Electron-Cash/keys-n-hashes/master/pubkeys/calinkey.txt | sudo -u fulcrum gpg --import
+  # Verify
+  # Get the PGP key
+  curl https://raw.githubusercontent.com/Electron-Cash/keys-n-hashes/master/pubkeys/calinkey.txt | sudo -u fulcrum gpg --import
 
-# Look for 'Good signature'
-sudo -u fulcrum  gpg --verify Fulcrum-1.7.0-${build}.tar.gz.asc
+  # Look for 'Good signature'
+  sudo -u fulcrum  gpg --verify Fulcrum-1.7.0-${build}.tar.gz.asc
 
-# Look for 'OK'
-sudo -u fulcrum sha256sum -c Fulcrum-1.7.0-${build}.tar.gz.sha256sum
+  # Look for 'OK'
+  sudo -u fulcrum sha256sum -c Fulcrum-1.7.0-${build}.tar.gz.sha256sum
 
-# Decompress
-sudo -u fulcrum tar -xvf Fulcrum-1.7.0-${build}.tar.gz
+  # Decompress
+  sudo -u fulcrum tar -xvf Fulcrum-1.7.0-${build}.tar.gz
 
-# Create the database directory in /mnt/hdd/app-storage (on the disk)
-sudo mkdir -p /mnt/hdd/app-storage/fulcrum/db
-sudo chown -R fulcrum:fulcrum /mnt/hdd/app-storage/fulcrum
+  # Create the database directory in /mnt/hdd/app-storage (on the disk)
+  sudo mkdir -p /mnt/hdd/app-storage/fulcrum/db
+  sudo chown -R fulcrum:fulcrum /mnt/hdd/app-storage/fulcrum
 
-# Create a symlink to /home/fulcrum/.fulcrum
-sudo ln -s /mnt/hdd/app-storage/fulcrum /home/fulcrum/.fulcrum
-sudo chown -R fulcrum:fulcrum /home/fulcrum/.fulcrum
+  # Create a symlink to /home/fulcrum/.fulcrum
+  sudo ln -s /mnt/hdd/app-storage/fulcrum /home/fulcrum/.fulcrum
+  sudo chown -R fulcrum:fulcrum /home/fulcrum/.fulcrum
 
-```
+  ```
 
 ### Create a config file
 * <https://github.com/cculianu/Fulcrum/blob/master/doc/fulcrum-example-config.conf>
 * Can paste the this as a block to create the config file, but fill in the PASSWORD_B (Bitcoin Core RPC password):
-```
-PASSWORD_B="your-password-here"
-```
-```
-echo "\
-datadir = /home/fulcrum/.fulcrum/db
-bitcoind = 127.0.0.1:8332
-rpcuser = ${RPC_USER}
-rpcpassword = ${PASSWORD_B}
+  ```
+  PASSWORD_B="your-password-here"
+  ```
+  ```
+  echo "\
+  datadir = /home/fulcrum/.fulcrum/db
+  bitcoind = 127.0.0.1:8332
+  rpcuser = ${RPC_USER}
+  rpcpassword = ${PASSWORD_B}
 
-# RPi optimizations
-# avoid 'bitcoind request timed out'
-bitcoind_timeout = 300
-# reduce load (4 cores only)
-bitcoind_clients = 1
-worker_threads = 1
-db_mem=1024
-# for 4GB RAM
-db_max_open_files=200
-fast-sync = 1024
-# server connections
-# disable peer discovery and public server options
-peering = false
-announce = false
-tcp = 0.0.0.0:50021
-# ssl via nginx
-" | sudo -u fulcrum tee /home/fulcrum/.fulcrum/fulcrum.conf
-```
+  # RPi optimizations
+  # avoid 'bitcoind request timed out'
+  bitcoind_timeout = 300
+  # reduce load (4 cores only)
+  bitcoind_clients = 1
+  worker_threads = 1
+  db_mem=1024
+  # for 4GB RAM
+  db_max_open_files=200
+  fast-sync = 1024
+  # server connections
+  # disable peer discovery and public server options
+  peering = false
+  announce = false
+  tcp = 0.0.0.0:50021
+  # ssl via nginx
+  " | sudo -u fulcrum tee /home/fulcrum/.fulcrum/fulcrum.conf
+  ```
 * The ports 50021 and 50022 are used to not interfere with a possible Electrs or ElectrumX instance.
 * Note the different settings for 4 and 8 GB RAM
 * Edit afterwards with `sudo nano /home/fulcrum/.fulcrum/fulcrum.conf`
 
 ### Create a systemd service
 * Can paste this as a block to create the fulcrum.service file:
-```
-echo "\
-[Unit]
-Description=Fulcrum
-After=network.target bitcoind.service
+  ```
+  echo "\
+  [Unit]
+  Description=Fulcrum
+  After=network.target bitcoind.service
 
-[Service]
-ExecStart=/home/fulcrum/Fulcrum-1.7.0-${build}/Fulcrum /home/fulcrum/.fulcrum/fulcrum.conf
-User=fulcrum
-LimitNOFILE=8192
-TimeoutStopSec=30min
-Restart=on-failure
+  [Service]
+  ExecStart=/home/fulcrum/Fulcrum-1.7.0-${build}/Fulcrum /home/fulcrum/.fulcrum/fulcrum.conf
+  User=fulcrum
+  LimitNOFILE=8192
+  TimeoutStopSec=30min
+  Restart=on-failure
 
-[Install]
-WantedBy=multi-user.target
-" | sudo tee /etc/systemd/system/fulcrum.service
-```
+  [Install]
+  WantedBy=multi-user.target
+  " | sudo tee /etc/systemd/system/fulcrum.service
+  ```
 
 ### Start
 * Depending on the available RAM it is a good idea to keep at least 10GB swap:
@@ -206,211 +224,211 @@ WantedBy=multi-user.target
   can consider ZRAM:  
   <https://haydenjames.io/raspberry-pi-performance-add-zram-kernel-parameters/>  
   <https://github.com/rootzoll/raspiblitz/issues/2905>
-```
-sudo systemctl enable fulcrum
-sudo systemctl start fulcrum
-```
+  ```
+  sudo systemctl enable fulcrum
+  sudo systemctl start fulcrum
+  ```
 
 ### Monitor
-```
-sudo journalctl -fu fulcrum
-sudo systemctl status fulcrum
-```
+* ```
+  sudo journalctl -fu fulcrum
+  sudo systemctl status fulcrum
+  ```
 
 ### Open the firewall
-```
-sudo ufw allow 50021 comment 'Fulcrum TCP'
-sudo ufw allow 50022 comment 'Fulcrum SSL'
-```
+* ```
+  sudo ufw allow 50021 comment 'Fulcrum TCP'
+  sudo ufw allow 50022 comment 'Fulcrum SSL'
+  ```
 
 ### Set up SSL
 * Paste this code as a block to make Fulcrum available on the port 50022 with SSL ncryption through Nginx
-```
-cd /home/fulcrum/.fulcrum
-
-# Create a self signed SSL certificate
-sudo -u fulcrum openssl genrsa -out selfsigned.key 2048
-
-echo "\
-[req]
-prompt             = no
-default_bits       = 2048
-default_keyfile    = selfsigned.key
-distinguished_name = req_distinguished_name
-req_extensions     = req_ext
-x509_extensions    = v3_ca
-
-[req_distinguished_name]
-C = US
-ST = Texas
-L = Fulcrum
-O = RaspiBlitz
-CN = RaspiBlitz
-
-[req_ext]
-subjectAltName = @alt_names
-
-[v3_ca]
-subjectAltName = @alt_names
-
-[alt_names]
-DNS.1   = localhost
-DNS.2   = 127.0.0.1
-" | sudo -u fulcrum tee localhost.conf
-
-sudo -u fulcrum openssl req -new -x509 -sha256 -key selfsigned.key \
-    -out selfsigned.cert -days 3650 -config localhost.conf
-
-
-# Setting up the nginx.conf
-    isConfigured=$(sudo cat /etc/nginx/nginx.conf 2>/dev/null | grep -c 'upstream fulcrum')
-    if [ ${isConfigured} -gt 0 ]; then
-            echo "fulcrum is already configured with Nginx. To edit manually run \`sudo nano /etc/nginx/nginx.conf\`"
-
-    elif [ ${isConfigured} -eq 0 ]; then
-
-            isStream=$(sudo cat /etc/nginx/nginx.conf 2>/dev/null | grep -c 'stream {')
-            if [ ${isStream} -eq 0 ]; then
-
-            echo "
-stream {
-        upstream fulcrum {
-                server 127.0.0.1:50021;
-        }
-        server {
-                listen 50022 ssl;
-                proxy_pass fulcrum;
-                ssl_certificate /home/fulcrum/.fulcrum/selfsigned.cert;
-                ssl_certificate_key /home/fulcrum/.fulcrum/selfsigned.key;
-                ssl_session_cache shared:SSL-fulcrum:1m;
-                ssl_session_timeout 4h;
-                ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;
-                ssl_prefer_server_ciphers on;
-        }
-}" | sudo tee -a /etc/nginx/nginx.conf
-
-            elif [ ${isStream} -eq 1 ]; then
-                    sudo truncate -s-2 /etc/nginx/nginx.conf
-                    echo "
-        upstream fulcrum {
-                server 127.0.0.1:50021;
-        }
-        server {
-                listen 50022 ssl;
-                proxy_pass fulcrum;
-                ssl_certificate /home/fulcrum/.fulcrum/selfsigned.cert;
-                ssl_certificate_key /home/fulcrum/.fulcrum/selfsigned.key;
-                ssl_session_cache shared:SSL-fulcrum:1m;
-                ssl_session_timeout 4h;
-                ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;
-                ssl_prefer_server_ciphers on;
-        }
-}" | sudo tee -a /etc/nginx/nginx.conf
-
-            elif [ ${isStream} -gt 1 ]; then
-                    echo " Too many \`stream\` commands in nginx.conf. Please edit manually: \`sudo nano /etc/nginx/nginx.conf\` and retry"
-                    exit 1
-            fi
-    fi
-
-# Test nginx
-sudo nginx -t
-
-# Restart nginx
-sudo systemctl restart nginx
-```
-
-### Create a Tor .onion service
-* On RaspiBlitz v1.7.2 run:
   ```
-  /home/admin/config.scripts/tor.onion-service.sh fulcrum 50021 50021 50022 50022
+  cd /home/fulcrum/.fulcrum
+
+  # Create a self signed SSL certificate
+  sudo -u fulcrum openssl genrsa -out selfsigned.key 2048
+
+  echo "\
+  [req]
+  prompt             = no
+  default_bits       = 2048
+  default_keyfile    = selfsigned.key
+  distinguished_name = req_distinguished_name
+  req_extensions     = req_ext
+  x509_extensions    = v3_ca
+
+  [req_distinguished_name]
+  C = US
+  ST = Texas
+  L = Fulcrum
+  O = RaspiBlitz
+  CN = RaspiBlitz
+
+  [req_ext]
+  subjectAltName = @alt_names
+
+  [v3_ca]
+  subjectAltName = @alt_names
+
+  [alt_names]
+  DNS.1   = localhost
+  DNS.2   = 127.0.0.1
+  " | sudo -u fulcrum tee localhost.conf
+
+  sudo -u fulcrum openssl req -new -x509 -sha256 -key selfsigned.key \
+      -out selfsigned.cert -days 3650 -config localhost.conf
+
+
+  # Setting up the nginx.conf
+      isConfigured=$(sudo cat /etc/nginx/nginx.conf 2>/dev/null | grep -c 'upstream fulcrum')
+      if [ ${isConfigured} -gt 0 ]; then
+              echo "fulcrum is already configured with Nginx. To edit manually run \`sudo nano /etc/nginx/nginx.conf\`"
+
+      elif [ ${isConfigured} -eq 0 ]; then
+
+              isStream=$(sudo cat /etc/nginx/nginx.conf 2>/dev/null | grep -c 'stream {')
+              if [ ${isStream} -eq 0 ]; then
+
+              echo "
+  stream {
+          upstream fulcrum {
+                  server 127.0.0.1:50021;
+          }
+          server {
+                  listen 50022 ssl;
+                  proxy_pass fulcrum;
+                  ssl_certificate /home/fulcrum/.fulcrum/selfsigned.cert;
+                  ssl_certificate_key /home/fulcrum/.fulcrum/selfsigned.key;
+                  ssl_session_cache shared:SSL-fulcrum:1m;
+                  ssl_session_timeout 4h;
+                  ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;
+                  ssl_prefer_server_ciphers on;
+          }
+  }" | sudo tee -a /etc/nginx/nginx.conf
+
+              elif [ ${isStream} -eq 1 ]; then
+                      sudo truncate -s-2 /etc/nginx/nginx.conf
+                      echo "
+          upstream fulcrum {
+                  server 127.0.0.1:50021;
+          }
+          server {
+                  listen 50022 ssl;
+                  proxy_pass fulcrum;
+                  ssl_certificate /home/fulcrum/.fulcrum/selfsigned.cert;
+                  ssl_certificate_key /home/fulcrum/.fulcrum/selfsigned.key;
+                  ssl_session_cache shared:SSL-fulcrum:1m;
+                  ssl_session_timeout 4h;
+                  ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;
+                  ssl_prefer_server_ciphers on;
+          }
+  }" | sudo tee -a /etc/nginx/nginx.conf
+
+              elif [ ${isStream} -gt 1 ]; then
+                      echo " Too many \`stream\` commands in nginx.conf. Please edit manually: \`sudo nano /etc/nginx/nginx.conf\` and retry"
+                      exit 1
+              fi
+      fi
+
+  # Test nginx
+  sudo nginx -t
+
+  # Restart nginx
+  sudo systemctl restart nginx
   ```
-* Previous versions:
+
+  ### Create a Tor .onion service
+  * On RaspiBlitz v1.7.2 run:
+    ```
+    /home/admin/config.scripts/tor.onion-service.sh fulcrum 50021 50021 50022 50022
+    ```
+  * Previous versions:
+    ```
+    /home/admin/config.scripts/network.hiddenservice.sh fulcrum 50021 50021 50022 50022
+    ```
+  * To set up manually see the guide [here](tor_hidden_service_example.md).
+
+  ### Remove the Fulcrum user and installation (not the database)
   ```
-  /home/admin/config.scripts/network.hiddenservice.sh fulcrum 50021 50021 50022 50022
+  sudo systemctl disable fulcrum
+  sudo systemctl stop fulcrum
+  sudo userdel -rf fulcrum
+
+  # Remove Tor service
+  /home/admin/config.scripts/tor.onion-service.sh off electrs
+
+  # Close ports on firewall
+  sudo ufw deny 50021
+  sudo ufw deny 50022
+
+  # To remove the database directory
+  # sudo rm -rf /mnt/hdd/app-storage/fulcrum/db
   ```
-* To set up manually see the guide [here](tor_hidden_service_example.md).
+  ## Docker setup
+  The database persisted and serving on ports tcp: 50025, ssl: 50027.
 
-### Remove the Fulcrum user and installation (not the database)
-```
-sudo systemctl disable fulcrum
-sudo systemctl stop fulcrum
-sudo userdel -rf fulcrum
+  Will mount the existing database from (can be any directory to sync new in < 10h on an SSD):
+  ```
+  /mnt/hdd/hdd-snapshot-clone/app-storage/fulcrum/db
+  ```
+  bitcoind is running on the localhost.
 
-# Remove Tor service
-/home/admin/config.scripts/tor.onion-service.sh off electrs
-
-# Close ports on firewall
-sudo ufw deny 50021
-sudo ufw deny 50022
-
-# To remove the database directory
-# sudo rm -rf /mnt/hdd/app-storage/fulcrum/db
-```
-## Docker setup
-The database persisted and serving on ports tcp: 50025, ssl: 50027.
-
-Will mount the existing database from (can be any directory to sync new in < 10h on an SSD):
-```
-/mnt/hdd/hdd-snapshot-clone/app-storage/fulcrum/db
-```
-bitcoind is running on the localhost.
-
-Adapted config in the `./fulcrum.conf`
-```
-bitcoind = 127.0.0.1:8332
-rpcuser = RPCUSER
-rpcpassword = RPCPASSWORD
-bitcoind_timeout = 600
-bitcoind_clients = 1
-worker_threads = 1
-db_mem=1024
-db_max_open_files=200
-fast-sync = 1024
-peering = false
-announce = false
-tcp = 0.0.0.0:50025
-ssl = 0.0.0.0:50027
-```
+  Adapted config in the `./fulcrum.conf`
+  ```
+  bitcoind = 127.0.0.1:8332
+  rpcuser = RPCUSER
+  rpcpassword = RPCPASSWORD
+  bitcoind_timeout = 600
+  bitcoind_clients = 1
+  worker_threads = 1
+  db_mem=1024
+  db_max_open_files=200
+  fast-sync = 1024
+  peering = false
+  announce = false
+  tcp = 0.0.0.0:50025
+  ssl = 0.0.0.0:50027
+  ```
 
 ### Generate TLS credentials
-```
-openssl req -newkey rsa:2048 -sha256 -nodes -x509 -days 3650 -subj "/O=Fulcrum" -keyout "tls.key" -out "tls.cert"
-```
+* ```
+  openssl req -newkey rsa:2048 -sha256 -nodes -x509 -days 3650 -subj "/O=Fulcrum" -keyout "tls.key" -out "tls.cert"
+  ```
 
 ### Start the image
-adapt the values as needed
-```
-docker image pull cculianu/fulcrum:latest
-docker run \
- --network="host" \
- -p 50025:50025 \
- -p 50027:50027 \
- -v "$(pwd)"/fulcrum.conf:/fulcrum.conf \
- -v "$(pwd)"/tls.key:/tls.key \
- -v "$(pwd)"/tls.cert:/tls.cert \
- -v /mnt/hdd/hdd-snapshot-clone/app-storage/fulcrum/db:/db \
- -e DATA_DIR=/db \
- -e SSL_CERTFILE=/tls.cert \
- -e SSL_KEYFILE=/tls.key \
- openoms/fulcrum \
- Fulcrum /fulcrum.conf
-```
+* adapt the values as needed
+  ```
+  docker image pull cculianu/fulcrum:latest
+  docker run \
+  --network="host" \
+  -p 50025:50025 \
+  -p 50027:50027 \
+  -v "$(pwd)"/fulcrum.conf:/fulcrum.conf \
+  -v "$(pwd)"/tls.key:/tls.key \
+  -v "$(pwd)"/tls.cert:/tls.cert \
+  -v /mnt/hdd/hdd-snapshot-clone/app-storage/fulcrum/db:/db \
+  -e DATA_DIR=/db \
+  -e SSL_CERTFILE=/tls.cert \
+  -e SSL_KEYFILE=/tls.key \
+  openoms/fulcrum \
+  Fulcrum /fulcrum.conf
+  ```
 ### Docker compose snippet
-```
-  fulcrum:
-    image: cculianu/fulcrum:latest
-    depends_on: [bitcoind]
-    volumes:
-      - ${PWD}/fulcrum.conf:/fulcrum.conf
-      - ${PWD}/tls.key:/tls.key
-      - ${PWD}/tls.cert:/tls.cert
-    environment:
-      - DATA_DIR=/db
-      - SSL_CERTFILE=/tls.cert
-      - SSL_KEYFILE=/tls.key
-    command: [ "Fulcrum", "/fulcrum.conf" ]
-```
+* ```
+    fulcrum:
+      image: cculianu/fulcrum:latest
+      depends_on: [bitcoind]
+      volumes:
+        - ${PWD}/fulcrum.conf:/fulcrum.conf
+        - ${PWD}/tls.key:/tls.key
+        - ${PWD}/tls.cert:/tls.cert
+      environment:
+        - DATA_DIR=/db
+        - SSL_CERTFILE=/tls.cert
+        - SSL_KEYFILE=/tls.key
+      command: [ "Fulcrum", "/fulcrum.conf" ]
+  ```
 ## Sources:
 * <https://github.com/cculianu/Fulcrum>
 * <https://sparrowwallet.com/docs/server-performance.html>
