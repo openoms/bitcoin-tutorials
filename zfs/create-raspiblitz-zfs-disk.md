@@ -1,8 +1,6 @@
 # Create a ZFS pool to be used as a Raspiblitz disk
 
 ## Documentation
-* https://openzfs.github.io/openzfs-docs/Getting%20Started/Debian/Debian%20Bullseye%20Root%20on%20ZFS.html
-* https://github.com/rootzoll/raspiblitz/issues/3590
 ```
 man zpool create
 man zpool-features
@@ -10,12 +8,26 @@ man zfsprops
 man zfs-load-key
 ```
 
-# Install ZFS and create a pool
+## Install ZFS
+* https://openzfs.github.io/openzfs-docs/Getting%20Started/Debian/index.html#installation
 ```
 # work as root
 sudo su -
-apt install zfsutils-linux
 
+echo "deb http://deb.debian.org/debian bullseye-backports main contrib" | sudo tee -a /etc/apt/sources.list.d/bullseye-backports.list
+echo "deb-src http://deb.debian.org/debian bullseye-backports main contrib" | sudo tee -a /etc/apt/sources.list.d/bullseye-backports.list
+
+echo "Package: src:zfs-linux" | sudo tee -a /etc/apt/preferences.d/90_zfs
+echo "Pin: release n=bullseye-backports" | sudo tee -a /etc/apt/preferences.d/90_zfs
+echo "Pin-Priority: 990" | sudo tee -a /etc/apt/preferences.d/90_zfs
+
+apt update
+apt install -y dpkg-dev linux-headers-generic linux-image-generic
+apt install -y zfs-dkms zfsutils-linux
+```
+
+## Create a pool
+```
 # create encryption key
 dd if=/dev/urandom of=/root/.zpoolraw.key bs=32 count=1
 chmod 400 /root/.zpoolraw.key
