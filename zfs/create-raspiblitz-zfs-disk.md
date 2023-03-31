@@ -23,10 +23,13 @@ echo "Pin-Priority: 990" | sudo tee -a /etc/apt/preferences.d/90_zfs
 
 apt update
 apt install -y dpkg-dev linux-headers-generic linux-image-generic
+# might need to reboot here if the headers are updated
 apt install -y zfs-dkms zfsutils-linux
+# test
+zpool status
 ```
 
-## Create a pool
+## Preparation
 ```
 # create encryption key
 dd if=/dev/urandom of=/root/.zpoolraw.key bs=32 count=1
@@ -50,8 +53,33 @@ sgdisk --zap-all $DISK2
 sgdisk --zap-all $DISK1
 sgdisk --zap-all $DISK2
 
-# create pool with two disk pair mirrored, see the last line and edit to your setup:
-# mirror $DISK1 $DISK3 mirror $DISK2 $DISK4
+# Clean a disk which was previously used with zfs:
+wipefs -a $DISK
+```
+
+## Creata a pool
+* see for the basic options
+```
+man zpoolconcepts
+```
+### Examples 
+* edit the last line of the `zpool create` command
+* the pool is named `fourdiskpool` - can change this 
+* for 4 disks - 2 pairs mirrored:
+    ```
+    mirror $DISK1 $DISK3 mirror $DISK2 $DISK4
+    ```
+* for 2 disks - 1 pair mirrored:
+    ```
+    mirror $DISK1 $DISK2
+    ```
+* for single data disk (can be extended to be a mirror later with `zpool attach`)
+    ```
+    $DISK1
+    ```
+
+
+```
 zpool create \
     -o cachefile=/etc/zfs/zpool.cache \
     -o ashift=12 -d \
@@ -72,43 +100,60 @@ zpool create \
     -o feature@zpool_checkpoint=enabled \
     -O acltype=posixacl -O canmount=off -O compression=lz4 \
     -O devices=off -O normalization=formD -O relatime=on -O xattr=sa \
-    -O mountpoint=/mnt \
     -O encryption=on \
     -O keyformat=raw -O keylocation=file:///root/.zpoolraw.key \
-    mirrorpool mirror $DISK1 $DISK3 # mirror $DISK2 $DISK4
+    fourdiskpool \
+    mirror $DISK1 $DISK3 mirror $DISK2 $DISK4
 
 # check
 zpool status
 zpool list
+```
 
-# create a dataset name hdd (so it can be mounted as /mnt/hdd)
-zfs create zpool/hdd
+### Mount to /mnt/hdd
+```
+# create a dataset named hdd (so it can be mounted as /mnt/hdd)
+zfs create fourdiskpool/hdd
+
+# mount a ZFS dataset to /mnt/hdd
+zfs set mountpoint=/mnt fourdiskpool
+zfs load-key -a
+zfs mount -la
+
 # check
 zfs list
 df -h
 
-# Mount a ZFS dataset to `/mnt/hdd`:
-zfs create zpool/hdd
-zfs mount zpool/hdd /mnt
-
-#or change an existing mountpoint for a whole pool:
-sudo zfs set mountpoint=/mnt/hdd POOL1
-
-# to automount:
-echo "\
-[Service]
-ExecStartPre=/sbin/zfs load-key -a
-ExecStartPre=/sbin/zfs mount -la
-" | sudo tee /etc/systemd/system/bootstrap.service.d/zfsautomount.conf
-
-# or in cron:
+# automount with cron
 cronjob="@reboot sudo /sbin/zfs load-key -a; sudo /sbin/zfs mount -la"
 (
     crontab -u admin -l
     echo "$cronjob"
 ) | crontab -u admin -
+
+# list the active crontab for admin
+crontab -u admin -l
 ```
 
+
+## Attach a new disk to an existing pool
+* can create a single zfs disk to mirror or a two-way mirror to a three-way mirror
+```
+# choose the existing disk from:
+zpool status
+EXISTING_DISK=<existing-disk-id>
+
+# choose the new disk id from:
+lsblk --scsi
+ls -la /dev/disk/by-id
+NEW_DISK=/dev/disk/by-id/ata-<new-disk-id>
+
+# attach the new disk
+zpool attach $EXISTING_DISK $NEW_DISK
+
+# check - shoudl start to resilver as the new disk is added
+zpool status
+```
 
 ## ZFS encryption key operations
 ```
@@ -150,9 +195,12 @@ zpool import -a
 sudo /sbin/zfs load-key -a
 sudo /sbin/zfs mount -la
 
+# automount with cron
 cronjob="@reboot sudo /sbin/zfs load-key -a; sudo /sbin/zfs mount -la"
 (
     crontab -u admin -l
     echo "$cronjob"
 ) | crontab -u admin -
+# list the active crontab for admin
+crontab -u admin -l
 ```
