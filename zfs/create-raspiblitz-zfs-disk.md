@@ -1,6 +1,7 @@
 <!-- omit from toc -->
 # Create a ZFS pool to be used as a Raspiblitz data disk
 
+- [Raspiblitz setup notes](#raspiblitz-setup-notes)
 - [Install ZFS](#install-zfs)
 - [Create the encryption key](#create-the-encryption-key)
 - [Create a pool](#create-a-pool)
@@ -12,6 +13,12 @@
 - [Temperature monitoring](#temperature-monitoring)
 - [Import an existing ZFS pool](#import-an-existing-zfs-pool)
 - [Documentation](#documentation)
+
+## Raspiblitz setup notes
+* Prebuilt OS disk images for amd64: https://github.com/rootzoll/raspiblitz/tree/dev/ci#images-generated-in-github-actions
+* you can start with the single EXT4 data disk as default and switch to ZFS later with by adding a new disk, set up ZFS and mounts and copy the data
+* if you start with ZFS it is the easiest to do it before the initial setup - before the EXT4 data disk is created and mounted
+
 
 ## Install ZFS
 * https://openzfs.github.io/openzfs-docs/Getting%20Started/Debian/index.html#installation
