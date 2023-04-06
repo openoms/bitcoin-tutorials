@@ -15,10 +15,9 @@
 - [Documentation](#documentation)
 
 ## Raspiblitz setup notes
-* Prebuilt OS disk images for amd64: https://github.com/rootzoll/raspiblitz/tree/dev/ci#images-generated-in-github-actions
-* you can start with the single EXT4 data disk as default and switch to ZFS later with by adding a new disk, set up ZFS and mounts and copy the data
-* if you start with ZFS it is the easiest to do it before the initial setup - before the EXT4 data disk is created and mounted
-
+* to start with ZFS build the data disk during the initial setup - before the EXT4 data disk is created and mounted (this happens after running the build_sdcard.sh and rebooting or using the prebuilt image on the first boot)
+* prebuilt OS disk images for amd64: https://github.com/rootzoll/raspiblitz/tree/dev/ci#images-generated-in-github-actions
+* you can start with the single EXT4 data disk as default and switch to ZFS later by adding a new disk, set up ZFS, mount, automount and copy the data
 
 ## Install ZFS
 * https://openzfs.github.io/openzfs-docs/Getting%20Started/Debian/index.html#installation
