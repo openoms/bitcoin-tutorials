@@ -43,7 +43,7 @@ bitcoin-qt --listen=0 --server=0 --datadir=/mnt/hdd/hdd-snapshot-clone/bitcoin
 # choose the disk to be prepared
 lsblk
 # !! careful here to choose the right disk !!
-hdd=sde
+hdd=sdf
 
 # create the filesystem and label
 # sudo /home/admin/config.scripts/blitz.datadrive.sh format ext4 /dev/${hdd}
@@ -56,6 +56,10 @@ sudo mkfs.ext4 -F -L BLOCKCHAIN /dev/${hdd}1
 sudo mount /dev/${hdd}1  /media/usb
 sudo mkdir /media/usb/bitcoin
 sudo chown -R bitcoin:bitcoin /media/usb/bitcoin
+
+## to delete an old chain
+#cd /media/usb/bitcoin/
+#sudo rm -r ./chainstate ./blocks ./indexes ./testnet3
 
 # work in tmux
 tmux
@@ -91,4 +95,9 @@ Samsung 870 QVO 1TB
 real    113m42.488s
 user    0m8.947s
 sys     16m33.474s
+
+Samsung 870 EVO 1TB
+real    53m11.247s
+user    0m9.899s
+sys     17m36.942s
 ```

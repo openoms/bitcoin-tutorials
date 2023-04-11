@@ -12,6 +12,7 @@
 - [ZFS encryption key operations](#zfs-encryption-key-operations)
 - [Temperature monitoring](#temperature-monitoring)
 - [Import an existing ZFS pool](#import-an-existing-zfs-pool)
+- [Copy files while keeping the owners and permissions](#copy-files-while-keeping-the-owners-and-permissions)
 - [Documentation](#documentation)
 
 ## Raspiblitz setup notes
@@ -55,7 +56,6 @@
 * [Why you should use mirror vdevs not raidz](https://jrs-s.net/2015/02/06/zfs-you-should-use-mirror-vdevs-not-raid)
 ### Examples
 * edit the last line of the `zpool create` command
-* the pool is named `fourdiskpool` - can change this
 * for 4 disks - 2 pairs mirrored:
     ```
     mirror $DISK1 $DISK3 mirror $DISK2 $DISK4
@@ -74,7 +74,7 @@
     ```
     # list physical disks
     lsblk --scsi
-    # get the IDS
+    # get the IDs
     ls -la /dev/disk/by-id
 
     DISK1="/dev/disk/by-id/ata-name-and-id-of-disk1"
@@ -85,11 +85,14 @@
     # Clear the partition table:
     sgdisk --zap-all $DISK1
     sgdisk --zap-all $DISK2
-    sgdisk --zap-all $DISK1
-    sgdisk --zap-all $DISK2
+    sgdisk --zap-all $DISK3
+    sgdisk --zap-all $DISK4
 
     # Clean a disk which was previously used with zfs:
     wipefs -a $DISK1
+
+    ## Decide on a pool name
+    POOL_NAME=<pool name>
     ```
 
     ```
@@ -115,7 +118,7 @@
         -O devices=off -O normalization=formD -O relatime=on -O xattr=sa \
         -O encryption=on \
         -O keyformat=raw -O keylocation=file:///root/.zpoolraw.key \
-        fourdiskpool \
+        $POOL_NAME \
         mirror $DISK1 $DISK3 mirror $DISK2 $DISK4
 
     # check
@@ -126,10 +129,10 @@
 ### Mount to /mnt/hdd
 *   ```
     # create a dataset named hdd (so it can be mounted as /mnt/hdd)
-    zfs create fourdiskpool/hdd
+    zfs create $POOL_NAME/hdd
 
     # mount a ZFS dataset to /mnt/hdd
-    zfs set mountpoint=/mnt fourdiskpool
+    zfs set mountpoint=/mnt $POOL_NAME
     zfs load-key -a
     zfs mount -la
 
@@ -150,21 +153,24 @@
 
 
 ## Attach a new disk to an existing pool
-* can create a single zfs disk to mirror or a two-way mirror to a three-way mirror
+* by adding another disk can convert a single zfs disk pool to mirrorred pool or a two-way mirror to a three-way mirror
     ```
     # choose the existing disk from:
     zpool status
+    POOL_NAME=<pool name>
     EXISTING_DISK=<existing-disk-id>
 
     # choose the new disk id from:
+    # the tmlist of physical disks
     lsblk --scsi
+    # get the IDs
     ls -la /dev/disk/by-id
     NEW_DISK=/dev/disk/by-id/ata-<new-disk-id>
 
     # attach the new disk
-    zpool attach $EXISTING_DISK $NEW_DISK
+    zpool attach $POOL_NAME $EXISTING_DISK $NEW_DISK
 
-    # check - shoudl start to resilver as the new disk is added
+    # check - should start to resilver as the new disk is added
     zpool status
     ```
 
@@ -216,6 +222,14 @@
     ) | crontab -u admin -
     # list the active crontab for admin
     crontab -u admin -l
+    ```
+
+## Copy files while keeping the owners and permissions
+*   ```
+    # change to destination
+    cd /mnt1/hdd
+    # copy with the flags --archive --verbose --recursive --progress
+    rsync -avrP /mnt/hdd/* ./
     ```
 
 ## Documentation
