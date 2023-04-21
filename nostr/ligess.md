@@ -55,6 +55,12 @@
   LIGESS_LND_MACAROON=<hex invoice macaroon from CONNECT menu>
   LIGESS_NOSTR_ZAPPER_PRIVATE_KEY=<use a new nostr hex key from iris.to and save it>
   ```
+* a faster and more reliable option is to use your own VPN between the node and the VPS
+  * set up [Tailscale](https://tailscale.com/download/), [ZeroTier](https://www.zerotier.com/download/) or your own Wireguard config on both
+  * fill in the config as above, but skip the `LIGESS_TOR_PROXY_URL` and use the VPN address of the node
+  ```
+  LIGESS_LND_REST=https://<VPN IP address of the node>:8080
+  ```
 
 ## Run the server
 * in `tmux` to keep running after the terminal is closed
