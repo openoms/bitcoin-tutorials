@@ -8,6 +8,7 @@
   - [Examples](#examples)
   - [A four disk setup](#a-four-disk-setup)
   - [Mount to /mnt/hdd](#mount-to-mnthdd)
+  - [manual Raspiblitz config with the zfs pool mounted](#manual-raspiblitz-config-with-the-zfs-pool-mounted)
 - [Attach a new disk to an existing pool](#attach-a-new-disk-to-an-existing-pool)
 - [ZFS encryption key operations](#zfs-encryption-key-operations)
 - [Temperature monitoring](#temperature-monitoring)
@@ -151,6 +152,42 @@
     crontab -u admin -l
     ```
 
+### manual Raspiblitz config with the zfs pool mounted
+* Assuming a new setup you have exited before it was mounting and formatting the data disk itself
+    ```
+    # create a minimal /home/admin/raspiblitz.info
+    echo "baseimage=debian
+    cpu=x86_64
+    blitzapi=off
+    state='setup'" | sudo tee /home/admin/raspiblitz.info
+    sudo chmod 664 /home/admin/raspiblitz.info
+
+    # create a minimal /mnt/hdd/raspiblitz.conf
+    echo "# RASPIBLITZ CONFIG FILE
+    raspiBlitzVersion='1.9.0rc3'
+    lcdrotate=0
+    lightning=off
+    network='bitcoin'
+    chain='main'
+    runBehindTor=on
+    mainnet=on" | sudo tee /mnt/hdd/raspiblitz.conf
+    sudo chmod 644 /home/admin/raspiblitz.info
+
+    # create symlinks
+    config.scripts/blitz.datadrive.sh link
+
+    # install bitcoin
+    config.scripts/bitcoin.install.sh on mainnet
+
+    # for CLN:
+    config.scripts/cl.install.sh on mainnet
+
+    # for LND:
+    config.scripts/cl.install.sh on mainnet
+
+    # reboot to rerun the bootstrap script and synchronise the state with the redis database
+    restart
+    ```
 
 ## Attach a new disk to an existing pool
 * by adding another disk can convert a single zfs disk pool to mirrorred pool or a two-way mirror to a three-way mirror
