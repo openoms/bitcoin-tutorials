@@ -76,13 +76,16 @@ This document aims to provide an introduction to using JoinMarket, a decentraliz
 ## The flow of funds
 
 * First need to state that [one single coinjoin doesn't improve privacy much](https://github.com/JoinMarket-Org/joinmarket-clientserver/issues/1047#issuecomment-944995635).
-* Participating in more coinjoins is essential. Find below the two main ways to achieve this.
+* Forward looking privacy (from a KYC exchange): where did the funds end up? - the possible number of destination grows if the peers keep coinjoining.
+* Backwards looking privacy (against a merchant): where did the funds come from? - from anyone it was coinjoined with.
+* Participating in more coinjoins is essential.
+* Find below the two main ways to achieve this with JoinMarket.
 
 ## Running the Tumbler
 * Using the Tumbler is a higher time preference option and usually is the best tool to use if the funds are needed in the near future - it can take multiple hours, up to days.
 * Multiple coinjoins are sent through the accounts including sweeping transactions at the start and at the end.
 * Breaks up the deposited amounts and sends to at least 3 final addresses without leaving change behind.
-* For the best outcome avoid merging between the final addresses.
+* For the best outcome avoid merging between the final addresses - use separate wallets.
 * The initiator acts repeatedly as a Taker and [pays all the miner and coinjoin fees](https://github.com/JoinMarket-Org/joinmarket-clientserver/blob/master/docs/tumblerguide.md#a-note-on-fees);
 * It is implemented in the JoinMarket-QT GUI and in the command line as the `tumbler.py`.
 * For a detailed usage guide see:
@@ -95,7 +98,7 @@ This document aims to provide an introduction to using JoinMarket, a decentraliz
 
 ## Sending transactions manually and running the Yield Generator
 ### Deposit
-* Send to a new address in m0 - could be any of the accounts, but suggesting using the first one for simplicity.
+* Deposit to a new address in m0 - could be any of the accounts, but suggesting using the first one for simplicity.
 * Deposit a single or multiple coins from a single funding source at a time.
 * Select the newly deposited coin(s) with freeze/unfreeze if there are others in the account.
 
@@ -126,14 +129,14 @@ This document aims to provide an introduction to using JoinMarket, a decentraliz
   ... m0 -> m1 -> m2 -> m3 -> m4 -> m0 -> m1 -> m2 -> m3 -> m4 ...
   ```
 * Only the `cj-out`  propagates to the next account.
-* The `change-out` stays behind in the same account where the funding utxo was.
+* The `change-out` stays behind in the same account where the funding UTXO was.
 
 ### Leaving the JoinMarket wallet
 #### When
 * The more coinjoins the funds were through the better.
 * Consider that the privacy benefit from coinjoins is breaking down with time as the peers are gradually exposed or clustered.
-* If deposited only to m0 and followed the steps above all coins in m4 must have been through at least 5 coinjoins.
-* In a long running, active Maker wallet some funds could have made multiple circles - there is no indication of this by default
+* If deposited only to m0 and followed the steps above all coins in m4 must have been through at least 4 coinjoins.
+* In a long running, active Maker wallet some funds could have done multiple cycles - there is no indication of this by default.
 
 #### How
 ##### Do
@@ -152,5 +155,5 @@ This document aims to provide an introduction to using JoinMarket, a decentraliz
 * <https://en.bitcoin.it/Privacy>
 
 ## Questions and discussions
+* Telegram: <https://t.me/joinmarketorg>
 * IRC through Matrix: <https://matrix.to/#/#joinmarket:libera.chat>
-* Telegram: <https://t.me/joinmarket.org>
