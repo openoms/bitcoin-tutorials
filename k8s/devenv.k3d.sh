@@ -160,6 +160,23 @@ if [ "${cpu}" = arm64 ]; then
   fi
 fi
 
+# PATH
+echo "PATH=$PATH:~/go/bin" | sudo -u k3d tee -a /home/k3d/.bashrc
+
+# for the smoketests
+go install github.com/fullstorydev/grpcurl/cmd/grpcurl@latest
+
+# open file limits
+echo "# show current open file limits"
+sysctl fs.inotify
+echo "# increase open file limits"
+sudo sysctl -w fs.inotify.max_user_instances=1024
+sudo sysctl -w fs.inotify.max_user_watches=524288
+echo "\
+fs.inotify.max_user_instances=1024
+fs.inotify.max_user_watches=524288
+" | sudo tee -a /etc/sysctl.conf
+
 # ZFS # https://github.com/k3s-io/k3s/issues/1688#issuecomment-619570374
 if [ $(df -T /var/lib/docker | grep -c zfs) -gt 0 ]; then
   zfs create -s -V 750GB rpool/ROOT/docker
@@ -173,6 +190,23 @@ if [ $(cat /proc/swaps | wc -l) -lt 2 ]; then
   sudo apt install zram-config
   echo "# needs reboot"
 fi
+
+# gcloud
+# https://cloud.google.com/sdk/docs/install#deb
+if ! which gcloud; then
+  echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+  curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+  sudo apt-get update && sudo apt-get install google-cloud-cli
+fi
+
+#ytt
+
+#yq
+
+# fly
+wget https://github.com/concourse/concourse/releases/download/v7.9.1/fly-7.9.1-linux-amd64.tgz
+tar -xvf fly-7.9.1-linux-amd64.tgz
+sudo mv fly /usr/local/bin
 }
 
 function start_dev_charts() {
