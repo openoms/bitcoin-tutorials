@@ -45,7 +45,11 @@ server {
   ssl_trusted_certificate /etc/letsencrypt/live/$SUBDOMAIN/chain.pem;
 
   location / {
-          proxy_pass      $REDIRECT;
+    proxy_pass      $REDIRECT;
+    # to allow wss:// connections
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade \$http_upgrade;
+    proxy_set_header Connection \"upgrade\";
 
   # from https://github.com/rootzoll/raspiblitz/blob/v1.7/home.admin/assets/nginx/snippets/ssl-proxy-params.conf
   proxy_redirect off;
