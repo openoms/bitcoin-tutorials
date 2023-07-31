@@ -27,11 +27,11 @@
     # work as root
     sudo su -
 
-    echo "deb http://deb.debian.org/debian bullseye-backports main contrib" | sudo tee -a /etc/apt/sources.list.d/bullseye-backports.list
-    echo "deb-src http://deb.debian.org/debian bullseye-backports main contrib" | sudo tee -a /etc/apt/sources.list.d/bullseye-backports.list
+    echo "deb http://deb.debian.org/debian bookworm-backports main contrib
+    deb-src http://deb.debian.org/debian bookworm-backports main contrib" | sudo tee -a /etc/apt/sources.list.d/bookworm-backports.list
 
     echo "Package: src:zfs-linux" | sudo tee -a /etc/apt/preferences.d/90_zfs
-    echo "Pin: release n=bullseye-backports" | sudo tee -a /etc/apt/preferences.d/90_zfs
+    echo "Pin: release n=bookworm-backports" | sudo tee -a /etc/apt/preferences.d/90_zfs
     echo "Pin-Priority: 990" | sudo tee -a /etc/apt/preferences.d/90_zfs
 
     apt update
@@ -248,8 +248,12 @@
     ```
     zpool import
     zpool import -a
+
+    # restore the key
+
     sudo /sbin/zfs load-key -a
     sudo /sbin/zfs mount -la
+
 
     # automount with cron
     cronjob="@reboot sudo /sbin/zfs load-key -a; sudo /sbin/zfs mount -la"

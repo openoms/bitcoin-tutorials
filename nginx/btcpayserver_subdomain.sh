@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# WOWRK IN PROGRESS
+# WORK IN PROGRESS
+# see https://gist.github.com/NicolasDorier/1a7fce6836ee55a7fa2c7f65417b88b5
 
 echo "
 Input your email:
@@ -31,7 +32,7 @@ sudo certbot certonly -a standalone -m $EMAIL --agree-tos \
 cat EOF | sudo tee /etc/nginx/sites-available/${SUBDOMAIN}
 # sudo cat /etc/nginx/sites-enabled/${SUBDOMAIN}
 server {
-  listen 80;
+  listen 80 http2;
   listen 443 ssl http2;
   server_name ${SUBDOMAIN};
 

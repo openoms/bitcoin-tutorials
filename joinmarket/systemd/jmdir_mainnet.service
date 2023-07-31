@@ -6,9 +6,10 @@ After=network-online.target
 
 [Service]
 Type=simple
-ExecStart=/bin/bash -c 'cd /home/jmdir/joinmarket-clientserver && \
- source jmvenv/bin/activate && cd scripts && python start-dn.py'
-User=jmdir
+ExecStart=/bin/bash -c 'cd /home/joinmarket/joinmarket-clientserver && source jmvenv/bin/activate \
+&& cd scripts && python start-dn.py --datadir=/home/joinmarket/.joinmarket-mainnet mainnet-directory-node'
+User=joinmarket
+Restart=always
 
 [Install]
 WantedBy=multi-user.target
