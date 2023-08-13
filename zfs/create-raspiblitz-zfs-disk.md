@@ -246,16 +246,20 @@
 ## Import an existing ZFS pool
 * https://openzfs.github.io/openzfs-docs/Getting%20Started/Debian/index.html
     ```
-    zpool import
-    zpool import -a
+    poolname="fourdiskpool"
+    zpool import ${poolname} -f
+
 
     # restore the key
 
+    # load key and mount
     sudo /sbin/zfs load-key -a
     sudo /sbin/zfs mount -la
 
+    # check
+    df -h
 
-    # automount with cron
+    # automount with cron on reboot
     cronjob="@reboot sudo /sbin/zfs load-key -a; sudo /sbin/zfs mount -la"
     (
         crontab -u admin -l
