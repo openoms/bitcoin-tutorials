@@ -249,7 +249,6 @@
     poolname="fourdiskpool"
     zpool import ${poolname} -f
 
-
     # restore the key
 
     # load key and mount
