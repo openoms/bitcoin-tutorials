@@ -48,8 +48,13 @@ HandleLidSwitchDocked=ignore" | sudo tee /etc/systemd/logind.conf.d/nosuspend.co
 
 function setup_devenv_k3d() {
   # dedicated user
-  sudo adduser --disabled-password --gecos "" k3d
-  sudo usermod -aG sudo k3d
+  USERNAME=k3d
+  echo "# add the user: ${USERNAME}"
+  sudo adduser --system --group --shell /bin/bash --home /home/${USERNAME} ${USERNAME}
+  echo "Copy the skeleton files for login"
+  sudo -u ${USERNAME} cp -r /etc/skel/. /home/${USERNAME}/
+
+  sudo adduser ${USERNAME} sudo
 
   # tools
   sudo apt update
@@ -135,10 +140,10 @@ function setup_devenv_k3d() {
   fi
 
   # KUBE_CONFIG_PATH
-  echo 'export KUBE_CONFIG_PATH=~/.kube/config' \
- | sudo -u k3d tee -a /home/k3d/.bashrc
-# aliases
-echo "\
+  echo 'export KUBE_CONFIG_PATH=~/.kube/config' |
+    sudo -u k3d tee -a /home/k3d/.bashrc
+  # aliases
+  echo "\
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias g='git'
@@ -149,70 +154,70 @@ alias l='ls -CF'
 alias la='ls -A'
 alias ll='ls -alF'
 alias ls='ls --color=auto'
-alias tf='terraform'" \
- | sudo -u k3d tee -a /home/k3d/.bash_aliases
+alias tf='terraform'" |
+    sudo -u k3d tee -a /home/k3d/.bash_aliases
 
-if [ "${cpu}" = arm64 ]; then
-  # https://code.pinske.eu/k3d-raspi.html
-  if ! grep "cgroup_memory=1 cgroup_enable=memory" < /boot/cmdline.txt; then
-    sudo sed -i s/$/ cgroup_memory=1 cgroup_enable=memory/ /boot/cmdline.txt
-    echo "# Will need to reboot to create a cluster successfully"
+  if [ "${cpu}" = arm64 ]; then
+    # https://code.pinske.eu/k3d-raspi.html
+    if ! grep "cgroup_memory=1 cgroup_enable=memory" </boot/cmdline.txt; then
+      sudo sed -i s/$/ cgroup_memory=1 cgroup_enable=memory/ /boot/cmdline.txt
+      echo "# Will need to reboot to create a cluster successfully"
+    fi
   fi
-fi
 
-# PATH
-echo "PATH=$PATH:~/go/bin" | sudo -u k3d tee -a /home/k3d/.bashrc
+  # PATH
+  echo "PATH=$PATH:~/go/bin" | sudo -u k3d tee -a /home/k3d/.bashrc
 
-# for the smoketests
-go install github.com/fullstorydev/grpcurl/cmd/grpcurl@latest
+  # for the smoketests
+  go install github.com/fullstorydev/grpcurl/cmd/grpcurl@latest
 
-# open file limits
-echo "# show current open file limits"
-sysctl fs.inotify
-echo "# increase open file limits"
-sudo sysctl -w fs.inotify.max_user_instances=1024
-sudo sysctl -w fs.inotify.max_user_watches=524288
-echo "\
+  # open file limits
+  echo "# show current open file limits"
+  sysctl fs.inotify
+  echo "# increase open file limits"
+  sudo sysctl -w fs.inotify.max_user_instances=1024
+  sudo sysctl -w fs.inotify.max_user_watches=524288
+  echo "\
 fs.inotify.max_user_instances=1024
 fs.inotify.max_user_watches=524288
 " | sudo tee -a /etc/sysctl.conf
 
-# ZFS # https://github.com/k3s-io/k3s/issues/1688#issuecomment-619570374
-if [ $(df -T /var/lib/docker | grep -c zfs) -gt 0 ]; then
-  zfs create -s -V 750GB rpool/ROOT/docker
-  mkfs.ext4 /dev/zvol/rpool/ROOT/docker
-  echo "/dev/zvol/rpool/ROOT/docker /var/lib/docker ext4 defaults 0 0" >> /etc/fstab
-  echo "# needs reboot"
-fi
+  # ZFS # https://github.com/k3s-io/k3s/issues/1688#issuecomment-619570374
+  if [ $(df -T /var/lib/docker | grep -c zfs) -gt 0 ]; then
+    zfs create -s -V 750GB rpool/ROOT/docker
+    mkfs.ext4 /dev/zvol/rpool/ROOT/docker
+    echo "/dev/zvol/rpool/ROOT/docker /var/lib/docker ext4 defaults 0 0" >>/etc/fstab
+    echo "# needs reboot"
+  fi
 
-# swap # https://github.com/lightningnetwork/lnd/issues/3612#issuecomment-1399208499
-if [ $(cat /proc/swaps | wc -l) -lt 2 ]; then
-  sudo apt install zram-config
-  echo "# needs reboot"
-fi
+  # swap # https://github.com/lightningnetwork/lnd/issues/3612#issuecomment-1399208499
+  if [ $(cat /proc/swaps | wc -l) -lt 2 ]; then
+    sudo apt install zram-config
+    echo "# needs reboot"
+  fi
 
-# gcloud
-# https://cloud.google.com/sdk/docs/install#deb
-if ! which gcloud; then
-  echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
-  curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
-  sudo apt-get update && sudo apt-get install google-cloud-cli
-fi
+  # gcloud
+  # https://cloud.google.com/sdk/docs/install#deb
+  if ! which gcloud; then
+    echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+    curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+    sudo apt-get update && sudo apt-get install google-cloud-cli
+  fi
 
-#ytt
+  #ytt
 
-#yq
+  #yq
 
-# fly
-wget https://github.com/concourse/concourse/releases/download/v7.9.1/fly-7.9.1-linux-amd64.tgz
-tar -xvf fly-7.9.1-linux-amd64.tgz
-sudo mv fly /usr/local/bin
+  # fly
+  wget https://github.com/concourse/concourse/releases/download/v7.9.1/fly-7.9.1-linux-amd64.tgz
+  tar -xvf fly-7.9.1-linux-amd64.tgz
+  sudo mv fly /usr/local/bin
 }
 
 function start_dev_charts() {
   # starting the charts
   cd /home/k3d/
-  sudo -u k3d git clone  https://github.com/GaloyMoney/charts
+  sudo -u k3d git clone https://github.com/GaloyMoney/charts
   cd /home/k3d/charts/dev
 
   sudo -u k3d direnv allow
