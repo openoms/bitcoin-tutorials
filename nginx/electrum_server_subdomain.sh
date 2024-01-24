@@ -13,7 +13,7 @@ read SUBDOMAIN
 
 echo "
 Input the TCP port of the Electrum Server to be redirected to:
-eg.: https://192.168.1.42:50021
+eg.: 192.168.1.42:50002
 "
 read REDIRECT
 
@@ -24,9 +24,9 @@ sudo certbot certonly -a standalone -m $EMAIL --agree-tos \
 
 
 # Setting up the nginx.conf
-    isConfigured=$(sudo cat /etc/nginx/nginx.conf 2>/dev/null | grep -c 'upstream fulcrum')
+    isConfigured=$(sudo cat /etc/nginx/nginx.conf 2>/dev/null | grep -c 'upstream electrum')
     if [ ${isConfigured} -gt 0 ]; then
-            echo "fulcrum is already configured with Nginx. To edit manually run \`sudo nano /etc/nginx/nginx.conf\`"
+            echo "electrum is already configured with Nginx. To edit manually run \`sudo nano /etc/nginx/nginx.conf\`"
 
     elif [ ${isConfigured} -eq 0 ]; then
 
@@ -35,15 +35,15 @@ sudo certbot certonly -a standalone -m $EMAIL --agree-tos \
 
             echo "\
 stream {
-        upstream fulcrum {
+        upstream electrum {
                 server $REDIRECT;
         }
         server {
-                listen 50022 ssl;
-                proxy_pass fulcrum;
+                listen 50002 ssl;
+                proxy_pass electrum;
                 ssl_certificate /etc/letsencrypt/live/$SUBDOMAIN/fullchain.pem;
                 ssl_certificate_key /etc/letsencrypt/live/$SUBDOMAIN/privkey.pem ;
-                ssl_session_cache shared:SSL-fulcrum:1m;
+                ssl_session_cache shared:SSL-electrum:1m;
                 ssl_session_timeout 4h;
                 ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;
                 ssl_prefer_server_ciphers on;
@@ -53,15 +53,15 @@ stream {
             elif [ ${isStream} -eq 1 ]; then
                     sudo truncate -s-2 /etc/nginx/nginx.conf
                     echo "\
-        upstream fulcrum {
+        upstream electrum {
                 server $REDIRECT;
         }
         server {
                 listen 50022 ssl;
-                proxy_pass fulcrum;
+                proxy_pass electrum;
                 ssl_certificate /etc/letsencrypt/live/$SUBDOMAIN/fullchain.pem;
                 ssl_certificate_key /etc/letsencrypt/live/$SUBDOMAIN/privkey.pem;
-                ssl_session_cache shared:SSL-fulcrum:1m;
+                ssl_session_cache shared:SSL-electrum:1m;
                 ssl_session_timeout 4h;
                 ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;
                 ssl_prefer_server_ciphers on;
