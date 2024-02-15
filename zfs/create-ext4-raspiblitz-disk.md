@@ -1,9 +1,10 @@
+```
 parted -s /dev/${hdd} mkpart primary ext4 1024KiB 100%
 mkfs.ext4 -F -L BLOCKCHAIN /dev/${hdd}
 tune2fs -c 1 /dev/${hdd}
+```
 
-
-
+```
     hddDataPartitionExt4=$hdd
     # loop until the uuids are available
     uuid1=""
@@ -30,8 +31,6 @@ tune2fs -c 1 /dev/${hdd}
     fi
     sync
     mount -a 1>/dev/null
-
-
 
 
       # make sure common base directory exits
@@ -75,3 +74,4 @@ tune2fs -c 1 /dev/${hdd}
   mv ./README.txt /mnt/hdd/app-storage/README.txt 2>/dev/null
 
   >&2 echo "# OK - all symbolic links are built"
+```
