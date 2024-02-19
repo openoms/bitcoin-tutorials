@@ -1,3 +1,5 @@
+# Bolt card setup using LNbits
+
 ## Tools used
 * Card: NXP NTAG424 DNA https://zipnfc.com/nfc-pvc-card-credit-card-size-ntag424-dna.html
 * Raspiblitz node running:
