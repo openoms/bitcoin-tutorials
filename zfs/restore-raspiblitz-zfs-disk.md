@@ -21,6 +21,9 @@
   ) | crontab -u admin -
   # list the active crontab for admin
   crontab -u admin -l
+
+  # disable swapfile service
+
   ```
 
 ## Restore a Raspiblitz ZFS disk

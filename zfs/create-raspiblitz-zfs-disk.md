@@ -10,6 +10,7 @@
   - [Mount to /mnt/hdd](#mount-to-mnthdd)
   - [manual Raspiblitz config with the zfs pool mounted](#manual-raspiblitz-config-with-the-zfs-pool-mounted)
 - [Attach a new disk to an existing pool](#attach-a-new-disk-to-an-existing-pool)
+- [Replace a missing disk with a new disk](#replace-a-missing-disk-with-a-new-disk)
 - [ZFS encryption key operations](#zfs-encryption-key-operations)
 - [Temperature monitoring](#temperature-monitoring)
 - [Import an existing ZFS pool](#import-an-existing-zfs-pool)
@@ -198,7 +199,7 @@
     EXISTING_DISK=<existing-disk-id>
 
     # choose the new disk id from:
-    # the tmlist of physical disks
+    # the list of physical disks
     lsblk --scsi
     # get the IDs
     ls -la /dev/disk/by-id
@@ -209,6 +210,33 @@
 
     # check - should start to resilver as the new disk is added
     zpool status
+    ```
+
+## Replace a missing disk with a new disk
+    ```
+    # choose the existing disk from:
+    zpool status
+    POOL_NAME=<pool name>
+    EXISTING_DISK=<existing-disk-id>
+
+    # choose the new disk id from:
+    # the list of physical disks
+    lsblk --scsi
+    # get the IDs
+    ls -la /dev/disk/by-id
+    NEW_DISK=/dev/disk/by-id/ata-<new-disk-id>
+
+    # Clear the partition table:
+    sgdisk --zap-all $NEW_DISK
+
+    # Clean a disk which was previously used with zfs:
+    wipefs -a $NEW_DISK
+
+    # overwrite with ext4
+    mkfs.ext4 -F -L BLOCKCHAIN $NEW_DISK
+
+    # replace
+    zpool replace -f $POOL_NAME $EXISTING_DISK $NEW_DISK
     ```
 
 ## ZFS encryption key operations

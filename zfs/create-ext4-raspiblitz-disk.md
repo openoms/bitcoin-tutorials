@@ -1,6 +1,8 @@
 ```
 parted -s /dev/${hdd} mkpart primary ext4 1024KiB 100%
 mkfs.ext4 -F -L BLOCKCHAIN /dev/${hdd}
+# for nvme
+mkfs.ext4 -F -L BLOCKCHAIN /dev/${hdd}p1
 tune2fs -c 1 /dev/${hdd}
 ```
 
