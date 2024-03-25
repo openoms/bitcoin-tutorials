@@ -51,12 +51,12 @@ server {
     proxy_set_header Upgrade \$http_upgrade;
     proxy_set_header Connection \"upgrade\";
 
-  # from https://github.com/rootzoll/raspiblitz/blob/v1.7/home.admin/assets/nginx/snippets/ssl-proxy-params.conf
-  proxy_redirect off;
-  proxy_set_header Host \$http_host;
-  proxy_set_header X-Real-IP \$remote_addr;
-  proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-  proxy_set_header X-Forwarded-Proto https;
+    # from https://github.com/rootzoll/raspiblitz/blob/v1.7/home.admin/assets/nginx/snippets/ssl-proxy-params.conf
+    proxy_redirect off;
+    proxy_set_header Host \$http_host;
+    proxy_set_header X-Real-IP \$remote_addr;
+    proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto https;
   }
 }" | sudo tee /etc/nginx/sites-available/$SUBDOMAIN
 
