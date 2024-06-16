@@ -1,6 +1,6 @@
 ## JoinMarket single seed multi-location backup scheme
 Documentation on JoinMarket wallet recovery: <https://github.com/JoinMarket-Org/joinmarket-clientserver/blob/master/docs/USAGE.md#recover>  
-When the wallet is restored connected to a bitcoin node with which it was not previously used, will need to rescan the blockhain to register the transactions and look up the wallet balance. Having the wallet birthday helps to do the rescan only from when the wallet was created, but it is not absolutely necessary.
+When the wallet is restored connected to a bitcoin node with which it was not previously used, will need to rescan the blockchain to register the transactions and look up the wallet balance. Having the wallet birthday helps to do the rescan only from when the wallet was created, but it is not absolutely necessary.
 
 ---
 ### Components grouped together by the requirement for a full restore
