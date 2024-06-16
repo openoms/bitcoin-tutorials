@@ -44,7 +44,7 @@ Start at <https://github.com/rootzoll/raspiblitz>
 * #### [Electrum Server in Rust (electrs) on the RaspiBlitz](electrs/README.md)
     Can be used as the backend of:
     * Blue wallet
-    * Phoenix / Eclair Mobile Bitcoin and Ligthtning wallet
+    * Phoenix / Eclair Mobile Bitcoin and Lightning wallet
     * Electrum wallet
     * BitBoxApp
 
