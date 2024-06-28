@@ -2,7 +2,7 @@
 
 Run BTCPayServer on your RaspiBlitz using the already synced bitcoin blockchain and local LND node.
 Benefit from the backup and security features of the RaspiBlitz and LND.  
-No added synchronization needed. 
+No added synchronization is needed. 
 
 Requirements:
 * a domain name or dynamic DNS
