@@ -2,16 +2,27 @@
 # To download and run:
 # $ wget https://github.com/openoms/bitcoin-tutorials/raw/master/nginx/bonus.SSL_for_RTL.sh && bash bonus.SSL_for_RTL.sh
 
-
 # For the certificate to be obtained successfully a dynamic DNS and port forwarding is needed
 # Need to forward port 80 to the IP of your RaspiBlitz for certbot
 # Forward port 3002 to be able to access RTL from outside of your LAN
 
 # https://www.raspberrypi.org/documentation/remote-access/web-server/nginx.md
 
+# check for certbot and nginx
+if dpkg -l | grep -qw "certbot"; then
+  echo "# certbot is already installed"
+else
+  sudo apt install -y certbot
+fi
+if dpkg -l | grep -qw "nginx"; then
+  echo "# nginx is already installed"
+else
+  sudo apt install -y nginx
+fi
+
 echo ""
 echo "***"
-echo "Please confirm that the port 80 is forwarded to the IP of the RaspiBlitz by pressing [ENTER]" 
+echo "Please confirm that the port 80 is forwarded to the IP of the RaspiBlitz by pressing [ENTER]"
 read key
 
 echo ""
@@ -74,7 +85,6 @@ RestartSec=60
 
 sudo systemctl enable certbot.timer
 
-
 echo "Setting up nginx.conf"
 echo "***"
 echo ""
@@ -88,7 +98,7 @@ elif [ ${isRTL} -eq 0 ]; then
         isStream=$(sudo cat /etc/nginx/nginx.conf 2>/dev/null | grep -c 'stream {')
         if [ ${isStream} -eq 0 ]; then
 
-        echo "
+                echo "
 stream {
         upstream RTL {
                 server 127.0.0.1:3000;

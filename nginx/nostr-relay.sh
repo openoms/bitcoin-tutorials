@@ -1,5 +1,17 @@
 #!/bin/bash
 
+# check for certbot and nginx
+if dpkg -l | grep -qw "certbot"; then
+  echo "# certbot is already installed"
+else
+  sudo apt install -y certbot
+fi
+if dpkg -l | grep -qw "nginx"; then
+  echo "# nginx is already installed"
+else
+  sudo apt install -y nginx
+fi
+
 echo "
 Input your email:
 "
@@ -24,8 +36,8 @@ eg.: /nostrrelay/nNZ59JFH
 read RELAY
 
 sudo certbot certonly -a standalone -m $EMAIL --agree-tos \
--d $SUBDOMAIN --expand -n --pre-hook "service nginx stop" \
---post-hook "service nginx start" || exit 1
+  -d $SUBDOMAIN --expand -n --pre-hook "service nginx stop" \
+  --post-hook "service nginx start" || exit 1
 
 # copy in place on a remote machine if needed
 #sudo cat /etc/letsencrypt/live/$SUBDOMAIN/fullchain.pem
@@ -51,29 +63,21 @@ server {
   ssl_trusted_certificate /etc/letsencrypt/live/$SUBDOMAIN/chain.pem;
 
   location / {
-    proxy_pass      https://${SUBDOMAIN}${RELAY};
-    # to allow wss:// connections
-    proxy_http_version 1.1;
-    proxy_set_header Upgrade \$http_upgrade;
-    proxy_set_header Connection \"upgrade\";
+    proxy_pass ${SERVER}${RELAY};
 
-    # from https://github.com/rootzoll/raspiblitz/blob/v1.7/home.admin/assets/nginx/snippets/ssl-proxy-params.conf
-    proxy_SERVER off;
-    proxy_set_header Host \$http_host;
-    proxy_set_header X-Real-IP \$remote_addr;
-    proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-    proxy_set_header X-Forwarded-Proto https;
-  }
-
-  location $RELAY {
-    proxy_pass      $SERVER;
+    # WebSocket support
     proxy_http_version 1.1;
-    proxy_set_header Upgrade \$http_upgrade;
-    proxy_set_header Connection \"upgrade\";
+    proxy_set_header Upgrade \$http_upgrade; # Upgrade header for WebSocket
+    proxy_set_header Connection \"upgrade\"; # Connection header for WebSocket
+
+    # Additional headers
     proxy_set_header Host \$host;
     proxy_set_header X-Real-IP \$remote_addr;
     proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-    proxy_set_header X-Forwarded-Proto \$scheme;
+    proxy_set_header X-Forwarded-Proto https;
+
+    # Disable proxy redirects
+    proxy_redirect off;
   }
 }" | sudo tee /etc/nginx/sites-available/$SUBDOMAIN
 
