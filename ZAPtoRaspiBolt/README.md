@@ -5,7 +5,7 @@
 The desktop app ZAP (https://github.com/LN-Zap/zap-desktop)
 ) is a cross platform Lightning Network wallet focused on user experience and ease of use.
 
-Download ZAP for your operating sytem:
+Download ZAP for your operating system:
 https://github.com/LN-Zap/zap-desktop/releases  
 Install instructions: https://github.com/LN-Zap/zap-desktop#install
 
