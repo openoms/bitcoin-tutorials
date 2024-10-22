@@ -86,7 +86,7 @@ Install instructions: https://github.com/LN-Zap/zap-desktop#install
 `~/tls.cert`  
 `~/admin.macaroon`  
 
-<img src="./zap1.png">
+<img src="./zap2.png">
 
 * Confirm the settings on the following screen and you are done!
 
