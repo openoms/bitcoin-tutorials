@@ -3,6 +3,18 @@
 # WORK IN PROGRESS
 # see https://gist.github.com/NicolasDorier/1a7fce6836ee55a7fa2c7f65417b88b5
 
+# check for certbot and nginx
+if dpkg -l | grep -qw "certbot"; then
+  echo "# certbot is already installed"
+else
+  sudo apt install -y certbot
+fi
+if dpkg -l | grep -qw "nginx"; then
+  echo "# nginx is already installed"
+else
+  sudo apt install -y nginx
+fi
+
 echo "
 Input your email:
 "

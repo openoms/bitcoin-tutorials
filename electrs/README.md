@@ -4,7 +4,7 @@
 
 ![electrum](./images/electrum.png)
 
-Requires 50 Gb diskpace after compactiing and ~100 GB during indexing (Nov 2019).
+Requires 50 Gb diskpace after compacting and ~100 GB during indexing (Nov 2019).
 
 Tested on:
 * Raspberry Pi 4

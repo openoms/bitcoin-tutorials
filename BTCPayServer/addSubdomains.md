@@ -11,7 +11,7 @@ read EMAIL
 echo "Input 3 subdomains separated with commas (eg: pay.example.com,tips.example.com,status.example.com)"
 read SUBDOMAINS
 
-echo "Input the URL to be redirected to for the second domain"
+echo "Input the URL to be redirected to the second domain"
 read REDIRECT1
 echo "Input the URL to be redirected to for the third domain"
 read REDIRECT2
