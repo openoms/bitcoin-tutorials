@@ -1,7 +1,7 @@
 # Get started with Satochip
 
 This setup is working out of the box on:
-- [TailsOS](https://tails.net/) (Can remain offline, but to see new transactions and balances needs an internet connection.)
+- [TailsOS](https://tails.net/) (can remain offline, but to see new transactions and balances needs an internet connection.)
 - Debian 12
 - Windows 10
 
@@ -11,7 +11,7 @@ This setup is working out of the box on:
 <img src="./card-and-reader01.png" height="200">
 <img src="./card-and-reader02.png" height="200">
 
-* Plug in the card to the readr with the chip facing up
+* Plug in the card to the reader with the chip facing up
 * Connet the Reader to a USB port
 * The reader will start flashing
 
@@ -62,7 +62,14 @@ This setup is working out of the box on:
 
 * Refer to the Sparrow Wallet documentation to transact using your Satochip: https://sparrowwallet.com/docs/coldcard-wallet.html#sending-bitcoin
 
-Reference:
+## Reference:
 * Find the original Satochip cards at: [satochip.io/product/satochip](https://satochip.io/product/satochip/)
 
 * For the DIY version see this [gist](https://gist.github.com/openoms/510b2876cab19e15c4190456ea8aad82#file-satochip-javacard-applet-install)
+
+* The Smartcard Reader pictured: ACS ACR39U-N1 PocketMate II USB Smart Card Reader
+  * https://www.amazon.co.uk/dp/B0758TS5JR/
+  * https://www.aliexpress.com/item/1005002034557322.html
+
+* The Card pictured: JCOP Chip Card Dual Interface Chip Magnetic Stripe Java Card J3H145 (no NFC)
+  * https://www.alibaba.com/product-detail/JCOP-Dual-Interface-Support-RSA4096-ECC_1600070838098.html
