@@ -2,9 +2,9 @@
 
 What you need to access the wallet stored on the card:
 * the smartcard loaded with the Satochip java applet and initialized (this was likely done by the one handing the card to you)
-+ a smartcard reader (here a ACS ACR39U-N1 PocketMate II USB)
++ a smartcard reader (here an ACS ACR39U-N1 PocketMate II USB)
 * a computer with a USB port capable to run:
-  - [TailsOS](https://tails.net/) (can remain offline, but to see new transactions and balances needs an internet connection.)
+  - [TailsOS](https://tails.net/) (can be used offline, but to see new transactions and the balance needs an internet connection)
   - Debian 12
   - Windows 10
   - other operating systems will likely work, just not tested
@@ -74,8 +74,8 @@ What you need to access the wallet stored on the card:
 * for the DIY version see this [gist](https://gist.github.com/openoms/510b2876cab19e15c4190456ea8aad82#file-satochip-javacard-applet-install)
 
 * the Smartcard Reader pictured: ACS ACR39U-N1 PocketMate II USB Smart Card Reader
-  * https://www.amazon.co.uk/dp/B0758TS5JR/
-  * https://www.aliexpress.com/item/1005002034557322.html
+  * [amazon.co.uk/dp/B0758TS5JR](https://www.amazon.co.uk/dp/B0758TS5JR/)
+  * [aliexpress.com/item/1005002034557322.html](https://www.aliexpress.com/item/1005002034557322.html)
 
 * the Card pictured: JCOP Chip Card Dual Interface Chip Magnetic Stripe Java Card J3H145 (no NFC)
-  * https://www.alibaba.com/product-detail/JCOP-Dual-Interface-Support-RSA4096-ECC_1600070838098.html
+  * [alibaba.com/product-detail/JCOP-Dual-Interface-Support-RSA4096-ECC_1600070838098.html](https://www.alibaba.com/product-detail/JCOP-Dual-Interface-Support-RSA4096-ECC_1600070838098.html)
