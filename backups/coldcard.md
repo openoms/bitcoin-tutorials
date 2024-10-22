@@ -1,12 +1,12 @@
 ## ColdCard single seed multi-location backup scheme
 Original idea by [@KollerTobias](https://twitter.com/KollerTobias) and [@21isenough](https://github.com/21isenough/).  
 Documentation of Coldcard backups: <https://coldcardwallet.com/docs/backups>  
-The scheme only works if the seed is not locked down to a passphase:
+The scheme only works if the seed is not locked down to a passphrase:
 <https://coldcardwallet.com/docs/passphrase>  
 In this case the passphrase is not tied to a PIN,
 but needs to be written in the CC every time the wallet is opened.
 
-The ColdCards should be stored uninitialized, best to be freshly acquired in the tamper resistant package from the manufacturer (<https://coldcardwallet.com>) to minimize the risk or evil-maid and supply-chain attacks.
+The ColdCards should be stored uninitialized, best to be freshly acquired in the tamper resistant package from the manufacturer (<https://coldcardwallet.com>) to minimize the risk of evil-maid and supply-chain attacks.
 
 ---
 ### Components grouped together by the requirement for a full restore
