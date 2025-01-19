@@ -1,6 +1,6 @@
 # Run the nokyc scripts in every 10 minutes in a tmux window
 
-Using:
+Based on:
 * https://github.com/j4imefoo/nokyc
 * https://github.com/tmuxinator/tmuxinator
 
@@ -9,7 +9,7 @@ Using:
 sudo apt-get install -y git tor tmux rubygems
 
 cd
-git clone https://github.com/j4imefoo/nokyc
+git clone https://github.com/openoms/nokyc
 cd nokyc
 pip install -r requirements.txt
 
