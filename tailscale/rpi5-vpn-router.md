@@ -703,12 +703,36 @@ logread | grep dhcp
 ```bash
 # Exit node status
 tailscale exit-node list
+# Verify that the selected exit node is actually enabled for default routing
+tailscale debug prefs | grep -E 'RouteAll|ExitNodeID|ExitNodeIP|ExitNodeAllowLANAccess'
 # Ping test directly from the Pi
 ping -c 3 1.1.1.1
 # If it fails, temporarily disable:
 tailscale set --exit-node=
 # If it works without exit node, the issue is with the exit node
 ```
+
+If the router should share the exit-node IP with all LAN clients, these conditions must all be true:
+
+- `tailscale set --exit-node=<HOSTNAME> --exit-node-allow-lan-access=true --accept-routes=true` has been applied
+- `tailscale debug prefs` shows `RouteAll: true`
+- the OpenWrt firewall has a `tailscale` zone with `masq='1'`
+- there is a `lan -> tailscale` forwarding rule
+
+Recovery commands:
+
+```bash
+# Re-enable the exit node for full internet routing
+tailscale set --exit-node=<HOSTNAME> --exit-node-allow-lan-access=true --accept-routes=true
+
+# Verify the policy-routing table points default traffic at tailscale0
+ip route show table 52
+
+# Verify LAN client traffic is being NATed to the router's Tailscale IP
+grep 'src=192.168.3.' /proc/net/nf_conntrack
+```
+
+Important: `ExitNodeID` can still be populated while the exit node is effectively disabled. The setting that decides whether clients actually use the exit node is `RouteAll`. If `RouteAll: false`, LAN clients fall back to the normal WAN path.
 
 ## References
 
