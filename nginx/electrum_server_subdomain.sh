@@ -59,6 +59,9 @@ stream {
                 ssl_session_timeout 4h;
                 ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;
                 ssl_prefer_server_ciphers on;
+                proxy_ssl on;
+                proxy_ssl_verify off;
+                proxy_ssl_server_name on;
         }
 }" | sudo tee -a /etc/nginx/nginx.conf
 
@@ -69,7 +72,7 @@ stream {
                 server $REDIRECT;
         }
         server {
-                listen 50022 ssl;
+                listen 50002 ssl;
                 proxy_pass electrum;
                 ssl_certificate /etc/letsencrypt/live/$SUBDOMAIN/fullchain.pem;
                 ssl_certificate_key /etc/letsencrypt/live/$SUBDOMAIN/privkey.pem;
@@ -77,6 +80,9 @@ stream {
                 ssl_session_timeout 4h;
                 ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;
                 ssl_prefer_server_ciphers on;
+                proxy_ssl on;
+                proxy_ssl_verify off;
+                proxy_ssl_server_name on;
         }
 }" | sudo tee -a /etc/nginx/nginx.conf
 
