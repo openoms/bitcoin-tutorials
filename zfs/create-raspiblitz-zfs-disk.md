@@ -42,6 +42,42 @@
     # test
     zpool status
     ```
+## Additional installation steps if using UEFI Secure Boot with kernel lockdown
+* https://wiki.debian.org/SecureBoot#MOK_-_Machine_Owner_Key
+* MOK generation only needs to be done once, and only if you don't already have a MOK. Module signing must be done for every module you want to install.
+* Make sure key doesn't exist yet, then create and enroll custom MOK:
+    ```
+    ls /var/lib/shim-signed/mok/ # should only exist if you already have a MOK
+    
+    mkdir -p /var/lib/shim-signed/mok/
+    cd /var/lib/shim-signed/mok/
+    openssl req -new -x509 -newkey rsa:2048 -keyout MOK.priv -outform DER -out MOK.der -days 36500 -subj "/CN=My Name/"
+    openssl x509 -inform der -in MOK.der -out MOK.pem
+    sudo mokutil --import /var/lib/shim-signed/mok/MOK.der # prompts for one-time password to be used during reboot
+    ```
+* Reboot system, device firmware should launch its MOK manager and prompt the user to review the new key and confirm it's enrollment, using the one-time password. Any kernel modules (or kernels) that have been signed with this MOK should now be loadable.
+* Verify MOK was loaded correctly:
+    ```
+    sudo mokutil --test-key /var/lib/shim-signed/mok/MOK.der
+    /var/lib/shim-signed/mok/MOK.der is already enrolled
+    ```
+* Now sign all ZFS modules with new MOK. ZFS installs more than just `zfs.ko`, so you need to sign `icp.ko`, `spl.ko`, `zavl.ko`, `zcommon.ko`, `zfs.ko`, `zlua.ko`, `znvpair.ko`, `zunicode.ko`, and `zzstd.ko`. 
+    ```
+    VERSION="$(uname -r)"
+    SHORT_VERSION="$(uname -r | cut -d . -f 1-2)"
+    MODULES_DIR=/lib/modules/$VERSION
+    KBUILD_DIR=/usr/lib/linux-kbuild-$SHORT_VERSION
+    cd "$MODULES_DIR/updates/dkms" # For dkms packages
+    echo -n "Passphrase for the private key: "
+    read -s KBUILD_SIGN_PIN # enter the passphrase for your private key at the prompt
+    export KBUILD_SIGN_PIN
+    for i in *.ko ; do sudo --preserve-env=KBUILD_SIGN_PIN "$KBUILD_DIR"/scripts/sign-file sha256 /var/lib/shim-signed/mok/MOK.priv /var/lib/shim-signed/mok/MOK.der "$i" ; done
+    ```
+* The last line above will sign every module in your `$MODULES_DIR/updates/dkms/` folder. To sign them one at a time, execute the following, replacing `zfs.ko` which each module you want to sign:
+    ```
+    sudo --preserve-env=KBUILD_SIGN_PIN "$KBUILD_DIR"/scripts/sign-file sha256 /var/lib/shim-signed/mok/MOK.priv /var/lib/shim-signed/mok/MOK.der zfs.ko
+    ```
+
 
 ## Create the encryption key
 * could use a CLN hsm_secret, see https://twitter.com/openoms/status/1480881081851207683
