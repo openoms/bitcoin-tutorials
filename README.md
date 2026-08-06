@@ -5,7 +5,7 @@ Start at <https://github.com/rootzoll/raspiblitz>
     A guide to store bitcoin on a clean Android or iPhone secured with multisignature in the Blockstream Green Wallet.  
     Recommendations to people who are looking into how to take custody of their first satoshis and not running their own node yet.
 * #### [Single seed multi-location backup schemes](backups/README.md)
-    Create 3 packages of cryptographically secure backups where the funds cannot be recovered from any single package, but can be recovered with the combination of any two. Can be thought of as a physical 2-of-3 multisig solution for ColdCard, JoinMarket and LND wallets.
+    Create 3 packages of cryptographically secure backups where the funds cannot be recovered from any single package, but can be recovered with the combination of any two. Can be thought of as a physical 2-of-3 multisig solution for hardware and software wallets.
 * #### [Forward ports with a reverse SSH tunnel](ssh_tunnel.md)
     No port forwarding needed on the local router.
     Hides the IP of the host and provides an encrypted connection. 
