@@ -7,8 +7,10 @@ Can be thought of as a physical 2-of-3 multisig solution.
 
 ## [SeedXOR](seedxor.md)
 ## [SeedSigner + smartcard](seedsigner-smartcard.md)
+## [Blockstream Jade](jade.md)
 ## [SpecterDIY](specterdiy.md)
 ## [ColdCard](coldcard.md)
+## [Foundation Passport](passport.md)
 ## [BitBox02](bitbox02.md)
 ## [JoinMarket](joinmarket.md)
 ## [LND](lnd.md)
